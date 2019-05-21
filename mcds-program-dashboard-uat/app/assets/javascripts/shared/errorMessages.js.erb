@@ -1,0 +1,111 @@
+angular
+  .module('errorMessages', [])
+  .config(['$httpProvider', function($httpProvider) {
+    $httpProvider.interceptors.push(function($q, Err) {
+
+      return {
+        // optional method
+       'requestError': function(rejection) {
+          // do something on error
+          return $q.reject(rejection);
+        },
+        // optional method
+       'responseError': function(rejection) {
+          var error = new Err.obj(rejection);
+          Err.add(error);
+          Err.setLifeTime(error);
+          return $q.reject(rejection);
+        }
+      };
+    });
+
+  }])
+  .directive('errorMessages', function () {
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: "<%= asset_path('shared/templates/errorMessages.html') %>",
+      controller: 'errorMessagesCtrl as er',
+      bindToController: true
+    };
+  })
+  .controller('errorMessagesCtrl', ['Err', function(Err){
+    var er = this;
+    er.errorMsgs = Err.all;
+
+    er.hasErrors = function(){
+      return angular.isArray(er.errorMsgs) && er.errorMsgs.length > 0
+    }
+
+  }])
+  .service('Err', ['$timeout', '$window', function($timeout,$window){
+    var _error, _errorsMsg, _errors, _addError, _remError, _setLifeTime;
+
+    _errors = [];
+
+    _error = function(rejection){
+      this.message   = _errorsMsg(rejection);
+      this.visible   = true;
+      this.code      = rejection.status;
+      this.createdAt =  new Date();
+    };
+
+    _errorsMsg = function(rejection){
+      if(angular.isObject(rejection.data) && angular.isDefined(rejection.data.location)) {
+        // Follow the redirect from the server if one provided
+        $window.location.href = rejection.data.location;
+        return;
+      };
+
+      switch (rejection.status) {
+      case 0:
+        return "The target server failed to respond";
+
+      case 302:
+        return rejection.data;
+
+      case 401:
+        return "Wrong usename or password";
+
+      case 403:
+        return "You don't have permission to do this";
+
+      case 404:
+        return "Not Found";
+
+      case 500:
+        return "Server internal error: " + rejection.data;
+
+      default:
+        return "Error " + rejection.status + ": " + rejection.data;
+
+      };
+    };
+
+    _addError = function(error){
+      _errors.push(error);
+    };
+
+    _remError = function(error){
+      var idx = _errors.indexOf(error);
+      if(idx > -1){
+        _errors.splice(idx, 1);
+      };
+    };
+
+    _setLifeTime = function(error){
+      var lifeTime = (_errors.length + 1) * 10000;
+      $timeout(function(){
+        _remError(error);
+      }, lifeTime);
+    };
+
+    return {
+      obj:          _error,
+      add:          _addError,
+      remove:       _remError,
+      setLifeTime:  _setLifeTime,
+      all:          _errors
+    };
+
+  }]);

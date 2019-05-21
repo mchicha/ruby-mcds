@@ -1,0 +1,66 @@
+
+'use strict';
+
+angular.module('schematicApp')
+  .directive('statusFilter', [
+    'SchematicSvc',
+    '$filter',
+    function(SchematicSvc, $filter){
+      return{
+        restrict: 'E',
+        require: '^ngModel',
+        replace: true,
+        scope: {status: '='},
+        template: '<div> <drop-down label="Status"><ul class="list-unstyled"> <li> <div><input type="checkbox" ng-model="sts.planning" name="planning" ng-change="setValue(plan, \'planning\')" /> <label>Planning </label> </div></li> <li> <div><input type="checkbox" ng-model="sts.published" name="published" ng-change="setValue(pub, \'published\')" /> <label>Published </label> </div></li> <li> <div><input type="checkbox" ng-model="sts.archived" name="archived" ng-change="setValue(archived, \'archived\')" /> <label>Archived </label> </div></li> </ul></drop-down> </div>',
+        link: function(scope, element, attrs, model){
+
+          scope.status = ['planning', 'published'];
+
+          scope.plan      = false;
+          scope.archived  = true;
+          scope.pub       = false;
+
+          scope.sts = {
+            planning:   true,
+            archived:   false,
+            published:  true
+          }
+
+          scope.setValue = function(bool, txt){
+            if(bool === true){
+              scope.status.push(txt);
+
+              if(txt == 'planning'){
+                scope.plan = false;
+              }else if (txt == 'archived'){
+                scope.archived = false;
+              }else{
+                scope.pub = false;
+              };
+
+            } else {
+
+              var idx = scope.status.indexOf(txt);
+              scope.status.splice(idx, 1);
+
+              if(txt == 'planning'){
+                scope.plan = true;
+              }else if (txt == 'archived'){
+                scope.archived = true;
+              }else{
+                scope.pub = true;
+              };
+
+            };
+          }
+
+          scope.$watch('status', function(newVal, oldVal){
+            var stats = ['planning', 'published', 'archived'];
+            for (var i = stats.length - 1; i >= 0; i--) {
+              scope.sts[stats[i]] = scope.status.indexOf(stats[i]) > -1;
+            };
+          });
+        }
+      };
+    }
+  ])

@@ -1,0 +1,69 @@
+'use strict';
+
+angular.module('schematicApp')
+    .directive('previewable', [
+        'CanvasSvc',
+        function(CanvasSvc) {
+            return {
+                restrict: 'A',
+                scope: {
+                    ctrl: '=ctrl',
+                    doc: '=doc'
+                },
+                link: function link(scope, element, attrs) {
+                    var startX = 0, startY = 0, x = 0, y = 0;
+                    var currCtrl = scope.ctrl;
+
+
+                    // ********************************************************
+                    //                      WATCHERS
+                    // ********************************************************
+                    scope.$watch(function() { return scope.doc; }, function(newValue, oldValue) {
+                        if(scope.stage){ scope.stage.destroyChildren(); }
+                        CanvasSvc.initialize(scope, attrs, currCtrl, true);
+                        Draw();
+                    });
+
+                    function applyLayerAssets(){
+                        angular.forEach(scope.layers[1].children, function(canvasElement, idx) {
+                            AssetHelpers.applyDamAsset(
+                              canvasElement.element,
+                              true
+                            );
+                        });
+                    };
+
+                    function Draw() {
+                        scope.stage  = CanvasSvc.buildStage(scope.doc.config);
+                        scope.layers = CanvasSvc.builder(scope, currCtrl);
+
+                        angular.forEach(scope.layers, function(layer, idx) {
+                            scope.stage.add(layer);
+                            layer.setZIndex(idx);
+                        });
+
+                        CanvasSvc.applyRetina(scope.stage, element);
+                        CanvasSvc.scaleStage(scope.doc.config, scope.stage);
+                        scope.stage.draw();
+                    };
+
+                    // ********************************************************
+                    //                  CANVAS CONFIG FILE
+                    // ********************************************************
+
+                    scope.config = {
+                        layers: [{
+                            name: 'Background',
+                            unscoped: true,
+                            builder: function(element) {
+                                var obj = angular.copy(element.values);
+                                obj.tipe = 'background';
+                                return obj;
+                            }
+                        }]
+                    };
+
+                }
+            };
+        }
+    ]);

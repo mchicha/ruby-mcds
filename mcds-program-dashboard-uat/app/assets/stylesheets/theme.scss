@@ -1,0 +1,904 @@
+// Keeps the flash messages fixed at the top of the page as the user scrolls
+header.notifications-header{
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+}
+
+.page-header {
+  margin: 30px 0 20px 0;
+
+  h1 {
+    font-weight: 700;
+  }
+
+  .breadcrumb_list {
+    margin-top: 0;
+    font-size: 0.9em;
+  }
+}
+
+.btn-actionable {
+    background-color: #74a3ca;
+    color: #fff;
+}
+.btn-primary{
+  border:none;
+  background:#da2934;
+}
+.clear-button{
+  background-color:#da2934;
+  border-color: #da2934;
+  color:#fff;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: #da2934;
+    border-color: #da2934;
+    color: #fff;
+  }
+}
+.navbar-default {
+  background-color: white;
+  border-radius:0;
+  border-bottom-width: 2px;
+  border-style: solid;
+  border-bottom-color: #cb2f3d; /* Old browsers */
+}
+.navbar-default div div .navbar-header a.navbar-brand {
+  background-image: asset-url("mcsource-brand.jpg");
+  width: 108px;
+  height: 71px;
+}
+.navbar-default div div .navbar-collapse {
+  color: black;
+}
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-left {
+  padding-top: 38px;
+}
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-left li a {
+  margin: 0em 0em;
+  text-transform: uppercase;
+  color: black;
+  padding-bottom: 0px;
+  font-size: 0.85em;
+  font-weight: 100;
+}
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-left li a.gray-header {
+  color: gray;
+}
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right {
+  padding-top: 9px;
+}
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li.dropdown a {
+  color: black;
+  background: white;
+}
+
+.navbar-default .navbar-brand {
+  color: #000;
+}
+
+.navbar-default .navbar-brand:hover {
+  color: #000;
+}
+.site-notifications {
+  padding:10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+#programs{
+  .dropdown-menu{
+
+    li{
+      padding: 0px;
+      text-align: center;
+      a {
+        display: block;
+        padding: 0px;
+        clear: both;
+        font-weight: normal;
+        line-height: 1.428571429;
+        color: #333333;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+footer {
+  background: #d9232e;
+  padding-top: 5em;
+  padding-bottom: 5em;
+  color: white;
+  font-weight: 200;
+  // position: absolute;
+  width: 100%;
+  bottom: 0;
+  margin: 0 auto;
+}
+
+footer a {
+  color: white;
+  text-decoration: underline;
+  padding-right: 1em;
+  padding-left: 1em; }
+
+footer .help-email{
+  padding-left: .5em;
+}
+
+.navbar-default div div .navbar-collapse {
+  color: black; }
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-left {
+  padding-top: 10px;
+  margin-left: 8px;}
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-left li {
+  padding: 0;
+  padding-right: 3em;
+  padding-top: 6px; }
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-left li a {
+  margin: 0em 0em;
+  text-transform: uppercase;
+  color: black;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  font-size: 0.89em;
+  font-weight: 600; }
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right {
+  padding-top: 9px;
+  color: #aaacac;
+  font-weight: 200;
+  font-size: 0.85em;
+  padding-bottom: 0.5em;
+}
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li {
+  float: left;
+  }
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li.clearfix div {
+  float: left; }
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li.dropdown:first-child{
+  // margin-right:1em;
+}
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li.dropdown{
+  padding: 6px 0px;
+}
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right ul.dropdown-menu li {
+  width:100%;
+}
+
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li.dropdown a {
+  color: black;
+  background: white;
+}
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li.dropdown ul.dropdown-menu li a:hover {
+  color: black;
+  background: rgb(234, 237, 237);
+  }
+
+.navbar-default div div .navbar-collapse ul.nav.navbar-nav.navbar-right li.dropdown span {
+  margin-left: 0.25em; }
+
+.navbar-default .navbar-brand {
+  color: #000; }
+
+.navbar-default .navbar-brand:hover {
+  color: #000; }
+
+.site-notifications {
+  padding: 10px; }
+
+.form-elements .program-image {
+  padding-left: 0px; }
+
+.form-elements .program-image .form-group {
+  margin: 15px 0px; }
+
+.form-elements .program-image img {
+  padding-left: 0px; }
+
+.row.general-inputs {
+  margin-bottom: 3em; }
+
+.general-attributes h3:first-child {
+  margin-top: 0px;
+  font-family:inherit; }
+
+#color-block-search {
+  padding-left: 0px; }
+
+.row-centered {
+  text-align: center; }
+
+.col-centered {
+  display: inline-block;
+  float: none;
+  text-align: left; }
+
+#apply-filter-message {
+  background-color: #ea9999;
+  border:none;
+  color:#d9232e;
+  display: none;
+  padding: 0.5em;
+  width: 100%;
+  text-align: left;
+}
+
+#apply-filter-message p {
+  padding: 0;
+  margin: 0;
+}
+
+#filter-program-list-form a {
+  cursor: pointer; }
+
+table#programs-list thead tr th {
+  padding-left: 4px;
+  border: 1px solid rgb(209, 210, 210);
+  padding-bottom:5px;
+  // color:#aaacac;
+}
+
+table#programs-list a{
+  color:#da2934;
+  text-decoration:underline;
+}
+table#programs-list a.edit{
+  text-decoration: none;
+  padding: .5em .7em;
+  margin: 0 .5em;
+  border-radius: 1em;
+  color: #fff;
+  background: #da2934;
+}
+.sort, a.add-item-link, .program-action-items a, a.action-item {
+  cursor: pointer; }
+
+.program-action-items {
+  margin-top: 2em; }
+
+.program-action-items.edit-program {
+  margin-top: 0em; }
+
+.program-action-items.new-program {
+  margin-top: 0em; }
+
+table.borderless tr td {
+  border: none; }
+
+.modal.custom .modal-dialog {
+  width: 82%;
+  margin: 0 auto; }
+
+.modal {
+  .modal-header {
+    .panel-title {
+      font-size: 24px;
+    }
+  }
+}
+
+.program-geographies-list fieldset ul li {
+  list-style: none;
+  margin-bottom:10px;
+  }
+
+table.all-users-table#contact-list-table {
+  width: 100%;
+  margin-top: 0px;
+  background:white; }
+
+td {
+  height: 3em;
+  vertical-align: middle;
+}
+.table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dddddd;
+  padding:5px;
+  text-align: center; }
+
+table.tablesorter tbody td {
+  color: #3D3D3D;
+  padding: 5px;
+  // background-color:#fff;
+  // vertical-align: top;
+  font-weight: normal;
+}
+.table-striped > tbody > tr:nth-child(odd){
+  background-color: #e1e5e5;
+}
+.table-striped > tbody > tr:nth-child(even){
+  background-color: #fff;
+}
+#program-list {
+  tr td:first-child{
+    padding-left: 3em;
+  }
+  tr {
+    td.program-thumbnail {
+      width:10%;
+      img {
+        width:100%;
+        padding:0.5em;
+      }
+    }
+  }
+}
+section.main {
+  min-height: 54em;
+  // height:100vh;
+}
+
+.form-control {
+  width: 100%; }
+
+
+//PROJECT INDEX PAGE
+.page-header h2{
+  color:#da2934;
+  font-weight: bolder;
+  margin:0;
+}
+div.new-program a{
+  border-radius:2em;
+  color:#fff;
+  text-decoration: none;
+  &:before{
+    margin-right:5px;
+  }
+}
+.input-group.date-range {
+  float: left;
+  padding-left: 0;
+  padding-right: .5em;
+  padding-top:.5em;
+}
+.program-date-ranges .input-group .form-control:first-child{
+  border-radius:2em;
+  padding-left:.5em;
+}
+span.to{
+  padding:1em 0;
+  width:5%;
+}
+.input-group-addon{
+  border:none;
+  background:none;
+}
+.pop-install-dates{
+  padding:0;
+}
+.project-list-filters{
+  background:#f8f8f8;
+  padding: 1.5em;
+
+  .form-group {
+    margin-bottom: 1em;
+  }
+}
+.project-list-filters select{
+   background: #fff;
+   padding: 5px 15px;
+   font-size: 16px;
+   border: 1px solid #ccc;
+   color:#858585;
+}
+.program-filter-status-row{
+  padding-bottom: 12px;
+}
+.keyword-search{
+  padding-top: 1em;
+  span.fa.fa-search {
+    display: table-cell;
+    vertical-align: middle;
+    color:#a2a2a2;
+    padding-right:0.5em;
+  }
+  input{
+    padding-left:1em;
+    box-shadow: none;
+  }
+  .input-group-btn:last-child > .btn{
+    border-radius:2em;
+  }
+}
+.keyword-search-input{
+  display: inline-block;
+}
+.geography-filter span,
+.project-created-by span,
+.filters-list .show-projects{
+  display: inline-block;
+  padding:0;
+}
+select#program_user_id,
+select#program_geography_id{
+  margin-top: .5em;
+}
+
+.filters-list {
+  label {
+    font-weight: 600;
+  }
+}
+
+.clear-filter a{
+  text-decoration: underline;
+  color:#da2934;
+}
+#filter-buttons{
+  margin-top:3em;
+}
+
+.apply-filter-btn{
+  margin-top:0em;
+  padding-left:0;
+}
+.apply-filter-btn button{
+  border-radius:2em;
+  font-weight: bold;
+  margin-left:0;
+  &:before{
+    margin-right:5px;
+  }
+}
+
+.projects-table{
+  margin-top:3em;
+  margin-bottom:1em;
+  h3 {
+    font-weight:bolder;
+  }
+}
+table#program-color-blocks-table,
+.assigned-geographies-list{
+  background: #fff;
+  padding:1em;
+}
+
+.top-filter-row{
+  // margin-bottom: 10px;
+}
+
+ ////////// PROGRAM_DETAILS_PAGE
+.program-details{
+  h1{font-weight:bolder;}
+  h2{
+    color:#000;
+    font-weight: normal;
+  }
+  .program-date-ranges{margin-top:1em;}
+}
+.action-items a{
+  color: #000;
+  text-decoration:underline;
+}
+.program-details .action-items a.btn-danger{
+  border-radius:2em;
+  color:#fff;
+  text-decoration:none;
+}
+.miscellaneous-lists{
+  background:#545759;
+
+  li {
+    a:hover{
+      text-decoration: none;
+      color:white;
+      background-color: #545759;
+    }
+  }
+  li.active{
+    a{
+      font-weight: 600;
+      color:black;
+    }
+  }
+}
+.program-details legend{
+  margin-bottom:.5em;
+  border-bottom:none;
+}
+
+#program-color-blocks-table {
+  tr{
+    padding-left:10px;
+    td{
+      vertical-align: inherit;
+      font-weight:normal;
+    }
+  }
+  .color-block{
+    width:30px;
+    border-top: 15px solid #fff;
+    border-bottom: 20px solid #fff;
+    border-left: 15px solid #fff;
+  }
+}
+
+.projects-table{
+  margin-top:3em;
+  margin-bottom:1em;
+  h3 {
+    font-weight:bolder;
+  }
+}
+
+.wrapper{
+  min-height: 100%;
+}
+
+.program-status .dropdown-toggle{
+  font-size: .9em;
+  border-radius:.5em;
+  padding:0em 1em;
+  margin-top:17px;
+  .caret{
+    color: #4f4f51;
+    margin-top: 0px;
+    margin-left: 15px;
+  }
+}
+
+input.co-op-checkbox {
+  margin-right:1em;
+  margin-left:auto;
+}
+ul.ui-autocomplete {
+  z-index:9999;
+}
+
+span.mid-level-case{
+  font-size: 15.5px;
+}
+
+
+////////// BRIDGE TRAFFIC REPORT //////////
+.bridge-trafic-report{
+  thead{
+    tr{
+      .aligned-left{
+        text-align: left;
+      }
+      th:not(:first-child){
+        border-left: 2px solid #999;
+      }
+    }
+    border-bottom: 3px solid #999;
+  }
+
+  .seen-row{
+    td{
+      font-weight: normal;
+    }
+    .traffic-body-link{
+      color: #629ED2;
+    }
+  }
+}
+
+
+////////// ADDRESS BOOK STYLES /////////////
+.global-address-book .input-group .form-control:first-child,
+.contact-lists .input-group .form-control:first-child{
+  margin-bottom:1em;
+}
+.global-address-book .clear-button,
+.contact-lists .clear-button{
+  margin-bottom:1em;
+}
+
+/////// GEOGRAPHY SELECTOR MAIN NAV//////////////
+.selected-geography-display{
+  padding-top: 4px;
+  p{
+    font-size: 15.5px;
+    margin-left: 8px;
+  }
+  form{
+    margin-left: 8px;
+    select{
+      font-weight: bold;
+    }
+  }
+}
+
+.agencies-grouping{
+  margin-top: 8px;
+  .agencies-listed{
+    color: black;
+  }
+  margin-left: 8px;
+  .agencies-listed{
+    color: #777;
+  }
+}
+
+.disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+
+.ajax-loader {
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  z-index: 999999;
+
+  &.ng-hide-add, &.ng-hide-remove {
+    -webkit-transition:600ms cubic-bezier(0.150, 0.250, 0.750, 0.750) all;
+    transition:600ms cubic-bezier(0.150, 0.250, 0.750, 0.750) all;
+
+    .loading-text {
+      -webkit-transition-delay: 4s; /* Safari */
+      transition-delay: 4s;
+      -webkit-transition: 200ms cubic-bezier(0.750, 0.750) all;
+      transition: 200ms cubic-bezier(0.750, 0.750) all;
+    }
+  }
+
+  &.ng-hide-add {
+    .loading-text {
+      top: 23.5em;
+    }
+  }
+
+  &.ng-hide {
+    opacity:0;
+
+    .loading-icon {
+      transform: scale(1.2);
+    }
+
+    .loading-text {
+      top: 6.5em;
+      opacity:0;
+      transform: none;
+    }
+  }
+
+  .loading-icon {
+    background-image: asset-url("mcd-bounce.gif");
+    width: 128px;
+    height: 128px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 100;
+  }
+
+  svg {
+    width: 90px;
+    height: 90px;
+    z-index: 99999999;
+    position: absolute;
+    left: 50%;
+    margin-left: -45px;
+    top: 10px;
+  }
+
+  .loading-text {
+    font-size: 2em;
+    text-align: center;
+    width: 400px;
+    position: absolute;
+    margin-left: -130px;
+    top: 3.5em;
+    opacity:1;
+  }
+
+  .base-circle {
+    display: none;
+    border-radius: 50%;
+    background: #d9232e;
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    top: 6px;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(115, 115, 115, 0.4);
+    box-shadow: 0px 0px 12px 1px rgba(115, 115, 115, 0.4);
+    left: 50%;
+    margin-left: -50px;
+    border: 2px solid red;
+  }
+}
+
+ul.pagination {
+  a {
+    color: #555555;
+  }
+
+  li.active {
+    a {
+      background-color: #d9232e;
+      border-color: transparent;
+      font-weight: bold;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: #d9232e;
+        border-color: #d9232e;
+      }
+    }
+  }
+
+  li {
+    a {
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: #e1e5e5;
+        color: #555555;
+      }
+    }
+  }
+}
+
+
+// CALENDAR GARBAGE
+
+.calendar-grid-view{
+  margin-bottom: 10px;
+  .date-type-legend{
+    margin-top: 4px;
+    margin-bottom: 10px;
+    .date-type-icon{
+      margin: 0 10px;
+    }
+  }
+
+  .moment-links-container{
+    .moment-link-calendar:first-child{
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    a{
+      width: 100%;
+    }
+  }
+
+  .calendar{
+    margin: 0 auto !important;
+    float: none !important;
+    thead{
+      border-bottom: 1px solid black;
+      th{
+        padding-left: 1px;
+        padding-right: 1px;
+      }
+    }
+
+    tbody{
+      border: 1px solid black;
+      tr {
+        td {
+          div.dontbreak{
+            page-break-inside:avoid;
+          }
+          width: 14%;
+          vertical-align: top;
+          border: 1px solid black;
+          padding: 2px;
+        }
+      }
+    }
+  }
+}
+
+.date-range ul.dropdown-menu {
+  padding: 0.5em;
+
+  li {
+    table {
+      &:focus { outline: none; }
+
+      button.btn-default {
+        border: 1px solid transparent;
+      }
+
+      thead {
+        th {
+          button.btn-default {
+            border-color: none;
+            border-radius: 4px;
+          }
+        }
+      }
+
+      tbody {
+        td {
+          button.btn-default {
+            border-color: transparent;
+            border-radius: 4px;
+
+            &:hover,
+            &:focus,
+            &:active {
+              border-color: #eee;
+              background-color: #eee;
+            }
+
+            &.active {
+              background-color: #3276b1;
+              box-shadow: none;
+              border-color: #3276b1;
+              color: #fff;
+
+              &:hover,
+              &:active,
+              &:focus {
+                background-color: #3276b1;
+                border-color: #3276b1;
+                color: #fff;
+              }
+            }
+
+            span.text-info {
+              color: #da2934;
+            }
+
+            .text-muted {
+              color: #999;
+            }
+
+            &.active {
+              .text-info {
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  span.btn-group {
+    button.btn-info {
+      background-color: #74a3ca;
+      border-color: #74a3ca;
+      box-shadow: none;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background-color: darken(#74a3ca, 10%);
+        border-color: darken(#74a3ca, 15%);
+        box-shadow: none;
+      }
+    }
+  }
+
+  button.btn-success {
+    background-color: #777;
+    border-color: #777;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: darken(#777, 10%);
+      border-color: darken(#777, 15%);
+    }
+  }
+}
+

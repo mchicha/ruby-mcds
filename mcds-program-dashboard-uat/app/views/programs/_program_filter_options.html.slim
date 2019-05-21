@@ -1,0 +1,62 @@
+.row.top-filter-row
+  .filters-list.form-inline
+    .form-group.col-md-6
+      label for="program-keyword-search"
+        = "Keywords: "
+        | &nbsp;
+      input.form-control.keyword-search-input#program-keyword-search name="program[keyword]" type="text"
+.row.program-filter-status-row
+  .filters-list.form-inline
+    .form-group.col-md-6
+      label for="select-program"
+        = "Program Status: "
+        | &nbsp;
+      = select_tag("program[status]", options_for_select([["Show planning only", "planning"], ["Show published only", "published"], ["Show archived only", "archived"], ["Show all", "all"]], ["Show all", "all"]), id: "select-program", class: "form-control")
+
+.row
+  .filters-list
+    .pop-install-dates
+      .form-group.col-md-6.col-sm-12
+        label
+          | Programs with
+          | &nbsp;
+          strong P.O.P Install
+          | &nbsp;
+          | dates from:
+        br
+        .input-group.col-md-5.date-range
+          input.form-control.form-date-input#popdates1(aria-describedby="basic-addon2"
+                                              placeholder=("MM/DD/YYYY")
+                                              type="text"
+                                              name="program[pop_install][start]")
+          span#basic-addon2.input-group-addon.fa.fa-calendar
+        span.to.col-md-1 to
+        .input-group.col-md-5.date-range
+          input.form-control.form-date-input#popdates2(aria-describedby="basic-addon2"
+                                              placeholder=("MM/DD/YYYY")
+                                              type="text"
+                                              name="program[pop_install][end]")
+          span#basic-addon2.input-group-addon.fa.fa-calendar
+      .form-group.col-md-6.col-sm-12
+        label
+          | Programs with
+          | &nbsp;
+          strong Last Modified
+          | &nbsp;
+          | dates from:
+        br
+        .input-group.col-md-5.date-range
+          input.form-control.form-date-input#moddates1 aria-describedby="basic-addon2" placeholder=("MM/DD/YYYY") type="text" name="program[updated_at][start]"/
+          span#basic-addon2.input-group-addon.fa.fa-calendar
+        span.to.col-md-1 to
+        .input-group.col-md-5.date-range
+          input.form-control.form-date-input#moddates2 aria-describedby="basic-addon2" placeholder=("MM/DD/YYYY") type="text" name="program[updated_at][end]"/
+          span#basic-addon2.input-group-addon.fa.fa-calendar
+.row
+  .filters-list-btns.col-md-5.col-sm-12
+    button.btn.btn-primary
+      i.fa.fa-filter
+      |  Apply Filters
+    button.btn.btn-primary(onclick="clearFilterFields(this);")
+      i.fa.fa-remove
+      |  Clear

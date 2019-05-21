@@ -1,0 +1,47 @@
+.position
+  .position-unselected(ng-hide="schemCtrl.currElement")
+    .well
+      p () No position selected. Please select a position to view the details for the asset in that position.
+
+  .position-selected(ng-show="schemCtrl.currElement")
+    p.text-right ( ng-if="edCtrl && !schemCtrl.schematic.parent_id")
+      span () Lock Co-Ops: &nbsp;
+      toggle-switch ng-model="schemCtrl.currElement.element.editable" save="edCtrl.saveCurrElement(schemCtrl.currElement)"
+
+    .well.text-center
+      img.thumbnail.center-block ng-src="{{schemCtrl.currElement.element.asset | damImage:'thumb_url'}}"
+
+      p () {{schemCtrl.currElement.element.asset.name}}
+
+    dl.dl.dl-horizontal.position-info-key ng-show="schemCtrl.currElement.element.asset"
+      dt () Position Selected
+      dd () {{schemCtrl.currElement.element.asset | attr:'Position Name':'-'}}
+
+      dt () Asset Name
+      dd () {{schemCtrl.currElement.element.asset | attr:'Element Name':'N/A'}}
+
+      dt () SKU Number
+      dd () {{schemCtrl.currElement.element.asset | attr:'SKU'}}
+
+      dt () Market Category
+      dd () {{schemCtrl.currElement.element.asset | attr:'Market Category':'N/A'}}
+
+      dt () Associated Program
+      dd () {{schemCtrl.currElement.element.asset | attr:'Program Name':'N/A'}}
+
+      dt () Geography
+      dd (asset-geographies asset="schemCtrl.currElement.element.asset")
+
+      dt () Up Date
+      dd () {{schemCtrl.currElement.element.asset | attr:'Up Date':'N/A'}}
+
+      dt () Down Date
+      dd () {{schemCtrl.currElement.element.asset | attr:'Down Date':'N/A'}}
+
+      div(ng-if="schemCtrl.schematic.parent_id")
+        dt () Vendor Name
+        dd () {{schemCtrl.currElement.element.asset | attr:'Vendor Name':'Other'}}
+
+      div(ng-if="!schemCtrl.currElement.element.editable")
+        dt () Locked for Co-Ops
+        dd () {{!schemCtrl.currElement.element.editable}}

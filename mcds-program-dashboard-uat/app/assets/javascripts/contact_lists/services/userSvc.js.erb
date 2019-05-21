@@ -1,0 +1,16 @@
+angular.module('contactListApp')
+  .factory('UserSvc', function($resource, $filter) {
+
+    var Users = $resource("/api/v1/users", {}, {
+      query: {
+        method: 'GET',
+        isArray: false
+      }
+    });
+
+    return {
+      resource: Users
+    }
+
+  }
+);

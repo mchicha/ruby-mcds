@@ -1,0 +1,58 @@
+---
+- !ruby/object:Rubber::Configuration::InstanceItem
+  name: mcd-staging-01
+  domain: mcsourceonline.com
+  roles:
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: web
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: app
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: nginx
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: unicorn
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: monit
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: db
+    options:
+      primary: true
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: sidekiq
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: redis
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: redis-master
+    options: {}
+  - !ruby/object:Rubber::Configuration::RoleItem
+    name: redis_master
+    options: {}
+  instance_id: i-c9347200
+  image_type: m3.medium
+  image_id: ami-0f47053f
+  security_groups:
+  - mcdonalds_staging_default
+  - mcdonalds_staging_web
+  - mcdonalds_staging_mcd-staging-01
+  - mcdonalds_staging_app
+  - mcdonalds_staging_nginx
+  - mcdonalds_staging_unicorn
+  - mcdonalds_staging_monit
+  - mcdonalds_staging_db
+  external_host: ec2-54-190-233-118.us-west-2.compute.amazonaws.com
+  external_ip: 54.190.233.118
+  internal_host: ip-10-214-14-116.us-west-2.compute.internal
+  internal_ip: 10.214.14.116
+  zone: us-west-2c
+  provider: aws
+  platform: linux
+  root_device_type: ebs
+- volumes: {}
+  static_ips: {}

@@ -1,0 +1,2 @@
+.geography-drop-down-select
+  =select_tag(:geography_id, grouped_options_for_select({'Assigned Co-Ops' => @geographies.pluck(:name, :id)}, current_user.selected_geography_id), class: 'form-control', 'ng-model' => 'ids')

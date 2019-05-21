@@ -1,0 +1,38 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  h1
+    | Bridge Traffic Report
+  .row
+    .col-lg-3
+      strong
+        | Incident Type:
+      p
+        = @traffic_report.incident_type
+    .col-lg-2
+      strong
+        | Date/Time:
+      p
+        = @traffic_report.created_at.strftime('%m/%d/%y - %H:%M:%S')
+    .col-lg-2
+      strong
+        | Archied:
+      p
+        - if @traffic_report.archived
+          a href=archive_traffic_report_path(id: @traffic_report.id)
+            | Activate!
+        - else
+          a href=archive_traffic_report_path(id: @traffic_report.id, archived: true)
+            | Archive!
+  .row
+    .col-lg-8
+      strong
+        | Report:
+      -@traffic_report.body.split('. ').each do |line|
+        -lines = line.split(/(was:)/) #each one has a "was:" that keeps label and info apart. Thus splitting on it is usable
+        strong
+          = lines[0]
+          = lines[1]
+        p
+          = lines[2]

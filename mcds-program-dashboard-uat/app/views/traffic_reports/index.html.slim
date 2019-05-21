@@ -1,0 +1,59 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  h1
+    | Bridge Traffic Report
+  .row.col-lg-11
+    .col-lg-10
+      form action=traffic_reports_path
+        .form-group.col-lg-4
+          label
+            | Type:
+          =select_tag "incident_type", options_for_select(['All', ['Template Name Not Found', 0], ['Program ID Not Found', 1], ['Asset Update Worker Fail', 2], ['Program Update Worker Fail', 3]], @incident_type), class: 'form-control'
+        .form-group.col-lg-2
+          label
+            | Archived:
+          =select_tag 'archived', options_for_select(['All', ['Archived', true], ['Active', false]], @archived), class: 'form-control'
+        .form-group.col-lg-2
+          label
+            | Read:
+          =select_tag 'seen', options_for_select(['All', ['Read', true], ['Unread', false]], @seen), class: 'form-control'
+        .form-group.col-lg-2
+          input.btn.btn-primary type="submit" value="Filter"
+  .row
+    .col-lg-10
+      .bridge-trafic-report
+        table.table.table-striped
+          thead
+            tr
+              th.col-lg-2 Date
+              th.col-lg-3 Incident Type
+              th.col-lg-4 Body
+              th.col-lg-1 Archived
+              th.col-lg-1 Read
+          tbody
+            -@traffic_reports.each do |report|
+              tr class="#{'seen-row' if report.seen}"
+                td
+                  = report.created_at.strftime(']%m/%d/%y - %H:%M:%S')
+                td
+                  = report.incident_type
+                td
+                  a.traffic-body-link href=traffic_report_path(report)
+                    = report.body.slice(4..47) + "..."
+                td
+                  - if report.archived
+                    a href=archive_traffic_report_path(id: report.id)
+                      | Activate!
+                  - else
+                    a href=archive_traffic_report_path(id: report.id, archived: true)
+                      | Archive!
+                td
+                  - if report.seen
+                    | Read
+                  - else
+                    | Unread
+
+        .pagination
+          = paginate @traffic_reports

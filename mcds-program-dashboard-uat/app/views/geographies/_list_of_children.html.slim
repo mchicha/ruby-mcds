@@ -1,0 +1,15 @@
+accordion-group
+  .panel-group aria-multiselectable="true" role="tablist" id="accordion-children-#{obj.id}"
+    .panel.panel-default
+      - if child_geography.is_a_co_op?
+        = co_op_checkbox(child_geography, obj)
+      - else
+        div(id="heading-child-#{child_geography.id}" class="panel-heading" role="tab")
+          h4.panel-title
+            a aria-controls="collapsechild#{child_geography.id}-#{obj.id}" aria-expanded="false" data-parent="#accordion-children-#{obj.id}" data-toggle="collapse" href="#collapsechild#{child_geography.id}-#{obj.id}" class="collapsed"
+              .fa.fa-plus-circle
+              = child_geography.name
+        div(id="collapsechild#{child_geography.id}-#{obj.id}" class="panel-collapse collapse" aria-labelledby="heading-child-#{child_geography.id}" role="tabpanel")
+          .panel-body
+            - if child_geography.children
+              = render partial: 'geographies/list_of_children', collection: child_geography.children, as: :child_geography, locals: {obj: obj}

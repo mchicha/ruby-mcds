@@ -1,0 +1,9 @@
+- @program.date_ranges.preload(:date_type).each do |date_range|
+  - unless date_range.start_date.nil?
+    .date-list(class="#{date_range.date_type.get_class_name}")
+      label()
+        = date_type_name(date_range.date_type)
+      div
+        = program_date_range_start(date_range)
+      div
+        = program_date_range_end(date_range)

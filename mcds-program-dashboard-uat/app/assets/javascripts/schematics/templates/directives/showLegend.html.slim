@@ -1,0 +1,38 @@
+.show-legend.legend-area
+  .row.legend-header
+    .col-xs-4.previous-zone
+      a (href="#" ng-click="ctrl.updateSelectedZone($event, ctrl.priorDocument)" ng-show="ctrl.priorDocument")
+        i.fa.fa-long-arrow-left>
+        | {{ ctrl.priorDocument.name }}
+    .col-xs-4.current-zone
+      h5 (style="display:inline;")
+        | {{ ctrl.currentDocument.name }}
+    .col-xs-4.next-zone
+      a (href="#" ng-click="ctrl.updateSelectedZone($event, ctrl.nextDocument)" ng-show="ctrl.nextDocument")
+        | {{ ctrl.nextDocument.name }}
+        i.fa.fa-long-arrow-right<
+
+  .row.legend-body
+    .col-md-3.col-sm-12.col-xs-12
+        .subtitle Time Period:
+        dl.dl.dl-horizontal
+          dt () Start Date:
+          dd () {{ ctrl.schematic.release_date | date }}
+          dt () End Date:
+          dd () {{ ctrl.schematic.end_date | date }}
+
+    .col-md-3.col-sm-12.col-xs-12
+      .subtitle Geography:
+      ul.list-unstyled
+        li (ng-repeat="geography in ctrl.schematic.geographies")
+          | {{ geography.name }}
+    .col-md-3.col-sm-12.col-xs-12 ng-show="ctrl.schematic.geographies.length > 0"
+      .subtitle Agency:
+      ul.list-unstyled.last
+        li (ng-repeat="agency in ctrl.schematic.agencies")
+          | {{ agency.name }}
+    .col-md-3.col-sm-12.col-xs-12
+      .subtitle Programs Included:
+      ul.list-unstyled
+        li (ng-repeat="program in ctrl.documents[ctrl.currDoc].programs | filter: ctrl.legendFilter")
+          | {{ program.name }}

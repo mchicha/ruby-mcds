@@ -1,0 +1,54 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('statusable', [
+    '$timeout',
+    '$modal',
+    '$filter', function ($timeout, $modal, $filter) {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        value        : '='
+      },
+      template: '<div class="btn-group" dropdown><button type="button" class="btn btn-down btn-actionable" dropdown-toggle>{{selectedText}}<i class="fa fa-caret-down"></i></button><ul class="dropdown-menu dropdown-select dropdown-menu-right"><li ng-repeat="opt in options"><a ng-click="setText(opt);">{{opt[label]}}</a></li></ul></div>',
+      link: function postLink(scope, element, attrs) {
+        scope.isopen = false;
+        scope.label = 'label';
+
+        scope.options =[{value: 'planning', label: 'Planning '}, {value: 'published', label: 'Published '}];
+
+        scope.findTextValue = function(value){
+          var obj, filter = {};
+
+          filter.value = scope.value;
+
+          obj = $filter('filter')(scope.options, filter, true);
+
+          if(obj.length > 0){
+            scope.selectedText = obj[0].label
+          }else{
+            scope.selectedText = 'Status'
+          }
+        };
+
+        scope.change = function(option){
+          scope.value         = option.value;
+          scope.selectedText  = option.label;
+        };
+
+        scope.setText = function(option){
+          scope.change(option);
+        };
+
+        scope.findTextValue(scope.value);
+      }
+    };
+  }]);
+
+///////////////////////////////////////////////
+// This is modified from Redbox Planogram,
+// stripped down because it is not used in multiple
+// places in mcsource. If needed again, pull original
+///////////////////////////////////////////
+

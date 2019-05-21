@@ -1,0 +1,65 @@
+.container-fluid
+  .keeptogether.document-holder (
+    ng-repeat="document in previewCtrl.documents | filter:{type_of: 'page'}"
+    ng-class="document.htmlClassName"
+    ng-style="{
+        'width': (document.config.width) + 'px',
+        'height': (document.config.height) + 'px'}"
+    )
+
+    .legend-wrapper (
+      ng-style="{
+        'max-width': (document.width * document.print_scale) + 'px'
+        }")
+
+      .whole-row
+        strong
+          | {{previewCtrl.schematic.name}}
+      .whole-row
+        .zone-section
+          strong.pdf-label
+            | Zone:
+          span.preview-tag.zone-tag
+            |  {{document.zone.name}}
+        .agency-section
+          strong.pdf-label
+            | {{previewCtrl.schematic.agencies.length == 1 ? 'Agency' : 'Agencies'}}:
+          span.preview-tag.agency-tag
+            span ng-if="previewCtrl.schematic.agencies.length == 1"
+              | {{previewCtrl.schematic.agencies[0].name}}
+            span ng-if="previewCtrl.schematic.agencies.length != 1"
+              | {{previewCtrl.schematic.agencies.length}}
+        .geography-section
+          strong.pdf-label
+            | {{previewCtrl.schematic.geographies.length == 1 ? 'Geography' : 'Geographies'}}:
+          span.preview-tag.geography-tag
+            span ng-if="previewCtrl.schematic.geographies.length == 1"
+              | {{previewCtrl.schematic.geographies[0].name}}
+            span ng-if="previewCtrl.schematic.geographies.length != 1"
+              | {{previewCtrl.schematic.geographies.length}}
+      .whole-row.program-section
+        .whole-row
+          strong.pdf-label
+            | {{document.programDisplay.length == 1 ? 'Program' : 'Programs'}}:
+        .whole-row
+          .preview-tag.program-tag (ng-repeat="program in document.programDisplay | filter: previewCtrl.legendFilter")
+            .tag-text
+              |  {{program | popStartDate:'pop_install'}}-{{program | popStartDate:'pop_take_down'}} {{program.name | cut:38}}
+
+    .canvas-stand(ng-style="{
+      'width': (document.config.width) + 'px',
+      'height': (document.config.height) + 'px',
+      'background': 'url(\"' + document.background + '\") no-repeat'}")
+
+      note-collection (
+        doc="document"
+        schem="previewCtrl.schematic"
+        edit="previewCtrl.textBoxes"
+        removable="previewCtrl.removable"
+        ng-style="{transform: 'scale(' + document.config.scale + ')'}")
+
+      div (
+        ng-attr-id="{{'schematic-builder-' + $index}}"
+        ctrl="previewCtrl"
+        doc="document"
+        previewable)

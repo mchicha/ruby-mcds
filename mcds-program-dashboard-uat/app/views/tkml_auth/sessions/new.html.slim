@@ -1,0 +1,48 @@
+doctype html
+html
+head
+  =stylesheet_link_tag 'application', media: 'all'
+  =javascript_include_tag 'application', 'programs'
+  link href="http://fonts.googleapis.com/css?family=Josefin+Slab:400,700" rel="stylesheet" type="text/css"
+  =csrf_meta_tags
+
+body
+
+  .wrapper
+    = render partial: "layouts/header"
+
+    section.main
+      .container
+        h1.text-center() McSource Online
+
+        .col-xs-6.col-xs-offset-3#mcsource-login-box
+          =form_tag session_path do |form|
+            .row
+              .col-xs-12
+                .header.form-group
+                  h2.text-center McSource Online Login
+            .row
+              .col-xs-12
+                p.form-group
+                  = label_tag "Username", nil, class: 'form-label'
+                  = text_field_tag 'username', params[:username], class: "form-control"
+            .row
+              .col-xs-12
+                p.form-group
+                  = label_tag "Password", nil, class: 'form-label'
+                  = password_field_tag 'password', params[:password], class: "form-control"
+            .row
+              .col-xs-12
+                p.text-right
+                  = link_to "Forgot Password", new_password_reset_path, class: "text-right"
+                  = submit_tag 'Login', :class => "text-right btn btn-primary btn-lg"
+
+
+    footer
+      = render partial: "layouts/footer"
+
+  / TO PREVENT WKHTMLTOPDF FROM STAYING OPEN
+  javascript:
+    $(document).ready(function(){
+      window.status = 'ready_to_print';
+    });

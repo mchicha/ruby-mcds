@@ -1,0 +1,30 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('typeFilter', [
+    'SchematicSvc',
+    '$filter',
+    function(SchematicSvc, $filter){
+      return{
+        require: 'ngModel',
+        restrict: 'E',
+        scope: {
+          sch_type: '=',
+          testFlagModel: '=ngModel',
+          change: '&'
+        },
+        replace: true,
+        template: '<div class="checkbox"><label><input type="checkbox" name="schematicType" ng-model="testFlagModel" ng-true-value="\'1\'" ng-false-value="\'0\'" ng-change="setVal(testFlagModel)">Show Tests Only</input></label></div>',
+        link: function(scope, element, attrs, ngModel){
+
+          scope.setVal = function(val){
+            ngModel.$setViewValue(val);
+
+            if(angular.isFunction(scope.change())) {
+              scope.change()(true);
+            }
+          }
+        }
+      };
+    }
+  ]);

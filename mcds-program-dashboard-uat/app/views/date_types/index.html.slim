@@ -1,0 +1,46 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+ .row.col-md-12
+    table.table.text-center.table-striped
+      thead
+        tr
+          th
+            | Name
+          th
+            | Display Name
+          th
+            | Required
+          th
+            | End Date Required
+          th
+            | Show On Calendar
+          th
+            | Sort Order
+          th
+            | Calendar Font Awesome Icon
+          th
+            | Calendar Icon Color
+      tbody
+        - @date_types.each do |date_type|
+          tr
+            td
+              a href="#{edit_date_type_path(date_type)}"
+                = date_type.name
+            td
+              = date_type.display_name
+            td
+              = date_type.required
+            td
+              = date_type.end_date_required
+            td
+              = date_type.show_on_calendar
+            td
+              = date_type.sort_order
+            td
+              = date_type.fa_icon
+            td
+              = date_type.icon_color
+    .pagination
+      = paginate @date_types

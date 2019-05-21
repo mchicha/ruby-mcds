@@ -1,0 +1,40 @@
+.asset-list
+  .position-unselected(ng-hide="schemCtrl.currElement")
+    .well
+      p () No position selected. Please select a position to view the details for the assets in that position.
+
+  asset-locked-warning
+
+  .position-selected(ng-if="schemCtrl.currElement && (schemCtrl.currElement.element.editable || !schemCtrl.schematic.parent_id)")
+    .form-group
+      label () Show Assets For #{"{{schemCtrl.currElement.element.values.id}}" unless Rails.env.production?}
+      select.form-control ng-model="aList.program" ng-options="program.id as program.name for program in schemCtrl.programs"
+        option value="" Market Category Placeholders
+
+    .form-group.inner-search-icon
+      i.fa.fa-search
+      input.form-control type="search" placeholder="Begin typing to search." name="search" ng-model="aList.search" autocomplete="off"
+    .results-found-container
+      strong ng-if="aList.filteredAssets.length > 1"
+        | {{aList.filteredAssets.length}} Assets Found
+      strong ng-if="aList.filteredAssets.length === 1"
+        | 1 Asset Found
+    .well
+      ul.row.list-unstyled.list-group ng-if="aList.program"
+        h3.text-center ng-if="aList.filteredAssets.length == 0"
+          | No Elements Found For Program
+        / for Development to ignore Position ID filter and program filter, comment out/un comment the next two lines, then switch them
+        / li.col-xs-12.col-md-6 (ng-repeat="asset in aList.filteredAssets = (schemCtrl.assets)")
+        li.col-xs-12.col-md-6 (ng-repeat="asset in aList.filteredAssets = (schemCtrl.assets | filter:aList.search | filter:{metadata: {name: 'Program ID', value: aList.program.toString()}} : true | filter: schemCtrl.positionIdFilter)")
+          div ng-class="{'grayed-out':!edCtrl.uniqueAsset(asset.id, schemCtrl.currElement, schemCtrl.currentDocument)}"
+            a.thumbnail ng-click="edCtrl.applyImage(asset, schemCtrl.currElement, schemCtrl.currentDocument, schemCtrl.schematic)"
+              img.img-responsive ng-src="{{asset.thumb_url}}"
+            span.asset-name () {{ asset.name | limitTo:50 }}
+      ul.row.list-unstyled.list-group ng-if="!aList.program || aList.program.length == 0"
+        h3.text-center ng-if="schemCtrl.marketCategories.length == 0"
+          | No Market Categories Available
+        li.col-xs-12.col-md-6 (ng-repeat="marketCategory in schemCtrl.marketCategories")
+          a.thumbnail.market-category ng-click="edCtrl.applyGradient(marketCategory, schemCtrl)" style="background-color: {{ marketCategory.start_hex }};"
+            | {{ marketCategory.name }}
+          span.market-category-title Market Category:
+          p() {{ marketCategory.name }}

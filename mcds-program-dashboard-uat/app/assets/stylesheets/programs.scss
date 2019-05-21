@@ -1,0 +1,302 @@
+// Place all the styles related to the Programs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+#filter-program-list-form .fa-calendar{
+  cursor: pointer;
+}
+
+#apply-filter-message {
+  background-color:#ea9999;
+  border:0.1em solid;
+  padding:.02em;
+  display:none;
+  p {
+    padding-top:0.4em;
+  }
+}
+
+#filter-program-list-form {
+  a {
+    cursor:pointer;
+  }
+}
+
+table#programs-list{
+
+  .edit {
+    float: left;
+  }
+
+  td.actions {
+    min-width: 190px;
+  }
+
+  thead{
+    tr{
+      th{
+        padding-left:4px;
+        text-align: left;
+        padding-right: 20px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.sort, a.add-item-link, .program-action-items a, a.action-item {
+  cursor:pointer;
+}
+
+.program-action-items {
+  margin-bottom:2em;
+
+  .btn {
+    font-family: 'Josefin Slab', serif;
+  }
+}
+
+table.borderless tr td {
+  border: none;
+}
+
+.tab-content {
+  // margin-top:1.5em;
+}
+
+.modal.custom .modal-dialog {
+  width:82%;
+  margin:0 auto;
+}
+
+.program-geographies-list fieldset ul li {
+  list-style:none;
+}
+.program-details .dates label{
+  margin-left:1em;
+  width: 175px
+}
+.program-details .date-list div {
+  display: inline-block;
+  margin-left: 7%;
+}
+label#program-dates{
+  text-decoration: underline;
+}
+
+div.program-date-ranges .col-xs-12, div.program-date-ranges .col-xs-6 {
+  padding: 0px; }
+
+div.program-date-ranges h4 {}
+
+div.program-status {
+  margin: 2em 0 1em -1em; }
+
+div.program-status h2 {
+  float: left;
+  margin-bottom: 0px;
+  margin-right:.3em; }
+
+.clearfix, .program-status button.selectpicker{
+  color: #80bd01;
+  font-size: 1.7em;
+  float: left; }
+
+.program-image {
+  padding-left: 0;
+  img {
+    max-height: 400px;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+}
+
+
+div.program-show div.dates {
+  padding-top:1em;
+  background: white;
+  }
+
+div.program-show .show-list,
+div.program-agency-list ul{
+  background: white;
+  padding: 1em; }
+
+.search-for-element, .search-for-resource {
+  padding: 2em 0px; }
+
+span.required {
+  color: #D9232D;
+}
+
+.program-date-ranges {
+  .date-list {
+
+  }
+  .lighter {
+
+  }
+  .shaded {
+    background-color:#f3f7f7;
+  }
+  .input-group[class*="col-"]{
+    float:left;
+    margin:.2em 0;
+
+    input.form-date-input {
+      border-radius: 2em;
+    }
+
+    .fa-calendar {
+      cursor: pointer;
+    }
+
+    .form-date-input {
+      padding-left: 4px;
+    }
+  }
+
+}
+
+#search-filter {
+
+  .input-group[class*="col-"]{
+    float: left;
+    margin-right: 1.5em;
+  }
+
+}
+
+.breadcrumb_list {
+  margin-top:1em;
+
+  a {
+    color: #D9232D;
+    font-weight: bold;
+  }
+}
+
+div.input-group.search{
+  input.form-control{
+    border-top-right-radius:0px;
+    border-bottom-right-radius:0px;
+  }
+}
+
+.selected-geographies, .selected-users {
+  margin-top:1em;
+  span {
+    font-weight: bold;
+  }
+  .selected-option {
+    padding:0.5em;
+    border-radius: 0.5em;
+    color:#FFF;
+    font-size:12px;
+    cursor:pointer;
+    margin-bottom:0.3em;
+  }
+  .geography {
+    background-color:#da2934;
+  }
+  .user {
+    background-color:#2cb46a;
+  }
+}
+select#program_status_id {
+  padding: 5px 0px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  color: #80bd01;
+  margin-top: 1.3em;
+}
+ select.mid-form-program-dropdown{
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+ }
+
+img.program-placeholer-image {
+  width:225px;
+}
+
+#email-resource-form {
+  width:100%;
+}
+
+.temp-program-id-label{
+  font-size: 35px;
+}
+
+.program-resource-row{
+  text-align: center;
+}
+
+label.required:after, .label.required:after {
+  content: "*";
+  color: #D24429;
+}
+
+.color-block{
+  height: 32px;
+  width: auto;
+}
+
+.table-sorting {
+  th span {
+    position: relative;
+    .up {
+      cursor: pointer;
+      font-size: 10px;
+      margin-left: 10px;
+      position: absolute;
+      top: -2px;
+    }
+    .down {
+      cursor: pointer;
+      font-size: 10px;
+      margin-left: 10px;
+      position: absolute;
+      top: 10px;
+    }
+  }
+}
+
+[ng-cloak] {
+  display: none;
+
+  .resource-actions {
+    a {
+      display: inline-block;
+      margin: 0 10px;
+    }
+  }
+}
+
+.current-file {
+  margin: 1em 0;
+
+  .name {
+    font-weight: bold;
+    margin-right: 0.5em;
+  }
+}
+
+.filters-list-btns {
+  margin-top: 1em;
+}
+
+.new-program {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.pos-text-area{
+  min-height: 200px;
+}
+
+// SAC
+
+input[name="asset[document]"]{
+  // Without this, long file names push the form outside of the limits
+  overflow: hidden;
+  width: 100%;
+}

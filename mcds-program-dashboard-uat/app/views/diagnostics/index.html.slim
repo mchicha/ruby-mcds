@@ -1,0 +1,33 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .row.col-lg-11
+    .col-lg-2
+      h2
+        | Published
+      strong
+        | National
+      p
+        = @published_national_schematic_count
+    .col-lg-8
+      h2
+        | Lookup Table Diagnostics
+      .col-lg-6
+        strong
+          | Keys Only With Position Data:
+        -@position_incompletes.each do |key|
+          p
+            =key
+      .col-lg-6
+        strong
+          | Keys Only With Friendly Data:
+        -@friendly_incompletes.each do |key|
+          p
+            =key
+    .col-lg-2
+      h2
+        | Grandparents:
+      -@grandparent_schematics.each do |schem|
+        p
+          =schem.name

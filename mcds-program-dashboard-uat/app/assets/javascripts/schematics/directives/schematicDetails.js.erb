@@ -1,0 +1,15 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("schematicDetails", [ function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/schematicDetails.html') %>",
+      controller: function() {
+        var details = this;
+
+      },
+      controllerAs: "details"
+    };
+  }]);

@@ -1,0 +1,206 @@
+
+.logout-btn {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333333;
+  white-space: nowrap;
+  background: white;
+  width: 100%;
+  text-align: left;
+  border: none;
+}
+
+.alerts-update-container{
+
+  .alerts-side{
+    margin-top: 25px;
+
+    .alerts-updates-header{
+      margin-bottom: 15px;
+    }
+
+    .alerts-box{
+      .alert-row{
+        margin-top: 5px;
+        margin-bottom: 5px;
+        .alert-entry{
+          background-color: white;
+          border: 2px solid #aaa;
+          margin-left: auto;
+          margin-right: auto;
+          width: 80%;
+
+          a{
+            color: red;
+            &:visited{
+              color: #FF9C9C;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.schematic-program-container{
+  margin-bottom: 20px;
+  .no-program-error {
+    padding-top: 30px;
+    p{
+    font-size: 20px;
+    font-family: 'Josefin Slab', serif;
+    font-weight: bold;
+    margin: 0px;
+    }
+  }
+  .parent-child-relationship-container{
+    border-bottom: 3px solid black;
+    padding-bottom: 50px;
+    &:last-child{
+      border-bottom: 0;
+    }
+  }
+
+  .schematic-row{
+    margin-top: 25px;
+    .current-schematic-header{
+      margin-bottom: 40px;
+      font-weight: bold;
+      font-family: 'Josefin Slab', serif;
+      .schematic-current{
+        font-size: 18px;
+      }
+      .schematic-name{
+        font-size: 22px;
+        color: #D82430;
+      }
+      .schematic-dates{
+        font-size: 12px;
+        font-family: 'Open Sans', sans-serif;
+      }
+    }
+    .programs-container{
+      border: 2px solid #aaa;
+      background-color: white;
+      padding-top: 5px;
+      .frame{
+        width: 90%;
+        .slidee{
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+      .frame, .backward, .forward{
+        display: inline-block;
+      }
+      .invisible{
+        visibility: none;
+      }
+      .backward, .forward{
+        vertical-align: top;
+        margin-top: 150px;
+        .fa{
+          font-size: 35px;
+          color: #aaa;
+          cursor: pointer;
+          &:hover{
+            color: #777;
+          }
+        }
+      }
+      .program-label{
+        font-weight: bold;
+        font-family: 'Josefin Slab', serif;
+        margin: 5px;
+      }
+      .program-image{
+        height: 155px;
+        width: 155px;
+        line-height: 155px;
+        transition: background-position .1s ease, opacity .3s ease;
+
+        img{
+          max-height:100%;
+          max-width:100%;
+        }
+      }
+      .single-program-container{
+        width: 175px;
+        display: inline-block;
+        .program-box{
+          a{
+            .program-name-container{
+              height: 50px;
+              white-space: pre-wrap; /* css-3 */
+              white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+              white-space: -pre-wrap; /* Opera 4-6 */
+              white-space: -o-pre-wrap; /* Opera 7 */
+              word-wrap: break-word; /* Internet Explorer 5.5+ */
+              p{
+                padding: 5px;
+              }
+            }
+            height: 300px;
+            text-align: center;
+            border: 1px solid #aaa;
+            border-radius: 10px;
+            margin: 4px;
+            padding: 4px;
+            display: block;
+            text-decoration: none;
+            &:hover{
+              border: 1px solid #D82430;
+              -webkit-box-shadow: 8px 8px 5px -2px rgba(170,170,170,1);
+              -moz-box-shadow: 8px 8px 5px -2px rgba(170,170,170,1);
+              box-shadow: 8px 8px 5px -2px rgba(170,170,170,1);
+            }
+          }
+          .program-name-container{
+            color: #D82430;
+            display: block;
+            border-bottom: 1px solid #F7AF0B;
+          }
+          .delivery-container{
+            color: black;
+          }
+        }
+      }
+    }
+  }
+  .pages{
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+    text-align: center;
+    li{
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin: 0 4px;
+      text-indent: -999px;
+      border-radius: 10px;
+      cursor: pointer;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+      &:hover{
+        background: #777;
+      }
+    }
+    .active{
+      background: #aaa;
+    }
+  }
+}
+
+.alerts-update-container{
+  .alerts-updates-header {
+    font-family: 'Josefin Slab', serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 25px;
+  }
+}

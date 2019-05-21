@@ -1,0 +1,133 @@
+.container
+  .page-header
+    new-button
+
+    h1 () Co-op Schematics
+
+    .row
+      .col-xs-12
+        ol.breadcrumb
+          li
+            a ui-sref="main" Home
+          li
+            | My Schematics
+
+    .row
+      .col-md-4
+        .btn-group.btn-group-justified
+          a.btn.btn-primary.active ui-sref="mySchematics"
+            | My Schematics
+            span ()  (000)
+
+          a.btn.btn-primary ui-sref="root"
+            | All Schematics
+            span ()  (000)
+
+      .col-md-8.well
+        .form-inline
+          drop-down.col-md-3 label="Date Range"
+            div style="width: 650px;"
+              .row.date-range
+                .col-md-3.col-xs-12
+                  | Show Start Dates From
+
+                .col-md-9.col-xs-12.form-inline
+                  div (ng-model="coopCtrl.f.sdate.from" date-picker)
+                  span () to
+                  div (ng-model="coopCtrl.f.sdate.to" date-picker)
+
+              .row.date-range
+                .col-md-3.col-xs-12
+                  | Show End Dates From
+
+                .col-md-9.col-xs-12.form-inline
+                  div (ng-model="coopCtrl.f.edate.from" date-picker)
+                  span () to
+                  div (ng-model="coopCtrl.f.edate.to" date-picker)
+
+              .row.date-range
+                .col-md-3.col-xs-12
+                  | Show Last Modified From
+
+                .col-md-9.col-xs-12.form-inline
+                  div (ng-model="coopCtrl.f.mdate.from" date-picker)
+                  span () to
+                  div (ng-model="coopCtrl.f.mdate.to" date-picker)
+
+
+          status-filter status="coopCtrl.f.st" ng-model="status"
+
+          type-filter ng-model="coopCtrl.f.ty"
+
+          a.btn.btn-warning.pull-right  ng-click="coopCtrl.clearFilters()"  Clear Filters
+
+    .row
+      .col-md-4
+        div.form-group.input-group.search
+          input.form-control(
+            type="search"
+            ng-model="coopCtrl.f.search"
+            name="search"
+            placeholder="search"
+          )
+          span.input-group-btn
+            button.btn.btn-default.clear-button(
+            type="button"
+            ng-click="coopCtrl.clearFilters()"
+            ) Clear
+      .col-md-4.form-inline
+        label.form-label ()
+          span () 1
+          | - &nbsp;
+          span () 5
+          |  of &nbsp;
+          span () {{coopCtrl.filterList}}
+          | Schematics &nbsp;
+
+          select-dropdown default-text="#" options="coopCtrl.perPage" value="coopCtrl.f.perPage" label="label" val-opt="val"
+          | per page
+
+      .col-md-4.text-right
+        pagination total-items="coopCtrl.filtCoops.length" ng-model="coopCtrl.f.currPage"  items-per-page="coopCtrl.f.perPage" max-size="5" previous-text="<" next-text=">" num-pages="coopCtrl.f.numPages" boundary-links="true"  first-text="<<"
+
+    .row
+      .col-md-12
+
+      table.table-striped#schematics-list
+        thread
+          tr
+            th (sortable name="name" align="center" col="coolCtrl.col" dir="coolCtrl.dir") Co-Op
+            th (sortable name="division" col="coopCtrl.col" dir="coopCtrl.dir") Division / Region
+            th (sortable name="status" col="coopCtrl.col" dir="coopCtrl.dir") Status
+            th () Programs Included
+            th (sortable name="release_date" col="coopCtrl.col" dir="coopCtrl.dir") Start Date
+            th (sortable name="end_date" col="coopCtrl.col" dir="coopCtrl.dir") End Date
+            th (sortable name="updated_at" col="coopCtrl.col" dir="coopCtrl.dir") Last Modified
+            th () Options
+
+        tbody
+          / tr ng-repeat="coop in coopCtrl.filtCoops = (coopCtrl.coops.geographies_schematics | filter:coopCtrl.f.search | dateRange:coopCtrl.f.sdate.from:coopCtrl.f.sdate.to:'release_date'| dateRange:coopCtrl.f.edate.from:coopCtrl.f.edate.to:'end_date'| dateRange:coopCtrl.f.mdate.from:coopCtrl.f.mdate.to:'updated_at' | statusFilter: coopCtrl.f.st | filter:coopCtrl.f.ty | orderBy:coopCtrl.col:coopCtrl.dir) | limitTo: coopCtrl.offSet(coopCtrl.f) | limitTo: coopCtrl.pullSize(coopCtrl.f, coopCtrl.filtCoops.length) track by coop.id"
+          tr ng-repeat="coop in coopCtrl.filterList = (coopCtrl.coops.geographies_schematics | filter:coopCtrl.f.search)"
+            td () {{coop.name}}
+            td
+              | {{coop.ancestry}}
+            td () status
+            td () program1
+            td () {{coop.release_date | date}}
+            td () {{coop.end_date | date}}
+            td () {{coop.updated_at | date}}
+            td
+              a.btn ui-sref="editor({id: coop.id})"
+                i.fa.fa-fw.fa-pencil-square-o
+                | Edit
+
+              a.btn
+                i.fa.fa-fw.fa-copy
+                |Copy
+
+        / ul ng-repeat="coop in coopCtrl.coops.geographies_schematics"
+        /   li () {{coop.name}}
+        /p () {{coopCtrl.coops}}
+
+
+

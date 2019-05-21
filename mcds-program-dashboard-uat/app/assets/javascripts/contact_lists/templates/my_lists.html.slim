@@ -1,0 +1,65 @@
+.container
+  h2() My Contacts/Contact Lists
+
+  .row
+    .col-xs-12
+      .col-md-3.contact-options.nav-pills
+        .global-address-book
+          h3.contact-list-nav-links(ui-sref="contact_lists") Global Address Book
+          h3.contact-list-nav-links.active-link(ui-sref="my_lists")My Contact Lists
+        .users-lists()
+          ul(ng-repeat="my_list in my_lists.contact_lists | orderBy:'name' ")
+            li()
+              a(ui-sref="list({listId: my_list.id})" ui-sref-active="active") {{my_list.name}}
+
+      .col-md-9
+        .row
+          .search-users.form-group.contact-lists
+            div.form-group.input-group.search
+              input.search.form-control#contact-list-search.col-xs-12.pull-right(
+                type="text"
+                ng-model="myListsFilter"
+                autofocus="true"
+                placeholder="search"
+              )
+              span.input-group-btn
+                button.btn.btn-default.clear-button(
+                  type="button"
+                  ng-click="myListsFilter = undefined"
+                )  Clear
+
+
+            .col-xs-12.delete-button
+              button.btn.btn-danger.btn-block(
+                ng-disabled="!my_lists.selectedLists().length"
+                ng-click="my_lists.removeBulkContactGroups();"
+              ) Delete Selected Lists
+        .row
+          table.table.table-bordered.all-users-table#contact-list-table()
+            .text-right.number-displayed
+              span() Displaying {{filteredLists.length}} Lists
+              |  |
+              span() {{my_lists.selectedLists().length}} Selected
+            thead()
+              tr
+                th() Select All
+                th()
+                  | Contact List Name
+                  a.pull-right(ng-click="my_lists.predicate = 'name'; reverse=!reverse")
+                    i.fa.fa-sort()
+                th()
+                  | Contacts
+                  a.pull-right(ng-click="my_lists.predicate = 'contact_list_users.length'; reverse=!reverse")
+                    i.fa.fa-sort()
+                th() Delete
+            tbody()
+              tr(ng-repeat="my_list in (filteredLists = (my_lists.contact_lists | filter: myListsFilter | orderBy:my_lists.predicate:reverse))")
+                td()
+                  input(type="checkbox" name="selectedLists[]" ng-model="my_list.checked" ng-click="my_lists.showGroupListField = false")
+                td()
+                  a(ui-sref="list({listId: my_list.id})") {{my_list.name}}
+                td() {{my_list.contact_list_users.length}}
+                td()
+                  button.btn.btn-primary.btn-block(
+                    ng-click="my_lists.removeGroup(my_list);"
+                  ) Delete

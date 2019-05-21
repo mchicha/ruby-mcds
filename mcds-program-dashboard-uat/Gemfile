@@ -1,0 +1,145 @@
+source 'https://rubygems.org'
+source 'https://rails-assets.org'
+
+# TKML Authentication
+# gem "tkml_auth", "0.0.13", :path => './../gems/tkml_auth'
+# gem 'tkml_auth', '0.0.13', git: "git@github.com:Tukaiz/tkml_auth.git", branch: 'master'
+
+gem 'sprockets', '~> 2.8'
+
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '4.2.3'
+gem 'responders', '~> 2.0'
+# Use mysql as the database for Active Record
+gem 'mysql2'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0.3'
+gem 'bootstrap-sass', '~> 3.3.1'
+gem "font-awesome-rails", '~> 4.3.0'
+gem 'bourbon'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+# Use CoffeeScript for .js.coffee assets and views
+gem 'coffee-rails', '~> 4.1.0'
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# gem 'therubyracer',  platforms: :ruby
+gem 'haml'
+gem 'nkss-rails', github: 'nadarei/nkss-rails'
+
+## Add New Relic for monitoring
+gem 'newrelic_rpm', '~> 3.15.0.314'
+
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+gem 'turbolinks'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.0'
+# bundle exec rake doc:rails generates the API under doc/api.
+gem 'sdoc', '~> 0.4.0',          group: :doc
+gem 'slim'
+gem "espinita"
+
+gem 'ancestry'
+
+gem 'momentjs-rails', '>= 2.8.1'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.0.0'
+gem 'bootstrap-datepicker-rails', '~> 1.4.0'
+
+gem 'ckeditor'
+gem 'carrierwave'
+gem 'mini_magick'
+gem 'remotipart', '~> 1.2'
+gem 'figaro'
+gem 'seed-fu'
+gem 'rack-cors'
+gem 'sidekiq', '~> 4.0.1'
+gem 'sidekiq-debounce'
+#NEED TO RUN THE VIEW LAYER FOR SIDEKIQ
+gem 'sinatra', require: false
+gem 'nokogiri'
+gem 'reform'
+gem 'virtus'
+gem 'kaminari' ## pagination
+
+# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+group :development, :test do
+  # gem 'sass-rails-source-maps', github: 'vhyza/sass-rails-source-maps', branch: 'sass-rails-5.0.0.beta1'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'spring'
+  gem 'factory_girl_rails'
+  gem 'shoulda-matchers'
+  gem 'faker'
+  gem 'pry-rails'
+end
+
+group :test do
+  gem 'webmock'
+end
+
+group :development do
+  gem 'thin'
+  gem "better_errors"
+  gem 'binding_of_caller'
+  gem 'letter_opener'
+  gem 'quiet_assets'
+  gem 'byebug'
+  gem 'redis-namespace'
+end
+
+# source 'https://rails-assets.org' do
+  gem 'rails-assets-angular', '~>  1.4.8'
+  gem 'rails-assets-angular-bootstrap', '~> 0.13.3'
+  gem "rails-assets-angular-route", '~>  1.4.8'
+  gem "rails-assets-angular-messages", '~>  1.4.8'
+  gem "rails-assets-angular-resource", '~>  1.4.8'
+  gem "rails-assets-angular-animate", '~>  1.4.8'
+  gem "rails-assets-angular-sanitize", '~>  1.4.8'
+  gem "rails-assets-angular-mocks", '~>  1.4.8'
+  gem 'rails-assets-angucomplete-alt'
+  gem 'rails-assets-angular-ui-router', '0.2.15'
+  gem 'rails-assets-kineticjs', '~> 5.1.0'
+  gem 'rails-assets-sly'
+  gem 'rails-assets-fullcalendar', '2.3.1'
+  gem 'rails-assets-angularjs-slider'
+
+  # gem 'angular-ui-bootstrap-rails'
+# end
+
+gem 'active_model_serializers'
+
+gem 'rails4-autocomplete'
+# gem 'rails-assets-bootstrap-sass'
+# Use ActiveModel has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
+
+# Use unicorn as the app server
+# gem 'unicorn'
+
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+
+# Use debugger
+# gem 'debugger', group: [:development, :test]
+
+# Error debugging
+gem "airbrake"
+
+# API gems
+gem 'httparty'
+
+gem "roo", '2.0.1'
+
+gem 'whenever', :require => false
+
+gem 'breadcrumbs_on_rails'
+gem "cancancan"
+
+# For deployment
+gem 'unicorn'
+gem 'rubber'
+gem 'open4'
+gem 'therubyracer', :group => :assets
+# For deployment
+gem 'wicked_pdf', github: 'mileszs/wicked_pdf'

@@ -1,0 +1,56 @@
+.panel-primary
+  .modal-header.panel-heading
+    h3.panel-title New Schematic
+  .modal-body
+    form.form.schematic-form (name="new.form" role="form" ng-submit="new.save()" novalidate)
+      .form-group
+        .row
+          .col-xs-12
+            label
+              | Name
+            input.form-control ( ng-model="new.schematic.name" placeholder="New Schematic" required name="name" )
+      .form-group
+        .row
+          .col-md-4.col-xs-12
+            label
+              | Start Date
+            div ( required='true' ng-model="new.schematic.release_date" date-picker validator="new.dateValidator")
+            .alert-danger.has-error ng-messages="new.form.$error" ng-show="new.form.$submitted || new.form.date.$touched"
+              .error-message ng-message="date-disabled"
+                i.fa.fa-caret-up
+                | Please select a valid release date.
+
+          .col-md-4.col-xs-12
+            label
+              | End Date
+            div ( required='true' ng-model="new.schematic.end_date" date-picker validator="new.dateValidator")
+            .alert-danger.has-error ng-messages="new.form.$error" ng-show="new.form.$submitted || new.form.date.$touched"
+              .error-message ng-message="date-disabled"
+                i.fa.fa-caret-up
+                | Please select a valid end date.
+
+          .col-md-4.col-xs-12
+            label
+              | Status
+            schematic-status ng-model="new.schematic.status"
+
+      schematic-geography-select new-schem="new" user="new.user"
+      .row
+        .col-xs-12
+          .form-group
+            schematic-test-bool ng-model="new.schematic.sch_type"
+
+      .row
+        .col-xs-12
+          button.btn.btn-default.pull-left type="cancel" ng-click="new.close()" ng-hide="new.saving"
+            | Cancel &nbsp;
+            i.fa.fa-times-circle
+
+          p.new-schematic-error (ng-show="new.showErrorMessage")
+            | Problem saving. Required:
+            span (ng-repeat="error in new.errors")
+              | {{$first ? ' ' : $last ? ' & ' : ', '}}{{error}}
+          button.btn.btn-primary.pull-right type="submit" ng-disabled="new.saving"
+            | {{ new.submitText() }}
+            i.fa.fa-chevron-circle-right (ng-hide="new.saving")
+

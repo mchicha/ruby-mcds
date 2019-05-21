@@ -1,0 +1,18 @@
+/! Modal
+#add-single-element.modal.fade aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button" ng-click="changeAssetType($event, '')"
+          span aria-hidden="true" &times;
+        h4#myModalLabel.modal-title
+          | {{ assetForm.title }} Single Element
+      .modal-body
+        h4 Select Asset Type
+        select.form-control.asset-type-selector(ng-options="assetType.id as assetType.name for assetType in assetTypes" ng-model="selectedAssetTypeId")
+          option value="" Select Asset Type
+        br
+        h4(ng-if="selectedAssetTypeId") Asset Details
+        div#asset-form-container(tkml-asset-id="selectedAssetId" tkml-asset-form="" tkml-asset-callback="updateAssets" tkml-asset-type-id="selectedAssetTypeId" tkml-asset-defaults="#{@program.default_info_for_dam.to_json}" tkml-shown-defaults="['Up Date', 'Down Date']")
+      .modal-footer
+        button.btn.btn-info data-dismiss="modal" type="button" ng-click="changeAssetType($event, '')" Close

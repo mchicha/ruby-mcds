@@ -1,0 +1,539 @@
+// Place all the styles related to the schematics controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.schematics{
+  span.to {
+    margin: 0 0.5em;
+  }
+
+  rzslider .rz-pointer {
+    background-color: #337ab7;
+  }
+
+  .position,
+  .asset-list,
+  .layout-list {
+    h3 {
+      font-weight: bold;
+    }
+  }
+
+  .position-selected {
+
+    .top-arrow {
+      display: block;
+      height: 2em;
+      padding-left: 52px;
+    }
+
+    .position-info-key{
+      font-size: 12px;
+      margin-top: 1em;
+
+      dt, dd {
+        text-align: left;
+        margin-bottom: 1em;
+      }
+      dt {
+        width: 45%;
+      }
+      dd {
+        margin-left: 50%;
+        width: 50%;
+      }
+    }
+
+    .box-row {
+      margin: 0 auto;
+      display: inline-block;
+    }
+
+    .left-arrow {
+      float: left;
+      height: 100px;
+      text-align: right;
+      padding-top: 30px;
+      padding-right: 5px;
+    }
+
+    .align-box {
+        background: white;
+        border: 1px solid #AAA;
+        display: inline-block;
+      }
+
+    @media screen and (max-width: 1549px) {
+
+      .top-arrow {
+        padding-left: 40px;
+        margin-top: 1em;
+      }
+
+      .left-arrow {
+        height: 40px;
+        text-align: right;
+        padding-top: 12px;
+      }
+
+      .align-box {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    @media screen and (min-width: 1550px) {
+      .align-box {
+        height: 75px;
+        width: 75px;
+      }
+    }
+
+
+    .form-horizontal {
+
+      .form-group {
+        margin-top: 1.2em;
+      }
+    }
+  }
+
+  .red-bar {
+    border-top: thin solid red;
+  }
+
+  .edit-schematics {
+    .input-group-addon {
+      padding-left: 0;
+    }
+  }
+
+  h1 {
+    input.form-control {
+      font-size: 36px;
+      color: inherit;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      height: auto;
+      background: none;
+      border: none;
+      padding-bottom: 0px;
+      border-radius: 0;
+      line-height: 1em;
+      border-bottom: 1px solid #eaeded;
+
+      &.ng-invalid {
+        background: #f9f2f4;
+        border-bottom: 1px dashed red;
+      }
+    }
+
+    input.form-control:focus, &:hover input.form-control {
+        background: #f5f5f5;
+        border-bottom: 1px dashed #545759;
+    }
+  }
+
+  #schematic-builder-header {
+    .well {
+      font-size: 12px;
+    }
+  }
+
+  //firefox breaking line
+  .row.date-range {
+    p.input-group {
+      width: 45%;
+
+      .input-group-btn {
+        .btn-cal {
+          background-color: #a8a8a8;
+        }
+      }
+    }
+  }
+
+  .schematic-details {
+    margin-bottom: 2em;
+
+    form {
+      .form-group {
+        p {
+          margin-bottom: 0;
+        }
+      }
+
+      dl {
+        margin-bottom: 0;
+
+        dd {
+          margin-top: 1em;
+        }
+      }
+
+      .modifications {
+        dt {
+          width: auto;
+          padding-right: 0.5em;
+        }
+        dd {
+          width: auto;
+          margin-left: 0;
+        }
+      }
+
+      .geos {
+        ul {
+          li {
+            span.label-danger {
+              font-size: 13px;
+              margin-right: 0.5em;
+            }
+          }
+        }
+      }
+    }
+
+    ul.dropdown-menu {
+      padding: 0.5em;
+
+      li {
+        table {
+          &:focus { outline: none; }
+
+          button.btn-default {
+            border: 1px solid transparent;
+          }
+
+          thead {
+            th {
+              button.btn-default {
+                border-color: none;
+                border-radius: 4px;
+              }
+            }
+          }
+
+          tbody {
+            td {
+              button.btn-default {
+                border-color: transparent;
+                border-radius: 4px;
+
+                &:hover,
+                &:focus,
+                &:active {
+                  border-color: #eee;
+                  background-color: #eee;
+                }
+
+                &.active {
+                  background-color: #3276b1;
+                  box-shadow: none;
+                  border-color: #3276b1;
+                  color: #fff;
+
+                  &:hover,
+                  &:active,
+                  &:focus {
+                    background-color: #3276b1;
+                    border-color: #3276b1;
+                    color: #fff;
+                  }
+                }
+
+                &.today {
+                  .btn-default {
+                    background-color: yellow;
+                  }
+                }
+
+                span.text-info {
+                  color: #da2934;
+                }
+
+                .text-muted {
+                  color: #999;
+                }
+
+                &.active {
+                  .text-info {
+                    color: #fff;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      span.btn-group {
+        button.btn-info {
+          background-color: #74a3ca;
+          border-color: #74a3ca;
+          box-shadow: none;
+
+          &:hover,
+          &:focus,
+          &:active {
+            background-color: darken(#74a3ca, 10%);
+            border-color: darken(#74a3ca, 15%);
+            box-shadow: none;
+          }
+        }
+      }
+
+      button.btn-success {
+        background-color: #777;
+        border-color: #777;
+
+        &:hover,
+        &:active,
+        &:focus {
+          background-color: darken(#777, 10%);
+          border-color: darken(#777, 15%);
+        }
+      }
+    }
+
+    .input-group-btn {
+      .btn-cal {
+        background-color: #a8a8a8;
+      }
+    }
+  }
+
+  .nav-tabs {
+    padding-left: 0.3em;
+
+    li {
+      a {
+        font-size: 12px;
+        padding: 10px 13px;
+        &.document-lqink-in-dropdown {
+          padding: 5px 13px;
+        }
+        cursor: pointer;
+      }
+
+      &:hover {
+        > a {
+          color: grey;
+        }
+      }
+    }
+  }
+
+  .btn-toolbar {
+    .btn-group {
+      margin-top: 0;
+    }
+  }
+
+  .schematic-geographies {
+    list-style: none;
+    padding-left: 0px;
+  }
+  .view-schematic {
+    margin-right: 25px;
+  }
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    /* display: none; */
+    /* float: left; */
+    /* min-width: 160px; */
+    /* padding: 5px 0; */
+    /* margin: 2px 0 0; */
+    list-style: none;
+    font-size: 14px;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    /* border: 1px solid rgba(0, 0, 0, 0.15); */
+    border-radius: 4px;
+    /* -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); */
+    /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); */
+    /* background-clip: padding-box; */
+    list-style-position: outside;
+    padding: 0;
+  }
+
+  .page-header{
+    margin: 30px 0 20px;
+
+    .btn-primary{
+      background-color: #74a3ca;
+    }
+  }
+  .btn{
+    margin:0;
+    border-radius: 2em;
+  }
+  .form-inline{
+    .btn-group{
+      margin-top:0;
+    }
+    .dropdown-menu-right {
+      right:inherit;
+    }
+  }
+
+  #schematic-builder {
+    // background-color: white;
+  }
+
+  .well{
+    margin-bottom: 5px;
+    background-color:#f8f8f8;
+  }
+  .my-schematic-options{
+    .btn{
+      background-color: #a8a8a8;
+      opacity: .5;
+    }
+    .active{
+      opacity: 1;
+      background-color: #74a3ca;
+    }
+  }
+  .btn-group > .btn + .dropdown-toggle{
+    background-color: #a8a8a8;
+    color:#333333;
+  }
+  .open > .btn-primary.dropdown-toggle{
+    border:1px solid #a8a8a8;
+  }
+  // .ng-isolate-scope button{
+  //   background-color:#fff;
+  //   color:#333333;
+  //   border:1px solid #a8a8a8;
+  //   &:hover{
+  //     background-color:#ffffff;
+  //     border:1px solid #a8a8a8;
+  //   }
+  // }
+  #schematics-list{
+    th{
+      border: 1px solid #d1d2d2;
+    }
+    td{
+      text-align:center;
+      font-weight:normal;
+    }
+    a.btn{
+      display:block;
+      margin-top: .25em;
+      margin-bottom: .25em;
+      background-color:#74a3ca;
+      color:#fff;
+      border:none;
+      .fa-fw{
+        margin-right:.5em;
+      }
+    }
+  }
+  .pagination{
+    margin:0 auto;
+  }
+  .no-schematics-message{
+    padding-top: 80px;
+  }
+}
+
+.asset-list, .layout-list {
+  ul {
+
+    max-height: 52em;
+    overflow-y: scroll;
+
+    li {
+
+      height: 180px;
+      margin-bottom: 10px;
+      overflow: hidden;
+
+      a {
+        height: 8em;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+
+        img {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+          max-width: 100%;
+          max-height: 100%;
+          width: auto;
+          height: auto;
+        }
+      }
+      span {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+    }
+  }
+}
+
+.blue-label-span{
+  color: #337ab7;
+}
+
+.market-category-title {
+  font-size: 12px;
+  width: 100%;
+  display: inline-block;
+}
+
+.thumbnail {
+  &.market-category {
+    color: white;
+    text-align: center;
+    line-height: 100px;
+  }
+}
+
+.geography-drop-down-select{
+  padding-bottom: 20px;
+}
+
+.geography-list {
+  .panel-default {
+    margin: 1em 0;
+  }
+}
+
+.grayed-out{
+  filter: gray;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  opacity: .6;
+}
+
+.new-schematic-error {
+  text-align: right;
+  color: red;
+}
+
+.results-found-container{
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.schematic-form {
+  .btn-default {
+    background-color: #74a3ca;
+    border-color: #74a3ca;
+    color: #fff;
+
+    &:active {
+
+    }
+  }
+}

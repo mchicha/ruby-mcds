@@ -1,0 +1,40 @@
+angular.module('contactListApp')
+  .factory('ContactListSvc', function($resource, $filter, current_user) {
+
+    var ContactLists = $resource("/api/v1/users/:user_id/contact_lists/:id", {user_id: "@user_id", id: "@id"}, {
+      query: {
+        method: 'GET',
+        isArray: true
+      },
+      save: {
+        method: "POST",
+        isArray: true
+      },
+      update: {
+        method: "PUT"
+      },
+      get: {
+        method: "GET"
+      }
+    });
+
+    var Build = function(obj) {
+      return new ContactLists({
+        name: obj.name || '',
+        user_id: obj.user_id,
+        users: obj.users || []
+      });
+    }
+
+    var resetLists = function() {
+      return ContactLists.query({user_id: current_user.id});
+    }
+
+    return {
+      resource: ContactLists,
+      build: Build,
+      resetLists: resetLists
+    }
+
+  }
+);

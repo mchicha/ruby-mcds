@@ -1,0 +1,36 @@
+.send-message-as-panel
+  .form-inline.col-xs-12
+    .form-group
+      label.control-label
+        | Find Contacts:
+        = text_field_tag("message[user_email]", "", data: {autocomplete_source: api_v1_user_search_path}, id: "find-recipient", class: "form-control")
+    .form-group.contact-list
+      label.control-label
+        | Find Contacts by Contact List:
+        = text_field_tag("message[contact_list_name]", "", data: {autocomplete_source: api_v1_search_contact_lists_path(current_user.id)}, id: "find-contact-list-recipients", class: "form-control")
+    .form-group
+      .users-selected
+        - @message.users.each do |user|
+          div(id='user_selected_#{user.id}')
+            input(type='hidden' value='#{user.id}' name='user_ids[]')
+              = user.email
+            a(onclick="$('#user_selected_#{user.id}').remove();")
+              |  Remove
+      .contact-lists-selected
+        - @message.contact_lists.each do |cl|
+          div(id='contact_list_selected_#{cl.id}')
+            input(type='hidden' value='#{cl.id}' name='contact_list_ids[]')
+              = contact_list.name
+            a(onclick="$('#contact_list_selected_#{cl.id}').remove();")
+              |  Remove
+
+    .form-group.send-message
+      label.control-label
+        | Send Message:
+        | &nbsp;
+      = f.select(:sent, options_for_select([["Send Immediately", true], ["Send at a specific time", false]], false), {class: "form-control"})
+
+    .form-group#send-at-later-date
+      label.control-label
+        | Send On:
+      = f.text_field(:send_date, value: convert_date_for_input(@message.send_date), class: "form-date-time-input form-control")

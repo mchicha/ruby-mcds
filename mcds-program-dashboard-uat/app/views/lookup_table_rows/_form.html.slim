@@ -1,0 +1,18 @@
+= form_for [@lookup_table, @lookup_table_row] do |f|
+  fieldset
+    = f.label(:key)
+    = f.text_field(:key)
+
+  fieldset
+    = f.label(:columns)
+    = f.text_field(:columns)
+
+  fieldset
+    = f.label(:archived, "Archived")
+    = f.radio_button(:archived, true)
+    = f.radio_button(:archived, false)
+
+    = f.hidden_field(:lookup_table_id)
+
+  fieldset
+   = f.submit

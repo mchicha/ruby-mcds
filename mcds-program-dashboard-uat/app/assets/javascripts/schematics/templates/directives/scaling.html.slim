@@ -1,0 +1,70 @@
+.position
+  .position-unselected(ng-hide="schemCtrl.currElement")
+    .well
+      p () No position selected. Please select a position to scale the asset in that position.
+
+  .position-unselected(ng-hide="!schemCtrl.currElement || schemCtrl.currElement.attrs.href")
+    .well
+      h3.text-center () Position is empty
+      p () No image added. Please add an asset to this position to scale.
+
+  asset-locked-warning
+
+  .position-selected(ng-if="schemCtrl.currElement.attrs.href && (schemCtrl.currElement.element.editable || !schemCtrl.schematic.parent_id)")
+    .well
+      .form-group
+        label.form-label () Scale
+        mcd-slider min="1" max="500" scale="0.01" qualifier="%" ng-model="schemCtrl.currElement.element.values.fillPatternScaleX" ng-change="edCtrl.adjustScaling('adjustFillScale', schemCtrl.currElement)"
+
+
+      .form-group
+        label.form-label () Rotate
+        mcd-slider min="0" max="360" scale="1" qualifier="°" ng-model="schemCtrl.currElement.element.values.fillPatternRotation" ng-change="edCtrl.adjustScaling('adjustFillRotation', schemCtrl.currElement)"
+
+        / rzslider rz-slider-model="schemCtrl.fillPatternRotation" rz-slider-options="{floor: 0, ceil: 360, value: 1}"
+        / input.form-control type="number" step="1" ng-model="schemCtrl.currElement.element.values.fillPatternRotation" ng-change="edCtrl.adjustScaling('adjustFillRotation', schemCtrl.currElement)" ng-model-options="schemCtrl.scalingModelOptions"
+
+      hr.hr
+
+      .row.form-horizontal
+        .col-md-5.col-s-12
+          .top-arrow
+            i.fa.fa-arrow-down.fa-fw
+          .box-row
+            .left-arrow
+              i.fa.fa-arrow-right.fa-fw
+            .align-box
+
+        .col-md-7.col-s-12
+          .form-group
+            label.control-label.col-xs-4 () Top:
+            .col-xs-8
+              input.form-control type="number" step="1" ng-model="schemCtrl.currElement.element.values.fillPatternY" ng-change="edCtrl.adjustScaling('adjustFillY', schemCtrl.currElement)" ng-model-options="schemCtrl.scalingModelOptions"
+
+          .form-group
+            label.control-label.col-xs-4 () Left:
+            .col-xs-8
+              input.form-control type="number" step="1" ng-model="schemCtrl.currElement.element.values.fillPatternX" ng-change="edCtrl.adjustScaling('adjustFillX', schemCtrl.currElement)" ng-model-options="schemCtrl.scalingModelOptions"
+
+      ////////
+      / Currently offset sliders not wanted, if they wanted them back uncomment here and in editCtrl.js.erb
+      //////
+      / .row.form-horizontal
+      /   .col-md-5.col-s-12
+      /     .top-arrow
+      /       i.fa.fa-arrow-up.fa-fw
+      /     .box-row
+      /       .left-arrow
+      /         i.fa.fa-arrow-left.fa-fw
+      /       .align-box
+      /   .col-md-7.col-s-12
+      /     .form-group
+      /       label.control-label.col-xs-4 () Offset Y
+      /       .col-xs-8
+      /         input.form-control type="number" step="1" ng-model="schemCtrl.currElement.element.values.fillPatternOffsetY" ng-change="edCtrl.adjustScaling('adjustFillOffY', schemCtrl.currElement)" ng-model-options="schemCtrl.scalingModelOptions"
+
+      /     .form-group
+      /       label.control-label.col-xs-4 () Offset X
+      /       .col-xs-8
+      /         input.form-control type="number" step="1" ng-model="schemCtrl.currElement.element.values.fillPatternOffsetX" ng-change="edCtrl.adjustScaling('adjustFillOffX', schemCtrl.currElement)" ng-model-options="schemCtrl.scalingModelOptions"
+

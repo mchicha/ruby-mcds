@@ -1,0 +1,19 @@
+.container
+  .lookup_tables_back
+    = link_to('<- Back to Lookup Table', lookup_table_path(@lookup_table))
+  a href="#{new_lookup_table_lookup_table_row_path(@lookup_table)}"
+    |  New
+  table.table
+    thead
+      tr
+        td Key
+        td Archived
+        td Attributes
+    tbody
+      - @lookup_table_rows.each do |row|
+        tr
+          td
+            a href="#{lookup_table_lookup_table_row_path(row.lookup_table, row)}"
+              =row.key
+          td =row.archived
+          td =row.columns

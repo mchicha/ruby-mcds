@@ -1,0 +1,18 @@
+.container
+  .lookup_tables_back
+    = link_to('<- Back to Lookup Table Rows', lookup_table_lookup_table_rows_path(@lookup_table_row.lookup_table))
+  a href="#{edit_lookup_table_lookup_table_row_path(@lookup_table_row.lookup_table, @lookup_table_row)}"
+    | Edit
+  ul
+    li
+      strong
+        | Key:
+      |  #{@lookup_table_row.key}
+    li
+      strong
+        | Archived:
+      |  #{@lookup_table_row.archived}
+    li
+      strong
+        | Attributes:
+      |  #{@lookup_table_row.columns}

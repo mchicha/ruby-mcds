@@ -1,0 +1,9 @@
+$("#calendar").hide();
+$("#events_list").show();
+
+$('#events_list').html(
+	"<%= escape_javascript(render partial: 'show_headers', locals: {start_date: @start_date, events: @events, all_events_count: @all_events_count}) %>"
+);
+
+window.MCDSListView();
+

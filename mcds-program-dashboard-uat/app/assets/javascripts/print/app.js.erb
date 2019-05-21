@@ -1,0 +1,89 @@
+'use strict';
+
+angular
+  .module('schematicApp', [
+    'ngResource',
+    'ui.router',
+    'config'
+  ])
+  .config([
+    '$httpProvider',
+    '$locationProvider',
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$compileProvider',
+    function($httpProvider, $locationProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+
+    $locationProvider.html5Mode(true).hashPrefix('!');
+    $compileProvider.debugInfoEnabled(<%= Rails.env.development? %>);
+
+    var token = document.querySelector('meta[name="csrf-token"]');
+
+    if(angular.isElement(token)){
+      $httpProvider.defaults.headers.common['X-CSRF-Token'] = token.content;
+    }
+    $httpProvider.useApplyAsync(true);
+    $httpProvider.defaults.headers.common['Authorization']  = '<%#
+    ActionController::HttpAuthentication::Basic.encode_credentials(
+      AUTH_CONFIG[:name],
+      AUTH_CONFIG[:password]
+    ) %>';
+
+    $httpProvider.defaults.headers.common['PDF-TOKEN']  = '<%#ENV["WKHTML_ACCESS_TOKEN"]%>';
+
+    // For any unmatched url, redirect to /state1
+    $urlRouterProvider.otherwise("/:id");
+
+    $stateProvider
+    .state('preview', {
+      url: "/:id",
+      templateUrl: "<%= asset_path('print/templates/preview.html') %>",
+      controller: 'PreviewCtrl as previewCtrl',
+      resolve: {
+        schematic: function($q, SchematicSvc, $stateParams){
+          return $q(function(resolve, reject){
+            SchematicSvc.resource.get({id: $stateParams.id}).
+            $promise.then(function(data) {
+              resolve(data);
+            }, function(error){
+              reject(error);
+            });
+          });
+        },
+        canvas: function($q, DocumentSvc, $stateParams){
+          return $q(function(resolve, reject){
+            DocumentSvc.resource.query({schematic_id: $stateParams.id, include_date_ranges: true}).
+            $promise.then(function(data) {
+              resolve(data);
+            }, function(error){
+              reject(error);
+            });
+          });
+        },
+        assetTypes: function($q, DamAssetTypeSvc){
+          return $q(function(resolve, reject){
+            DamAssetTypeSvc.resource.query().
+            $promise.then(function(data) {
+              resolve(data);
+
+            }, function(error){
+              reject(error);
+            });
+          });
+        },
+        assets: function($q, DamAssetSvc){
+          return $q(function(resolve, reject){
+            DamAssetSvc.resource.query().
+            $promise.then(function(data) {
+              resolve(data);
+
+            }, function(error){
+              reject(error);
+            });
+          });
+        }
+      }
+    });
+
+
+  }]);

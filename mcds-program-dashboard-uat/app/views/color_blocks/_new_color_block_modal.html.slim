@@ -1,0 +1,27 @@
+#NewColorBlockModal.modal.fade.row.row-centered aria-hidden="true" aria-labelledby="NewColorBlock" role="dialog" tabindex="-1"
+  .col-md-6.col-centered
+    .container-fluid
+      .modal-dialog
+        .modal-content
+          = form_for @color_block do |f|
+            .modal-header.text-center
+              button.close data-dismiss="modal" type="button"
+                span aria-hidden="true"
+                span.sr-only Close
+              h4#myModalLabel.modal-title New Market Category
+            .modal-body.col-xs-12
+              .form-group.col-xs-4
+                = f.label :name
+                br/
+                = f.text_field :name, class: "form-control"
+              .form-group.col-xs-4
+                = f.label :start_hex
+                br/
+                = f.text_field :start_hex, class: "form-control demo"
+              .form-group.col-xs-4
+                = f.label :end_hex
+                br/
+                = f.text_field :end_hex, class: "form-control demo"
+            .modal-footer
+              button.btn.btn-default data-dismiss="modal" type="button"  Close
+              = f.submit "Create Market Category", :id => "submit-button", :class => "btn btn-primary"

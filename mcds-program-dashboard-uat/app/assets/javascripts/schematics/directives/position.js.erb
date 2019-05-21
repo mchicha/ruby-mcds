@@ -1,0 +1,10 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("position", [ function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/position.html') %>",
+    };
+  }]);

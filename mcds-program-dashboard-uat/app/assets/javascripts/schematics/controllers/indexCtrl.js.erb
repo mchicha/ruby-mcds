@@ -1,0 +1,92 @@
+'use strict';
+
+angular.module('schematicApp')
+    .controller('IndexCtrl', [
+        'schematics',
+        '$modal',
+        'current_user',
+        'PaginateSvc',
+        function(schematics, $modal, current_user, PaginateSvc) {
+          var ctrl = this;
+
+          ctrl.resource           = schematics;
+          ctrl.schematics         = schematics.schematics;
+          ctrl.geographies        = schematics.geographies;
+          ctrl.user_role          = current_user.role
+          ctrl.selected_geography = current_user.selected_geography
+          ctrl.perPage            = [
+            {label: 5, val: 5},
+            {label: 10, val: 10},
+            {label: 15, val: 15},
+            {label: 20, val: 20},
+            {label: 50, val: 50}
+          ];
+
+          ctrl.f = {
+              release_date: {from: null, to: null},
+                  end_date: {from: null, to: null},
+                updated_at: {from: null, to: null},
+                  currPage: schematics.meta.current_page,
+                   perPage: 20,
+                totalCount: schematics.meta.total_count,
+                  numPages: null,
+                    search: '',
+                    isTest: false,
+                    status: ['planning', 'published'],
+                      sort: 'id',
+                       dir: true
+          };
+
+          ctrl.modelOptions = {
+            updateOn: 'default blur',
+            debounce: {default: 500, blur: 0}
+          }
+
+          ctrl.clearFilters = function(){
+            ctrl.f.search       = '';
+            ctrl.f.release_date = {from: null, to: null};
+            ctrl.f.end_date     = {from: null, to: null};
+            ctrl.f.updated_at   = {from: null, to: null};
+            ctrl.f.status       = ['planning', 'published'];
+            ctrl.f.isTest       = false;
+            ctrl.filter(true);
+          };
+
+          ctrl.search = function(){
+
+            ctrl.resource.$query(ctrl.f, ctrl.searchSuccess, ctrl.searchError);
+          };
+
+          ctrl.searchSuccess = function(success){
+            ctrl.schematics   = success.schematics;
+            ctrl.f.totalCount = success.meta.total_count;
+            ctrl.f.currPage   = success.meta.current_page;
+          };
+
+          ctrl.searchError = function(error){
+            alert('Search Failed to bring back a valid response');
+          };
+
+          ctrl.filter = function(valid) {
+            if(valid){
+                ctrl.f.currPage = 1;
+                ctrl.search();
+            }
+          }
+
+          ctrl.min = function() {
+            return ((ctrl.f.currPage - 1) * ctrl.f.perPage) + 1;
+          }
+
+          ctrl.max = function() {
+            var max = ((ctrl.f.currPage - 1) * ctrl.f.perPage) + ctrl.f.perPage;
+
+            if (max > ctrl.f.totalCount) {
+              return ctrl.f.totalCount;
+            } else {
+              return max;
+            }
+          }
+
+        }
+    ]);

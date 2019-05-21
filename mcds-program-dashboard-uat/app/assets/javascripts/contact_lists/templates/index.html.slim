@@ -1,0 +1,152 @@
+script id="create_new_list.html" type="text/ng-template"
+  .modal-header
+    h3.modal-title
+      | Create a New Contact List with {{modal.number_of_users.length}} Contacts
+  .modal-body
+    p()
+      | Contact List Name:
+      input(type="text" ng-model="modal.newListName")
+  .modal-footer
+    button.btn.btn-primary ng-click="modal.makeList()"  Create List
+    button.btn.btn-warning ng-click="modal.cancel()"  Cancel
+
+script id="update_list.html" type="text/ng-template"
+  .modal-header
+    h3.modal-title
+      | Add {{modal.number_of_users.length}} Contacts to an Existing List
+  .modal-body
+    p()
+      | Select a list to add these contacts to:
+      select(
+        ng-options="item as item.name for item in modal.contact_lists"
+        ng-model="modal.selectedList"
+        ng-required="true"
+      )
+  .modal-footer
+    button.btn.btn-primary(
+      ng-click="modal.updateList(modal.selectedList)"
+      ng-disabled="!modal.selectedList"
+    )  Add to List
+    button.btn.btn-warning ng-click="modal.cancel()"  Cancel
+
+
+.container
+  .page-header
+    h1 Global Address Book
+    .row
+      .col-xs-12
+        .breadcrumb_list
+          a href="/" Home
+          | &nbsp;
+          | /
+          | &nbsp;
+          | Contact Lists
+  .row
+    .col-xs-12
+      .col-md-3.contact-options.nav-pills
+        .global-address-book
+          h3.contact-list-nav-links.active-link(ui-sref="contact_lists") Global Address Book
+          h3.contact-list-nav-links(ui-sref="my_lists")My Contact Lists
+        .users-lists()
+          ul(ng-repeat="contact_list in contact.contact_lists | orderBy:'name' ")
+            li()
+              a(ui-sref="list({listId: contact_list.id})") {{contact_list.name}}
+
+      .col-md-9
+        fieldset.global-address-book
+          .search-users.form-group
+            .row
+              .col-xs-12
+                div.form-group.input-group.search
+                  input.search.form-control#contact-list-search.col-xs-12.pull-right(
+                    type="text"
+                    ng-model="addressBookFilter"
+                    autofocus="true"
+                    placeholder="Start by typing a name or email address"
+                  )
+                  span.input-group-btn
+                    button.btn.btn-default.clear-button(
+                      type="button"
+                      ng-click="addressBookFilter = undefined"
+                    )  Clear
+
+                .col-xs-6.filter-button#add-to-new
+                  button.btn.btn-primary.btn-block.filter-buttons(
+                    ng-click="contact.createNewList(contact.selectedUsers())"
+                    ng-disabled="!contact.selectedUsers().length"
+                  ) Add to new list
+
+                .col-xs-6.filter-button#add-to-existing
+                  button.btn.btn-primary.btn-block.filter-buttons(
+                    ng-click="contact.updateListModal(contact.selectedUsers())"
+                    ng-disabled="!contact.selectedUsers().length"
+                  ) Add to existing list
+
+
+          table.table.all-users-table.table-hover.table-bordered.tablesorter.col-xs-12#contact-list-table
+            .text-right.number-displayed
+              span() Displaying {{filteredUsers.length}} Contacts
+              |  |
+              span() {{contact.selectedUsers().length}} Selected
+            thead()
+              tr()
+                th()
+                  input(
+                    type="checkbox"
+                    ng-click="contact.checkAllUsers()"
+                    ng-model="contact.selectedAllUsers"
+                  )
+                  |
+                th()
+                  | First Name
+                  a.pull-right(ng-click="contact.predicate = 'first_name'; reverse=!reverse")
+                    i.fa.fa-sort()
+                th()
+                  | Last Name
+                  a.pull-right(ng-click="contact.predicate = 'last_name'; reverse=!reverse")
+                    i.fa.fa-sort()
+                th()
+                  | Email
+                  a.pull-right(ng-click="contact.predicate = 'email'; reverse=!reverse")
+                    i.fa.fa-sort()
+            tbody()
+              tr(ng-repeat="user in (filteredUsers = (contact.users | filter: addressBookFilter | orderBy:contact.predicate:reverse))")
+                td()
+                  input(type="checkbox" name="selectedUsers[]" ng-model="user.checked" ng-click="contact.showGroupListField = false")
+                td() {{user.first_name}}
+                td() {{user.last_name}}
+                td() {{user.email}}
+
+          fielset.add-to-group(
+            ng-show="contact.showGroupListField && contact.selectedUsers().length"
+          )
+            .instructions
+              p() To add the users to an existing group:
+              p() Type in the name of the group to which you'd like the selected users added. As you type, the system will show you existing groups that match your entry. Click the matching entry, then click the button "Confirm Addition of Users to this Group"
+              p() To add the users to a new group:
+              p() Type in a name for the new group you would like to create and add the users to. Once you've typed in the name, click the button "Confirm Addition of Users to this Group"
+
+            .col-xs-12
+            label() Name your list:
+            angucomplete-alt(
+              id="users-contact-list"
+              placeholder="Search lists"
+              pause="100"
+              selected-object="contact.contactSearch"
+              local-data="contact.contact_lists"
+              search-fields="name"
+              title-field="name"
+              minlength="1"
+              input-class="form-control"
+              match-class="highlight"
+              input-changed="contact.inputChanged"
+            )
+
+            button.btn.btn-primary.btn-block(ng-click="contact.makeList()"
+                   ng-disabled="!contact.listName.length || !contact.selectedUsers().length"
+                   ng-show="!contact.showUpdateList")
+              | Confirm Addition of Users to this Group
+            button.btn.btn-primary(ng-click="contact.updateList()"
+                   ng-disabled="!contact.listName.title.length || !contact.selectedUsers().length"
+                   ng-show="contact.showUpdateList")
+              | Confirm Addition of Users to this Group

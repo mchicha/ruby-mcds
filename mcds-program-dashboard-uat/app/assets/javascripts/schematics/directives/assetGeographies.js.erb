@@ -1,0 +1,31 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("assetGeographies", [
+    "DamAssetTypeSvc",
+    "ProgramSvc",
+    function(DamAssetTypeSvc, ProgramSvc) {
+    return {
+      restrict: "A",
+      templateUrl: "<%= asset_path('schematics/templates/directives/assetGeographies.html') %>",
+      scope: {
+        asset: '=asset'
+      },
+      link: function(scope, element, attrs){
+
+        scope.$watch('asset', function(newAsset){
+          if (newAsset){
+            var idx = DamAssetTypeSvc.lookup()[newAsset.asset_type_id]["Program ID"];
+
+            if (newAsset.metadata.length > 0 && idx > -1) {
+                var programId = newAsset.metadata[idx].value;
+                ProgramSvc.get({id: programId}, function(data){
+                    scope.geographies = data.program.geographies;
+                });
+            }
+          }
+        });
+
+      }
+    };
+  }]);

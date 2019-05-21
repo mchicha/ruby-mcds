@@ -1,0 +1,4 @@
+$("td#add-color-to-program-<%= @color_block.id %>").replaceWith(
+  "<td id='remove-color-to-program-<%= @color_block.id %>'><a class='btn btn-primary' data-method='delete' data-remote='true' href='/programs/<%= @program.id %>/remove_color_block?color_block_id=<%= @color_block.id %>' rel='nofollow'>Remove</a></td>"
+);
+$("#program-color-blocks-table").html("<%= escape_javascript render partial: 'color_blocks/color_block_list', collection: @program.color_blocks, as: :color_block %>");

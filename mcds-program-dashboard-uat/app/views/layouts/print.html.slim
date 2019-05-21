@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title() Program Dashboard
+
+    link href="//fonts.googleapis.com/css?family=Josefin+Slab:400,700" rel="stylesheet" type="text/css"
+
+    =stylesheet_link_tag 'prints', media: 'all'
+    / MAKE CSS AS CLOSE TO SCALED DOWN VERSION AS POSSIBLE
+    css:
+      .schematics .canvas-stand note-collection .adjustable textarea {
+        font-size: 2.2em !important;
+        line-height: 1.4em !important
+      }
+
+      <!--
+       @page {
+          size: 14in 11.5in;   /* auto is the initial value */
+          margin: 0;
+       }
+
+       @page rotated { size : landscape }
+       -->
+
+  body
+    .wrapper
+      =yield
+
+    = yield :javascript

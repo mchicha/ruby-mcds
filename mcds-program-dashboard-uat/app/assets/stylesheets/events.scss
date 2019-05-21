@@ -1,0 +1,86 @@
+.event_list_info {
+  .info {
+    padding-left: 5px;
+  }
+  li {
+    list-style-type: none;
+    font-size: 12px;
+
+    .event_geographies {
+      .event_geographies ul li {
+        padding-left: 20px;
+      }
+    }
+    .event_dates li {
+      padding-bottom: 10px;
+      border-bottom: 1px solid grey;
+    }
+  }
+}
+
+// ul.event_list_info {
+//   border-bottom: 1px solid grey;
+//   padding: 5px 0 10px;
+// }
+
+li.event_name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+span.event_type {
+  padding-left: 5px;
+}
+
+.event_list_date {
+  font-size:14px;
+  font-weight: bold;
+}
+
+.event_list_counts {
+   float:left;
+}
+
+.events_list_none {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+li.one_event {
+  padding: 15px 0;
+  border-bottom: 1px solid grey;
+}
+
+ul.events_list {
+  list-style-type: none;
+}
+
+.calendar-queue-interactions{
+  .search-calendars{
+    float:left;
+    margin-bottom:1em;
+    padding-left:0px;
+    button{
+      background-color: #DA2934;
+      color:#fff;
+    }
+    label{
+      padding-top: 7px;
+    }
+  }
+  #calendar-search{
+    float: left;
+    width:25%;
+    margin-left:1em;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: 1px solid #ccc;
+  }
+  .input-group-btn{
+    float:left;
+    button{
+      border-left:0px;
+    }
+  }
+}

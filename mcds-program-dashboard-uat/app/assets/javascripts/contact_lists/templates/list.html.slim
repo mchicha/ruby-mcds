@@ -1,0 +1,80 @@
+.container
+  h2() My Contacts/Contact Lists
+
+  .row
+    .col-md-3.contact-options.nav-pills
+      .global-address-book
+        h3.contact-list-nav-links(ui-sref="contact_lists") Global Address Book
+        h3.contact-list-nav-links(ui-sref="my_lists") My Contact Lists
+      .users-lists()
+        ul(ng-repeat="contact_list in list.contact_lists | orderBy:'name' ")
+          li()
+            a(ui-sref="list({listId: contact_list.id})" ui-sref-active="active") {{contact_list.name}}
+
+    .col-md-9
+      fieldset.global-address-book
+        legend() {{list.current_list.name}}
+        .search-users.form-group
+          .row
+            .col-xs-12
+              div.form-group.input-group.search
+                input.search.form-control#contact-list-search.col-xs-12.pull-right(
+                  type="text"
+                  ng-model="addressBookFilter"
+                  autofocus="true"
+                  placeholder="search"
+                )
+                span.input-group-btn
+                  button.btn.btn-default.clear-button(
+                    type="button"
+                    ng-click="addressBookFilter = undefined"
+                  )  Clear
+              .col-xs-6.filter-button#send-message-to-selected
+                button.btn.btn-primary.btn-block.filter-buttons(
+                  ng-model="list.showGroupListField"
+                  ng-click="list.showGroupListField = true"
+                  ng-disabled="!list.selectedUsers().length"
+                ) Send Message to Selected Contacts
+
+              .col-xs-6.filter-button#remove-selected
+                button.btn.btn-primary.btn-block.filter-buttons(
+                  ng-click="list.removeUsersFromList(list.current_list)"
+                  ng-disabled="!list.selectedUsers().length"
+                ) Remove Selected from Contact List
+
+          table.table.all-users-table.table-hover.table-bordered.tablesorter.col-xs-12#contact-list-table
+            .text-right.number-displayed
+              span() Displaying {{filteredListUsers.length}} Contacts
+              |  |
+              span() {{list.selectedUsers().length}} Selected
+            thead()
+              tr()
+                th()
+                  input(
+                    type="checkbox"
+                    ng-click="list.checkAllUsers()"
+                    ng-model="list.selectedAllUsers"
+                  )
+                  | Select All
+                th()
+                  | First Name
+                  a.pull-right(ng-click="list.predicate = 'user.first_name'; reverse=!reverse")
+                    i.fa.fa-sort()
+                th()
+                  | Last Name
+                  a.pull-right(ng-click="list.predicate = 'user.last_name'; reverse=!reverse")
+                    i.fa.fa-sort()
+                th()
+                  | Email
+                  a.pull-right(ng-click="list.predicate = 'user.email'; reverse=!reverse")
+                    i.fa.fa-sort()
+                th() Remove
+            tbody()
+              tr(ng-repeat="contact_list_user in (filteredListUsers = (list.current_list.contact_list_users | filter: addressBookFilter | orderBy:list.predicate:reverse))")
+                td()
+                  input(type="checkbox" name="selectedUsers[]" ng-model="contact_list_user.checked")
+                td() {{contact_list_user.user.first_name}}
+                td() {{contact_list_user.user.last_name}}
+                td() {{contact_list_user.user.email}}
+                td()
+                  a.btn.btn-primary.btn-block.view-contact-modal(ng-click="list.removeContactListUser(list.current_list, contact_list_user, $index)") Remove

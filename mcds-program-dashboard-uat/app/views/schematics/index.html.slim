@@ -1,0 +1,16 @@
+- dam_host = DAM_CONFIG[:host].match(':3009') ? DAM_CONFIG[:host].split(':')[0] : DAM_CONFIG[:host]
+- content_for :javascript do
+  = javascript_include_tag :vendor
+  javascript:
+    angular.module('config', []).
+      constant('current_user', #{{current_user.to_json(include: [:geographies, :selected_geography])}}).
+      constant('domain', "#{{"#{request.protocol}#{request.host_with_port}"}}").
+      constant('dam_host', '#{{DAM_CONFIG[:uri_class].build({host: dam_host, port: DAM_CONFIG[:port]}).to_s}}').
+      constant('dam_client_token', '#{{DAM_CONFIG[:client_token]}}');
+
+  = javascript_include_tag :schematics
+
+base href="/schematics/"
+
+.schematics ng-app="schematicApp"
+  ui-view

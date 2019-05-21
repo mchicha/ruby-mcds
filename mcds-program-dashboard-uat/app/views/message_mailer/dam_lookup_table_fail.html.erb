@@ -1,0 +1,13 @@
+<h3>Dam Lookup Table Update Worker did not get a successful response from the Dam.</h3>
+<br />
+<br />
+<div><b>Environment:</b> <u><%=Rails.env%></u></div>
+<br />
+<br />
+<div><b>Process was started by:</b> <u><%=@initiator%></u></div>
+<br />
+<br />
+<div><b>The full request sent was:</b> <%={body: @request_body, headers: {'Authorization' => ActionController::HttpAuthentication::Token.encode_credentials(@auth_key)}}%></div>
+<br />
+<br />
+<div><b>The response from the DAM was:</b> <%=@response%></div>

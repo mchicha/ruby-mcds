@@ -1,0 +1,28 @@
+tr(id="message_#{message.id}")
+  td.select
+    = check_box_tag("messages[id][#{message.id}]", message.id, false, class: "remove-message-checkbox")
+    = label_tag("messages[id][#{message.id}]", "", class: "remove-message-checkbox-label")
+  td.delivery_type()
+    = message.delivery_type.to_s.titleize
+  td.subject()
+    =link_to((message.subject), message_path(message))
+  td.created_by()
+    = message.user.email
+  td.send_to()
+    = sent_to(message.users)
+  td.publish_date()
+    - if message.publish_date
+      = convert_date_for_input(message.publish_date)
+    - elsif !message.sent?
+      = convert_date_for_input(message.send_date)
+    - else
+      = convert_date_for_input(message.created_at)
+  td.edit-message
+    - if !message.sent?
+      .btn-group
+        a.btn.btn-primary(onclick="removeMessage(this);" data-message-id="#{message.id}")
+          i.fa.fa-trash
+          |  Delete
+        =link_to(edit_message_path(message), class: "btn btn-primary")
+          i.fa.fa-pencil-square-o
+          |  Edit

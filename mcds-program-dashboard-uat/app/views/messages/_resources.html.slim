@@ -1,0 +1,11 @@
+li.message-resource(id="program-resource-#{resource.id}")
+  a(href="#{resource_url(resource)}" target="_blank")
+    i.fa.fa-download()
+    |  Download
+  a.remove-resource.action-item(
+    onclick="removeResource(this)"
+    data-message-id="#{@message.id}"
+    data-resource-id="#{resource.id}"
+  )
+    i.fa.fa-trash
+    |  Delete

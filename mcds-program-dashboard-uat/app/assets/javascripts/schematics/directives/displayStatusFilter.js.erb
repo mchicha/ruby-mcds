@@ -1,0 +1,51 @@
+
+'use strict';
+
+angular.module('schematicApp')
+  .directive('displayStatusFilter', [
+    'SchematicSvc',
+    '$filter',
+    function(SchematicSvc, $filter){
+      return{
+        restrict: 'E',
+        require: '^ngModel',
+        replace: true,
+        scope: {
+          displayStatus: '=',
+          change: '&'
+        },
+        template: '<div> <drop-down label="Status"> <ul class="list-unstyled"> <li> <div class="block-row"><label><input type="checkbox" ng-model="sts.planning" name="planning" ng-change="setValue(sts.planning, \'planning\')" />Planning </label></div> </li> <li> <div class="block-row"><label><input type="checkbox" ng-model="sts.published" name="published" ng-change="setValue(sts.published, \'published\')" />Published </label></div> </li> <li> <div class="block-row"><label><input type="checkbox" ng-model="sts.archived" name="archived" ng-change="setValue(sts.archived, \'archived\')" />Archived </label></div> </li> </ul> </drop-down> </div>',
+        link: function(scope, element, attrs, model){
+
+          scope.displayStatus = scope.displayStatus || ['planning', 'published'];
+
+          scope.sts = {
+            planning:   true,
+            archived:   false,
+            published:  true
+          }
+          scope.setValue = function(bool, txt){
+            if(bool === true){
+              scope.displayStatus.push(txt);
+
+            } else {
+              var idx = scope.displayStatus.indexOf(txt);
+              scope.displayStatus.splice(idx, 1);
+
+            };
+
+            if(angular.isFunction(scope.change())) {
+              scope.change()(true);
+            }
+          }
+
+          scope.$watch('displayStatus', function(newVal, oldVal){
+            var stats = ['planning', 'published', 'archived'];
+            for (var i = stats.length - 1; i >= 0; i--) {
+              scope.sts[stats[i]] = scope.displayStatus.indexOf(stats[i]) > -1;
+            };
+          });
+        }
+      };
+    }
+  ])

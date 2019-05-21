@@ -1,0 +1,46 @@
+/! Modal
+#assign-program-color-blocks.modal.fade aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+        h4#myModalLabel.modal-title Assign Market Category
+      .modal-body#color-block-list
+
+        p.search-for-color-block()
+          label()
+            | Search:
+          input.search(type="text")
+          a.btn.btn-primary(onclick="clearFuzzySearch(colorBlockList);")
+            |  Clear
+
+        .co-op-hierarchy-list()
+
+          table.table.borderless.responsive()
+            h4() Select a market category to add to this program.
+            tbody.list
+              - @color_blocks.each do |color_block|
+                tr()
+                  td()
+                    = radio_button_tag("color_block_ids[]",
+                                    color_block.id,
+                                    obj.color_blocks.include?(color_block),
+                                    class: "color-block-checkbox",
+                                    onclick: "addColorBlock(this)",
+                                    "data-color-name" =>  color_block.name)
+                  td[class="color-block"
+                    id="color-block-#{color_block.id}"
+                    data-start-hex="#{color_block.start_hex}"
+                    data-end-hex="#{end_color(color_block)}"]
+                  td.name() #{color_block.name}
+                - content_for :javascript do
+
+                  javascript:
+                    var options = {
+                      valueNames: [ 'name', 'color-block-action' ]
+                    };
+                    var colorBlockList = new List('color-block-list', options);
+
+      .modal-footer
+        button.btn.btn-default data-dismiss="modal" type="button"  Close

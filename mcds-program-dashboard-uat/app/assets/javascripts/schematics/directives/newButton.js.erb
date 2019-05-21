@@ -1,0 +1,33 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('newButton', [
+    function(){
+    return{
+      require :'?ngModel',
+      restrict: 'E',
+      bindToController: true,
+      controller: function($modal){
+        var nw = this;
+
+        nw.openNewModal = function(size, schematic){
+            var modalInstance = $modal.open({
+              templateUrl: "<%= asset_path('schematics/templates/new.html') %>",
+              controller: "NewCtrl as new",
+              size: size,
+              resolve: {
+                schematic: function(){
+                  return null;
+                },
+                geographies: function(){
+                  return null;
+                }
+              }
+            });
+          };
+      },
+      controllerAs: "newBtnCtrl",
+      template: '<a admin-only="" class="btn btn-primary pull-right btn-lg" national-only="" ng-click="newBtnCtrl.openNewModal(\'lg\')"><i class="fa fa-fw fa-plus-circle"></i> New Schematic</a>'
+    };
+  }
+]);

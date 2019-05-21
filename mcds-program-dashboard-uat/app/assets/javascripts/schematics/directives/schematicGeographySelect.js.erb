@@ -1,0 +1,42 @@
+
+'use strict';
+
+angular.module('schematicApp')
+  .directive('schematicGeographySelect', [
+
+    function() {
+    return {
+      restrict: 'EA',
+      replace:  true,
+      transclude: 'true',
+      scope: {
+        newSchem : '=',
+        user: '='
+      },
+      templateUrl: "<%= asset_path('schematics/templates/directives/schematicGeographySelect.html') %>",
+      link: function(scope, element, attrs) {
+                                                         // Set geography_ids as blank array, this will logic what they should be
+        scope.newSchem.schematic.geography_ids = []      // NOTE: This does not wipe schematic.geographies, they function as a record of the source/parent
+                                                         // geographies while geography_ids are source of truth for Rails
+        if(scope.newSchem.parentLevelSelected){          // If it is on the national level, then multiple geographies can be selected
+          scope.newSchem.useGeographyMultiSelect = true; // Parent schematics can have more than one coops
+
+          angular.forEach(scope.newSchem.schematic.geographies, function(geog){
+            scope.newSchem.schematic.geography_ids.push(geog.id);
+
+            // check if it is assigned to national or to other coops
+            if (geog.name === 'National'){
+              scope.newSchem.schematic.nationalSelected = true;
+            }
+            else{
+              scope.newSchem.schematic.coopSelected = true;
+            }
+          })
+        }
+        else{
+          scope.newSchem.useGeographyDropDown = true;                                           // Child schematics can only have one geography
+          scope.newSchem.schematic.geography_ids = scope.user.selected_geography_id.toString(); // It will start assigned to the selected geog
+        }
+      }
+    };
+ }]);

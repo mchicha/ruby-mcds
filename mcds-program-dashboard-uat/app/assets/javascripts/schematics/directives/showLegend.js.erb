@@ -1,0 +1,13 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("showLegend", [ function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/showLegend.html') %>",
+      scope: {
+        ctrl: '=ctrl'
+      }
+    };
+  }]);

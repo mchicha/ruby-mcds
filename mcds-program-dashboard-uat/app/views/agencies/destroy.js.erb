@@ -1,0 +1,6 @@
+<% if @agency.destroy %>
+  $(".agency-error-messages").hide();
+<% else %>
+  $("#agency-error-messages").show();
+  $("#agency-error-messages").html("<%= escape_javascript(@agency.errors.full_messages.join(", ")) %>")
+<% end %>

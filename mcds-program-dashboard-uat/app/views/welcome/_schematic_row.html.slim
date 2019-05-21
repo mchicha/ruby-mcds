@@ -1,0 +1,52 @@
+.schematic-row
+  .row
+    .current-schematic-header
+      .col-sm-5.schematic-current
+        - if national
+          | Current Published National McSource:
+        -else
+          | Current Published Local McSource:
+      .col-sm-4.schematic-name
+        =" #{schematic.name} "
+      .col-lg-3.schematic-dates
+        - if schematic.release_date.present?
+          = "Dates: #{format_date(schematic.release_date)}-#{format_date(schematic.end_date)}"
+  .row
+    .programs-container.col-sm-12
+      .col-sm-12.program-label
+        - if national
+          | National Programs
+        - else
+          | Local Market Programs
+      - filter_geography = national ? Geography.national : @selected_coop
+      - program_list = schematic.non_query_programs_for_geography(filter_geography)
+      .backward class="#{'invisible' if program_list.length < 5}"
+        i.fa.fa-chevron-left
+      .frame
+        .slidee
+          - program_list.each do |program|
+            .single-program-container
+              .program-box
+                a href="#{program_path(program)}"
+                  .program-image
+                    img src=program.thumb_image_url
+                  .program-name-container
+                    p
+                      = ellipsify_string(program.name, 30)
+                  .delivery-container
+                    div
+                      = "P.O.P. Install Date"
+                    div
+                      - pop_install = program.non_query_pop_install_date_range
+                      strong
+                        - if pop_install.present?
+                          - if pop_install.start_date == pop_install.end_date
+                            = format_date(program.non_query_pop_install_date_range.start_date)
+                          - else
+                            = formatted_date_range(pop_install)
+                        -else
+                          | (P.O.P. Install Not Given)
+      .forward class="#{'invisible' if program_list.length < 5}"
+        i.fa.fa-chevron-right
+      .col-sm-12 class="#{'invisible' if program_list.length < 5}"
+        ul.pages

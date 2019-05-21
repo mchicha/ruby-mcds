@@ -1,0 +1,20 @@
+angular.module('contactListApp')
+  .factory('ContactListUserSvc', function($resource, $filter) {
+
+    var ContactListUsers = $resource("/api/v1/contact_list_users/:id", {id: "@id"}, {
+      get: {
+        method: 'GET',
+        isArray: false
+      },
+      delete: {
+        method: 'DELETE',
+        isArray: false
+      }
+    });
+
+    return {
+      resource: ContactListUsers
+    }
+
+  }
+);

@@ -1,0 +1,89 @@
+// Place all the styles related to the Agencies controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#agency-error-messages, .new-agency-error-messages {
+  display:none;
+}
+
+.remove-co-op-from-agency-link, .remove-agency-user-link {
+  cursor:pointer;
+}
+
+#agency-error-messages, .new-agency-error-messages {
+  display: none; }
+
+.remove-co-op-from-agency-link, .remove-agency-user-link {
+  cursor: pointer; }
+
+.co-op-hierarchy-list li {
+  list-style: none;
+  padding: 0.5em;
+  margin: 10px 0px;
+  background: #dddddd;
+  text-transform: uppercase; }
+
+.co-op-hierarchy-list li:hover {
+  list-style: none;
+  text-transform: uppercase;
+  background: #eaeded; }
+
+.co-op-hierarchy-list li a {
+  list-style: none;
+  text-transform: uppercase;
+  color: #D9232D;
+  font-weight: bold;
+  padding: 10px 10px; }
+
+.co-op-hierarchy-list li.root-level-geographies ul {
+  margin-bottom: 0px; }
+
+.co-op-hierarchy-list li a:hover {
+  text-decoration: none; }
+
+.co-op-hierarchy-list li.child-geography {
+  margin-left: 1.0em;
+  padding: 0.5em; }
+
+a.remove-co-op-from-agency-link {
+  cursor:pointer;
+}
+.instructional-info .instructions {
+  margin-left:1.2em;
+}
+.assign-agency-geographies {
+  h1 {
+    padding-left:0.3em;
+  }
+}
+.program-agency-list{
+  li {
+    list-style:none;
+  }
+}
+
+#agencies{
+  .search-agency{
+    float:left;
+    margin-bottom:1em;
+    padding-left:0px;
+    label{
+      padding-top: 7px;
+    }
+  }
+  #agency-search{
+    float: left;
+    width:50%;
+    margin-left:1em;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: 1px solid #ccc;
+  }
+  .input-group-btn{
+    float:left;
+    padding:1px;
+    button{
+      border-left:0px;
+    }
+  }
+}

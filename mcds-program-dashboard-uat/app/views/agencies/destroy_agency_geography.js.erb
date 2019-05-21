@@ -1,0 +1,6 @@
+<% if @agency.geographies.delete(@geography) %>
+  // agency-#{agency.id}-co-op-#{co_op.id}
+  // $("#agency-<%= @agency.id %>-co-op-<%= @geography.id %>").fadeOut('slow');
+<% else %>
+  swal("Oops...", <%= @agency.geographies.errors.full_messages.join(", ") %>, "error");
+<% end %>

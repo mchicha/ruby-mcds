@@ -1,0 +1,28 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+  =javascript_include_tag 'welcome'
+
+.container
+  .row
+    .col-lg-9.schematic-program-container
+      - if @report.rows.blank?
+        .no-program-error
+          p  There are currently no programs for this geography.
+          p  Please contact your local agency for program information.
+      - else
+        - @report.rows.each do |row|
+          .parent-child-relationship-container
+            = render partial: 'schematic_row', locals: {schematic: row.parent, national: true}
+            = render partial: 'schematic_row', collection: row.children, as: :schematic, locals: {national: false}
+    .col-lg-3.alerts-update-container
+      div
+        .alerts-side.text-center
+          .alerts-updates-header
+            | Alerts and Updates
+          .alerts-box
+            - @alerts.each do |alert|
+              .row.alert-row
+                .alert-entry
+                  div.program-label.text-center
+                    = link_to(alert_path(alert)) do
+                      = ellipsify_string(alert.title, 27)

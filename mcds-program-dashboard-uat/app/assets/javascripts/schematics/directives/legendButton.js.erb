@@ -1,0 +1,18 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("legendButton", [ function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/legendButton.html') %>",
+      scope: {
+        ctrl: '=ctrl'
+      },
+      controller: function() {
+        var LegendButtonCtrl = this;
+        LegendButtonCtrl.legendTemplateUrl = "<%= asset_path('schematics/templates/directives/legend.html') %>";
+      },
+      controllerAs: "LegendButtonCtrl"
+    };
+  }]);

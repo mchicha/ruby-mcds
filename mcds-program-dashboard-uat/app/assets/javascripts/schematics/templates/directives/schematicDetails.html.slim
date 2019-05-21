@@ -1,0 +1,38 @@
+.schematic-details ng-controller="detailsCtrl" ng-init="init(schemCtrl.schematic)"
+  .row
+    .col-xs-12
+      dl.dl
+        dt () Geography:
+        dd (ng-repeat="geography in schemCtrl.schematic.geographies")
+          span () {{geography.name}}
+
+        dt () Last Modified:
+        dd () {{schemCtrl.schematic.updated_at | date }}
+
+        dt () Modified By:
+        dd () {{schemCtrl.schematic.last_modified_by.email}}
+
+      form (name="form" role="form" ng-submit="saveForm()" novalidate)
+
+        .form-group
+          label () Schematic Name:
+          input.form-control (type="text" name="schName" ng-model="schemCtrl.schematic.name" required)
+
+        .form-group
+          label () Schematic Status:
+          select.form-control (name="schStatus" ng-model="schemCtrl.schematic.status" required)
+            option value="planning" Planning
+            option value="published" Published
+
+        .form-group
+          label () Start Date
+          div ( ng-model="schemCtrl.schematic.release_date" name="schReleaseDate" date-picker )
+
+        .form-group
+          label () End Date
+          div ( ng-model="schemCtrl.schematic.end_date" name="schReleaseDate" date-picker )
+
+        .form-group
+          button.btn.btn-primary.pull-right type="submit"
+            | Save Details &nbsp;
+            i.fa.fa-chevron-circle-right

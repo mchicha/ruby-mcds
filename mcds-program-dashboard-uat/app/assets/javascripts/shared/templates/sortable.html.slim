@@ -1,0 +1,4 @@
+th ng-click="changeSort(name)"
+  .th-inner
+    span (ng-transclude)
+    i.fa ng-class="{'fa-sort': (col != name), 'fa-sort-asc': (col == name && !dir), 'fa-sort-desc': (col == name && dir)}"

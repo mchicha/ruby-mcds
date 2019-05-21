@@ -1,0 +1,32 @@
+section.assets
+  ul.nav.nav-tabs
+    / li ng-class=("{ active:edTab.isSet(1) }")
+    /   a href="" ng-click="edTab.setTab(1)"  Details
+    li ng-class=("{ active:edTab.isSet(1) }")
+      a href="" ng-click="edTab.setTab(1)"  Position
+
+    li ng-class=("{ active:edTab.isSet(2) }") ng-disabled="!schemCtrl.currElement.element.editable"
+      a href="" ng-click="edTab.setTab(2)"  Assets
+
+    li ng-class=("{ active:edTab.isSet(3) }")  ng-disabled="(!schemCtrl.currElement.element.editable && schemCtrl.schematic.parent_id) || schemCtrl.currWrapper.element.group"
+      a href="" ng-click="edTab.setTab(3)"  Layouts
+
+    li ng-class=("{ active:edTab.isSet(4) }")
+      a href="" ng-click="edTab.setTab(4)"  Scaling
+
+  .well
+    /! Assets Tab's Content
+    div.tab-section ng-show="edTab.isSet(1)"
+      position
+
+    /! Takedown Tab's Content
+    div.tab-section ng-show="edTab.isSet(2)"
+      asset-list
+
+    /! Schematic Details Tab's Content
+    div.tab-section ng-show="edTab.isSet(3)"
+      layout
+
+    /! Takedown Tab's Content
+    div.tab-section ng-show="edTab.isSet(4)"
+      scaling

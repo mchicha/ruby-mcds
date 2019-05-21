@@ -1,0 +1,18 @@
+.geography-list
+  accordion close-others="oneAtATime"
+    - @roots.each do |root|
+      - if root.national?
+        - if can? :create, GeographiesSchematic.new(geography_id: root.id)
+          accordion-group#coop-accordion(ng-if="!coopSelected")
+            accordion-heading
+              input(type="checkbox" class="co-op-checkbox" id="#{root.id}" ng-model="coops" ng-click="clickNational(#{root.id}, $event)" ng-checked="nationalSelected")
+              = root.name
+      - else
+        accordion-group#coop-accordion(ng-if="!nationalSelected")
+          accordion-heading
+            .fa.fa-plus-circle
+            = root.name
+
+          - if root.children.any?
+            accordion close-others="oneAtATime"
+              = render partial: 'geographies/schematic_list_of_children', collection: root.children, as: :child_geography

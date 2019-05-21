@@ -1,0 +1,31 @@
+.legend-area
+  .section
+    h5.subtitle Geography
+    ul.list-unstyled
+      li (ng-repeat="geography in ctrl.schematic.geographies")
+        | {{ geography.name }}
+
+  .section
+    h5.subtitle Agency
+    ul.list-unstyled
+      li (ng-repeat="agency in ctrl.schematic.agencies")
+        | {{ agency.name }}
+  .section
+    h5.subtitle Zone
+    ul.list-unstyled
+      li
+        | {{ ctrl.documents[ctrl.currDoc].name }}
+
+  .section
+    h5.subtitle Time Period
+    ul.list-unstyled
+      li
+        | Start Date: {{ ctrl.schematic.release_date | date:'MM/dd/yyyy' }}
+      li
+        | End Date: {{ ctrl.schematic.end_date | date:'MM/dd/yyyy' }}
+
+  .section
+    h5.subtitle Programs Included
+    ul.list-unstyled
+      li (ng-repeat="program in ctrl.documents[ctrl.currDoc].programs | filter: ctrl.legendFilter")
+        | {{ program.name }}

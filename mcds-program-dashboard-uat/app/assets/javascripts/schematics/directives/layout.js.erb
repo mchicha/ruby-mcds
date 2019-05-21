@@ -1,0 +1,15 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("layout", [ function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/layout.html') %>",
+      controller: function() {
+        var layCtrl = this;
+
+      },
+      controllerAs: "layCtrl"
+    };
+  }]);

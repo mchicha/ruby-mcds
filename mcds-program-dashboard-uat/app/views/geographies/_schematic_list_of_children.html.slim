@@ -1,0 +1,17 @@
+- if child_geography.is_a_co_op?
+  - if can? :create, GeographiesSchematic.new(geography_id: child_geography.id)
+    .option
+      input(id="co-op-#{child_geography.id}" type="checkbox" class="co-op-checkbox" ng-model="coops.coops_#{child_geography.id}" ng-click="setValue(coops.coops_#{child_geography.id}, #{child_geography.id})" ng-checked="isChecked(#{child_geography.id})" )
+      label for="co-op-#{child_geography.id}"
+        = child_geography.name
+
+- else
+  accordion-group
+    accordion-heading
+      .fa.fa-plus-circle
+      = child_geography.name
+
+    div(id="collapsechild#{child_geography.id}" )
+      - if child_geography.children
+        accordion close-others="oneAtATime"
+          = render partial: 'geographies/schematic_list_of_children', collection: child_geography.children.preload(:geography_type), as: :child_geography

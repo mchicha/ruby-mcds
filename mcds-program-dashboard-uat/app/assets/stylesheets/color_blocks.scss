@@ -1,0 +1,41 @@
+#color-block-search{
+  padding-left: 0px;
+}
+
+.row-centered {
+  text-align:center;
+}
+.col-centered {
+  display:inline-block;
+  float:none;
+  text-align:left;
+}
+.search-for-color-block{
+  label{
+    margin-right:.5em;
+}
+#color_blocks{
+
+  }
+  table{
+    tbody{
+      tr{
+        td{
+          vertical-align: middle;
+        }
+        td.text-right{
+          float: right;
+          div.btn-group{
+            margin-top:0px;
+            button.btn{
+              border-radius:2em;
+            }
+            a{
+              border-radius:2em;
+            }
+          }
+        }
+      }
+    }
+  }
+}

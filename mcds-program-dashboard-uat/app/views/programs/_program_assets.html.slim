@@ -1,0 +1,49 @@
+#program_assets.col-xs-12
+  - if @new_program
+    p.text-center Please save the program and click to edit it to add elements to this program.
+  - else
+    div
+      .search-for-element.pull-left.col-xs-12
+        .input-group.search
+          input.search.form-control(placeholder=("Search for assets with keyword...") type="text" ng-model="searchTerm")/
+          span.input-group-btn
+            button.btn.btn-default.clear-button type="button" ng-click="clearSearchTerm($event)" Clear
+      - unless current_page?(:program)
+        .element-action-btns.pull-right
+          -if can? :upload, :multiple_assets
+            - dam_host = DAM_CONFIG[:host].match(':3009') ? DAM_CONFIG[:host].split(':')[0] : DAM_CONFIG[:host]
+            a href="#{DAM_CONFIG[:uri_class].build({host: dam_host, port: DAM_CONFIG[:port]}).to_s}" target="blank" class="btn #{@new_program ? 'disabled btn-default' : 'btn-primary'}"
+              i.fa.fa-plus-circle
+              |  Upload Multiple Elements
+          a data-target="#add-single-element" ng-click="addAssetMode($event)" data-toggle="modal" type="button" class="btn #{@new_program ? 'disabled btn-default' : 'btn-primary'}"
+            i.fa.fa-plus-circle
+            |  Add Single Element
+    div
+      table.table.col-xs-12.table-striped.table-sorting
+        / .table-sorting
+        thead()
+          tr()
+            th
+              span(ng-table-sorter sort-term="Zone") Zone
+            th
+              span(ng-table-sorter sort-term="Element Name") Element Name
+            th
+              span(ng-table-sorter sort-term="SKU") SKU/Descriptor
+            th
+              span(ng-table-sorter sort-term="Up Date") Up Date
+            th
+              span(ng-table-sorter sort-term="Down Date") Down Date
+            th(ng-if="!isShowPage") Action
+        tbody.list
+          tr.program-resource-row(ng-repeat="asset in assets | filter:searchTerm | orderBy:sortAssets:reverse" ng-cloak)
+            td() {{ formattedMetadata(asset, "Zone") }}
+            td() {{ formattedMetadata(asset, "Element Name") }}
+            td() {{ formattedMetadata(asset, "SKU") }}
+            td() {{ formattedMetadata(asset, "Up Date") }}
+            td() {{ formattedMetadata(asset, "Down Date") }}
+
+            td(ng-if="!isShowPage")
+              a.btn.btn-danger(data-target="#add-single-element" data-toggle="modal" ng-click="editAssetMode($event, asset)")
+                i.fa.fa-pencil-square-o
+                | Edit
+              a class="btn btn-info" disabled=true Remove

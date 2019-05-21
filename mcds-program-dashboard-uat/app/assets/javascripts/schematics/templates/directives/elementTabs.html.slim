@@ -1,0 +1,16 @@
+section.assets
+  ul.nav.nav-tabs
+    li ng-class=("{ active:elTab.isSet(1) }")
+      a href="" ng-click="elTab.setTab(1)"  Position
+
+    li ng-class=("{ active:elTab.isSet(2) }")
+      a href="" ng-click="elTab.setTab(2)"  Scaling
+
+  .well
+    /! Assets Tab's Content
+    div.tab-section ng-show="elTab.isSet(1)"
+      position ctrl="ctrl"
+
+    /! Takedown Tab's Content
+    div.tab-section ng-show="elTab.isSet(2)"
+      scaling

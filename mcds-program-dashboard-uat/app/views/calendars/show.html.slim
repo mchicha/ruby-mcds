@@ -1,0 +1,40 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs', 'calendars'
+
+-content_for :javascript do
+   javascript:
+      window.calendarId = #{@calendar.id};
+      window.userId = #{@calendar.user_id};
+
+.container
+  .row
+    .col-xs-12.page-header
+      h2
+        | Calendar
+
+  .row
+    div.pull-right
+      = render partial: "calendar_print_option"
+
+  .row
+    div.calendar_grid_list_option
+      = render partial: "calendar_grid_list_option"
+
+  .row
+    div.col-md-4
+      div
+        #picktheday
+      div
+        #filter_types
+          = render partial: "filter_event_type"
+      div
+        #user_geographies
+          = render partial: "select_geographies", locals: {obj: @calendar}
+
+    div.col-md-8
+      #calendar
+      #events_list
+
+#calendar_modal.modal.fade
+  .modal-dialog
+    .modal-content

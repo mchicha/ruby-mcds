@@ -1,0 +1,81 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+
+
+.conatiner
+  / wrapper div needs to have the ID of the first param in new List()
+  .container#agencies
+    .page-header
+      h1 Manage Agencies
+      = render partial: "shared/breadcrumbs"
+
+    .search-agency.col-xs-8
+      label.pull-left()
+        | Search for an agency:
+      input.form-control.input-group.search#agency-search( name="search_agency" placeholder="Search" type="text")
+        span.input-group-btn
+          a.btn.btn-primary(onclick="clearFuzzySearch(agencyList);")
+            | Clear
+    fieldset#agency-details.col-xs-12
+      legend() Agency Details
+      p#agency-error-messages()
+      table.table.table-striped.table-responsive.table-bordered.list-of-agencies
+        thead()
+          tr()
+            th() Agency Name
+            th() Co-Ops Associated to Agency
+            th() Number of Agency Users
+            th() Action
+        / class name of 'list' has to be there in order for list.js to work properly
+        tbody.list()
+          - @agencies.each do |agency|
+            tr(id="agency-id-#{agency.id}")
+              td.name() = agency.name
+              td()
+                = render partial: "agency_geographies",
+                         collection: agency.geographies,
+                         as: :co_op, locals: {agency: agency}
+
+                p()
+                  = link_to("+ Add Co-Op to Agency",
+                            "",
+                            "data-toggle" => "modal",
+                            "data-target" => "#assign-agency-geographies-#{agency.id}",
+                            type: "button")
+                  = render partial: "agency_geography_modal", locals: {agency: agency}
+
+              td()
+                =link_to(agency.users.count, manage_users_agency_path(agency), remote: true, class: "clickme btn btn-primary")
+              td()
+                button.btn.btn-primary(
+                  data-agency-id="#{agency.id}"
+                  data-agency-name="#{agency.name}"
+                  onclick="confirmAgencyDelete(this)"
+                ) Remove Selected From System
+
+        -content_for :javascript do
+          # used in list.js to fuzzy search the agency names
+          javascript:
+            var options = {
+              // columns on the model you want to search by
+              valueNames: ['name']
+            };
+            // first param needs to be the ID in the wrapper container
+            var agencyList = new List('agencies', options);
+
+      button.pull-right.btn.btn-primary(
+        data-target="#new-agency-modal"
+        data-toggle="modal"
+      )
+        i.fa.fa-plus-circle() Add an Agency to the System
+      br
+      br
+      = render "new_agency_modal"
+section.drawer
+  .drawer-content
+    .row
+      .clickme.col-xs-12.text-center
+        .fa.fa-angle-double-down
+        | cancel
+        .fa.fa-angle-double-down
+    #drawer-content

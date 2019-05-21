@@ -1,0 +1,456 @@
+'use strict';
+
+angular.module('schematicApp')
+    .controller('SchematicCtrl', [
+        '$scope',
+        'schematic',
+        'canvas',
+        'assets',
+        'assetTypes',
+        '$filter',
+        '$modal',
+        'ProgramSvc',
+        'LayoutSvc',
+        'CanvasSvc',
+        function($scope, schematic, canvas, assets, assetTypes, $filter, $modal, ProgramSvc, LayoutSvc, CanvasSvc) {
+          var currCtrl = this;
+
+          currCtrl.textBoxes      = false;
+          currCtrl.removable      = false;
+          currCtrl.schematic      = schematic;
+          currCtrl.documents      = canvas.documents;
+          currCtrl.pageDocuments  = $filter('filter')(currCtrl.documents, {type_of: 'page'}, true);
+          currCtrl.doc_layouts    = [];
+          currCtrl.elements       = canvas.elements;
+          currCtrl.assets         = assets;
+          currCtrl.currElement    = null;
+
+          schematic.release_date.setMinutes( schematic.release_date.getMinutes() + schematic.release_date.getTimezoneOffset() );
+          schematic.end_date.setMinutes( schematic.end_date.getMinutes() + schematic.end_date.getTimezoneOffset() );
+
+          // TODO: attempt to resolve this instead
+          ProgramSvc.query({ popStartDate: currCtrl.schematic.release_date, popEndDate: currCtrl.schematic.end_date}, function(data){
+            currCtrl.programs = data.programs;
+            currCtrl.marketCategories = data.marketCategories;
+          });
+          // END TODO
+
+          currCtrl.legendFilter = function(program){
+            var popInstallRange = $filter('filter')(program.pop_start_dates, {date_type: {id: 2}})[0]
+            if(popInstallRange){
+              if(popInstallRange.start_date && popInstallRange.end_date){
+                return new Date(popInstallRange.start_date) <= currCtrl.schematic.end_date && new Date(popInstallRange.end_date) >= currCtrl.schematic.release_date
+              }
+            }
+          }
+
+          currCtrl.saveForm = function(valid) {
+            if (valid){
+              currCtrl.schematic.$update(function(success){
+                console.log("successsfully saved.")
+              }, function(errorResult){
+                console.log("something isn't right...");
+                console.log(errorResult);
+              });
+            }
+          }
+
+          currCtrl.setSelectedZone = function(docNum) {
+            currCtrl.currDoc          = docNum;
+            currCtrl.currElement      = null
+            currCtrl.currentDocument  = currCtrl.documents[currCtrl.currDoc];
+            currCtrl.currentZone      = currCtrl.currentDocument.zone;
+            currCtrl.setPriorDocument();
+            currCtrl.setNextDocument();
+          }
+
+          currCtrl.setPriorDocument = function() {
+            var scopedIndex = currCtrl.pageDocuments.indexOf(currCtrl.currentDocument),
+                priorDocNum = scopedIndex - 1 >= 0 ? scopedIndex - 1 : -1;
+
+            if (priorDocNum < 0){
+              currCtrl.priorDocument = undefined;
+            } else {
+              currCtrl.priorDocument = currCtrl.pageDocuments[priorDocNum];
+            }
+          }
+
+          currCtrl.setNextDocument = function() {
+            var scopedIndex = currCtrl.pageDocuments.indexOf(currCtrl.currentDocument),
+                nextDocNum = scopedIndex + 1
+            if (nextDocNum > currCtrl.pageDocuments.length){
+              currCtrl.nextDocument = undefined;
+            } else {
+              currCtrl.nextDocument = currCtrl.pageDocuments[nextDocNum];
+            }
+          }
+
+          currCtrl.updateSelectedZone = function(e, doc){
+            e.preventDefault();
+            currCtrl.setSelectedZone(doc.idx);
+          };
+
+          currCtrl.scalingModelOptions = {
+            updateOn:"default mouseup blur",
+            debounce: {
+              default: 1500,
+              mouseup: 1500,
+              blur: 0
+            }
+          };
+
+          currCtrl.mouseEvents = {
+            unfocusElements: function(canvasElement) {
+                canvasElement.on('click', function(){
+                    if(currCtrl.currElement){
+                        currCtrl.currElement.setStroke('white').setStrokeWidth(0);
+                    }
+
+                    if(currCtrl.currWrapper){
+                        currCtrl.currWrapper.setStroke('white').setStrokeWidth(0);
+                    }
+
+                    currCtrl.currElement    = null;
+                    currCtrl.currWrapper    = null;
+
+                    $scope.$digest();
+                    canvasElement.parent.parent.children[2].draw();
+                });
+            },
+            setFocusabeElement: function(canvasElement) {
+              canvasElement.on('mouseover', function() {
+                canvasElement.setStroke('gold').setStrokeWidth(6);
+                canvasElement.parent.draw();
+              });
+
+              canvasElement.on('mouseout', function() {
+                if (currCtrl.currElement === canvasElement){
+                    canvasElement.setStroke('red').setStrokeWidth(6);
+                } else if (currCtrl.currWrapper === canvasElement) {
+                    canvasElement.setStroke('blue').setStrokeWidth(6);
+                } else {
+                    canvasElement.setStroke('white').setStrokeWidth(0);
+                }
+
+                canvasElement.parent.draw();
+              });
+
+              canvasElement.on('click', function() {
+                if (currCtrl.removable) {
+                    currCtrl.removeImage(canvasElement);
+
+                } else if (canvasElement.element.group) {
+                    currCtrl.styleGroup(canvasElement);
+
+                } else {
+                    currCtrl.styleElementAndParent(canvasElement);
+                }
+
+                $scope.$digest();
+
+                canvasElement.parent.parent.draw();
+              });
+            }
+          }
+
+
+          currCtrl.clearScaling = function(canvasElement){
+            delete canvasElement.element.values.fillPatternScaleX
+            delete canvasElement.element.values.fillPatternScaleY
+            delete canvasElement.element.values.fillPatternRotation
+            delete canvasElement.element.values.fillPatternY
+            delete canvasElement.element.values.fillPatternX
+          }
+
+          currCtrl.removeImage = function(canvasElement){
+              var parentSelected = !currCtrl.schematic.parent_id;
+              if (canvasElement.attrs.fillPatternImage && (!parentSelected && !canvasElement.element.editable)) {
+                  alert('Permission Denied: You are not allowed to remove this element');
+              } else if ((canvasElement.attrs.fillPatternImage || canvasElement.attrs.fillLinearGradientColorStops) && (parentSelected || !parentSelected && canvasElement.element.editable) ){
+                  var confirm = $modal.open({
+                    templateUrl:"<%= asset_path('schematics/templates/directives/confirmable.html') %>",
+                    controller: 'ConfirmBoxCtrl as con',
+                    size: 'sm',
+                    resolve: {
+                      text: function(){ return 'Are you sure you wish to remove this image?' }
+                    }
+                  });
+
+                  /////////////////////
+                  // Without this, popups do not appear until something else changes. Mostly controller attributes like .schematic.status or .removable
+                  $scope.$apply();
+                  ///////////////////
+
+                  confirm.result.then(function (execute) {
+                    if(execute){
+
+                      /// Remove Gradient junk
+                      if(canvasElement.attrs.fillLinearGradientColorStops){
+                        var gradientKeys = ['fillLinearGradientColorStops', 'fillLinearGradientEndPointX', 'fillLinearGradientEndPointY', 'fillLinearGradientEndPoint', 'fillLinearGradientStartPointX', 'fillLinearGradientStartPointY', 'fillLinearGradientStartPoint', 'fillPriority'];
+                        gradientKeys.forEach(function(key){
+                          if(canvasElement.element.values[key]){
+                            delete canvasElement.element.values[key];
+                            delete canvasElement.attrs[key];
+                          }
+                        })
+                      }
+
+                      if(canvasElement.attrs.fillPatternImage){
+                        var primaryIdx   = currCtrl.documents[currCtrl.currDoc].assetIds.indexOf(canvasElement.element.primary_dam_asset_id),
+                            secondaryIdx = currCtrl.documents[currCtrl.currDoc].assetIds.indexOf(canvasElement.element.secondary_dam_asset_id);
+
+                        // need to check if indexes are more than -1, as splice takes -1 as an arugment
+                        if(primaryIdx > -1){currCtrl.documents[currCtrl.currDoc].assetIds.splice(primaryIdx, 1);}
+                        if(secondaryIdx > -1){currCtrl.documents[currCtrl.currDoc].assetIds.splice(secondaryIdx, 1);}
+                      }
+
+                      canvasElement.attrs.href = '';
+                      canvasElement.element.primary_dam_asset_path    = '';
+                      canvasElement.element.primary_dam_asset_id      = '';
+                      canvasElement.element.secondary_dam_asset_id    = '';
+                      canvasElement.element.secondary_dam_asset_path  = '';
+
+                      currCtrl.clearScaling(canvasElement)
+
+                      CanvasSvc.applyImage(canvasElement);
+                      canvasElement.element.$update({
+                          schematic_id: currCtrl.schematic.id
+                      });
+                    }
+                  });
+              }
+          }
+
+          currCtrl.styleGroup = function(canvasElement) {
+            if(currCtrl.currWrapper){
+                currCtrl.currWrapper.setStroke('white').setStrokeWidth(0);
+            }
+
+            if(currCtrl.currElement){
+                currCtrl.currElement.setStroke('white').setStrokeWidth(0);
+            }
+
+            if(currCtrl.currWrapper == canvasElement){
+              currCtrl.currElement = null;
+              currCtrl.currWrapper = null;
+            }else{
+              currCtrl.currElement = null;
+              currCtrl.currWrapper = canvasElement;
+              canvasElement.setStroke('blue').setStrokeWidth(6);
+            }
+          }
+
+          currCtrl.checkWrapperIfLocked = function(wrapper) {
+            if(!wrapper || !wrapper.group || !wrapper.group.children || !wrapper.group.children.length){
+              return false;
+            }
+            return wrapper.group.children.some(function(e) {
+              return e.element.editable === false
+            })
+          }
+
+          currCtrl.styleElementAndParent = function(canvasElement) {
+            if(currCtrl.currWrapper && canvasElement.parent !== currCtrl.currWrapper.group){
+                currCtrl.currWrapper.setStroke('white').setStrokeWidth(0);
+                if(canvasElement.parent.nodeType === 'Group') {
+                  currCtrl.currWrapper.setStroke('white').setStrokeWidth(0);
+                  currCtrl.currWrapper = canvasElement.parent.wrapperElement;
+                  currCtrl.currWrapper.setStroke('blue').setStrokeWidth(6);
+                } else {
+                  currCtrl.currWrapper.setStroke('white').setStrokeWidth(0);
+                  currCtrl.currWrapper = null;
+                }
+            } else if(canvasElement.parent.nodeType === 'Group') {
+                if(currCtrl.currWrapper){
+                    currCtrl.currWrapper.setStroke('white').setStrokeWidth(0);
+                }
+
+                currCtrl.currWrapper = canvasElement.parent.wrapperElement;
+                currCtrl.currWrapper.setStroke('blue').setStrokeWidth(6);
+            } else {
+                if(currCtrl.currWrapper){
+                    currCtrl.currWrapper.setStroke('white').setStrokeWidth(0);
+                    currCtrl.currWrapper = null;
+                }
+            }
+
+            if(currCtrl.currElement){
+                currCtrl.currElement.setStroke('white').setStrokeWidth(0);
+            }
+
+            if (currCtrl.currElement != canvasElement){
+              currCtrl.currElement = canvasElement;
+              canvasElement.setStroke('red').setStrokeWidth(6);
+            }
+            else{
+              currCtrl.currElement = null
+              currCtrl.currWrapper = null
+            }
+          }
+
+          currCtrl.positionIdFilter = function(asset){
+            // If there is no positionId, then no filteirng, bring em all back
+            if(!currCtrl.currElement.element.values.id){
+              return true;
+            }
+            // Until front and back logic implemented, both fronts and backs need to be accepted
+
+            // If asset uploaded and has not been reconciled yet...it might not have position ids...or if someone changes the name for whatever reason
+            var positionIds;
+            // Filter metadata for Position Ids
+            var positionIdFiltering   = $filter('filter')(asset.metadata, {name: 'Position Ids'});
+
+            // If filter finds nothing, returns empty array
+            if(positionIdFiltering.length > 0){
+              // Check if index 0 filter is null
+              if(positionIdFiltering[0]){
+                positionIds = positionIdFiltering[0].value;
+              }
+            }
+
+            // if position id data was not found, we will be safe and call it a match
+            if(!positionIds) {
+              return true;
+            }
+
+            // create array with f (front) and b (back) variants of the position id added
+            var possibilities = [currCtrl.currElement.element.values.id, currCtrl.currElement.element.values.id + "f", currCtrl.currElement.element.values.id + "b"]
+            // cehck if any of the possibilities are in asset position ids
+            var hasMatch = possibilities.some(function(posId){return positionIds.indexOf(posId) > -1})
+            return hasMatch
+          }
+
+          currCtrl.generateDocumentZoneSelector = function() {
+            currCtrl.schematicZones = [];
+            // var zones = ["Exterior","Drive Thru","Counter","Dining Room-Lobby"];
+            angular.forEach(currCtrl.doc_layouts, function(doc, i){
+              // var zone = zones[(i % 4)];
+              // doc.zone_type = zone;
+              currCtrl.schematicZones[doc.zone.sort_order] = currCtrl.schematicZones[doc.zone.sort_order] || {name: doc.zone.name, documents: []};
+
+              var shownName = doc.display_name ? doc.display_name : doc.name;
+
+              currCtrl.schematicZones[doc.zone.sort_order].documents.push({ name: shownName, idx: doc.idx, sort_order: doc.sort_order });
+            });
+
+            currCtrl.schematicZones = currCtrl.schematicZones.filter(function(doc){return doc != null})
+
+            angular.forEach(currCtrl.schematicZones, function(zone, i){
+              zone.documents = zone.documents.sort(function(a,b){
+                return a.sort_order > b.sort_order
+              })
+            })
+          };
+
+          currCtrl.processIndicies = function() {
+            angular.forEach(currCtrl.documents, function(doc, idx) {
+                currCtrl.documents[idx].idx = idx;
+                if (currCtrl.documents[idx].type_of === 'page') {
+                  currCtrl.doc_layouts.push(currCtrl.documents[idx]);
+                }
+            });
+          }
+
+          currCtrl.applyExistingAssets = function(){
+            angular.forEach(currCtrl.elements, function(element, idx){
+              if(element.primary_dam_asset_id){
+                var asset = $filter('filter')(currCtrl.assets, {id: element.primary_dam_asset_id}, true)[0];
+                currCtrl.elements[idx].asset = asset;
+              }
+            });
+          }
+
+          currCtrl.applyLayout = function(layout, currWrapper) {
+            if(currWrapper){
+
+              // All to remove asset from the cached ids on the main document so it can be readded to the document:
+              if(currWrapper.element && currWrapper.element.group){
+                // Get group with right name and id:   (seen an error where all documents end up with same id, so this is extra careful)
+                var group = currCtrl.documents.filter(function(d) {return d.name === currWrapper.element.group && d.id === currWrapper.element.layout_id});
+
+                if (group[0] && group[0].element_ids){
+                  // Using elements ids from the group, grab elements from currCtrl
+                  var elements = []
+                  group[0].element_ids.forEach(function(q){ elements = elements.concat(currCtrl.elements.filter(function(e){return e.id == q})) })
+
+                  // Look for primary_dam_asset_id in the document assetId. Removing it will un-gray-out the asset in the asset list and let it be added again
+                  elements.forEach( function(el){
+                    var needToSave = false;
+                    if(el.primary_dam_asset_id){
+                      needToSave = true;
+                      var indexOfAssetId = currCtrl.currentDocument.assetIds.indexOf(el.primary_dam_asset_id);
+                      if (indexOfAssetId > -1){
+                        currCtrl.currentDocument.assetIds.splice(indexOfAssetId, 1);
+                      }
+                      el.primary_dam_asset_id = null
+                      el.primary_dam_asset_path = null
+                    }
+
+                    // wildfire burn all that was done to this element so if they switch the layout back it will be a start over
+                    var gradientKeys = ['fillLinearGradientColorStops', 'fillLinearGradientEndPointX', 'fillLinearGradientEndPointY', 'fillLinearGradientEndPoint', 'fillLinearGradientStartPointX', 'fillLinearGradientStartPointY', 'fillLinearGradientStartPoint', 'fillPriority'];
+                    var scalingKeys = ['fillPatternX', 'fillPatternY', 'fillPatternOffsetX', 'fillPatternOffsetY', 'fillPatternRotation', 'fillPatternScaleX']
+                    gradientKeys.concat(scalingKeys).forEach(function(key){
+                      if(el.values[key]){
+                        needToSave = true;
+                        delete el.values[key];
+                      }
+                    })
+
+                    // Only fire off need to save if something was changed information to save
+                    if(needToSave){
+                      el.$update({schematic_id: schematic.id}, function(success) {
+
+                      }, function(errorResult) {
+
+                      });
+                    }
+                  })
+                }
+              }
+
+              currWrapper.element.layout_id = layout.id;
+              var schematic_layout;
+
+              LayoutSvc.resource.save({schematic_id: schematic.id, layout_id: layout.id}).
+              $promise.then(function(l) {
+                  if(currCtrl.documents.filter(function(d){return d.id === l.document.id}).length === 0){
+                    currCtrl.documents.push(l.document);
+                  }
+
+                  currWrapper.element.layout_id = l.document.id;
+                  currWrapper.element.$update({schematic_id: schematic.id});
+                  currCtrl.elements = currCtrl.elements.concat(l.elements);
+
+                  CanvasSvc.applyLayout(
+                    currWrapper,
+                    l.elements,
+                    currCtrl.mouseEvents.setFocusabeElement
+                  );
+              });
+
+              // Clear current element, otherwise it keeps linked to the hidden element and
+              // lets user apply images to it
+              currCtrl.currElement = null
+            }
+          }
+
+
+          currCtrl.toggleTextboxes = function() {
+            currCtrl.removable = false;
+            currCtrl.textBoxes = !currCtrl.textBoxes;
+            return currCtrl.textBoxes;
+          };
+
+          currCtrl.toggleRemovable = function() {
+            currCtrl.textBoxes = false;
+            currCtrl.removable = !currCtrl.removable;
+            return currCtrl.removable;
+          };
+
+          currCtrl.setSelectedZone(0);
+          currCtrl.applyExistingAssets();
+          currCtrl.processIndicies();
+          currCtrl.generateDocumentZoneSelector();
+
+        }
+    ]);

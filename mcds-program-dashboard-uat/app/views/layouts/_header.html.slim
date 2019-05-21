@@ -1,0 +1,126 @@
+-content_for :javascript do
+  =javascript_include_tag 'geographies'
+
+nav.navbar.navbar-default role="navigation"
+  .container-fluid
+    .container
+      - if current_user && current_user.tukaiz_super_admin?
+        .pull-right#role-selector
+          =form_tag role_stub_set_users_path, method: :get, id: "role_stub_form", class: "form-inline", style: 'visibility: hidden' do
+            span
+            =select_tag(:role, options_from_collection_for_select([['admin', 'admin'], ['inputter', 'inputter'], ['leadership', 'leadership'], ['us_read_only', 'us_read_only'], ['tukaiz_super_admin']], :last, :first, Redis.current.get("#{current_user.id}_role_stub")), class: 'form-control', id: 'role_select_dropdown')
+          -content_for :javascript do
+            javascript:
+              $(document).on('mouseenter', '#role-selector', function(){$('#role_stub_form').css({visibility: 'visible'}) })
+              $(document).on('mouseleave', '#role-selector', function(){$('#role_stub_form').css({visibility: 'hidden'}) })
+              $(document).on('change', '#role_select_dropdown', function(){$('#role_stub_form').submit() })
+
+      /! Brand and toggle get grouped for better mobile display
+      .navbar-header
+        button.navbar-toggle.collapsed data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand href="/"
+      - if current_user
+        .row.col-md-8
+          .form-group.selected-geography-display
+            =form_tag set_selected_id_geographies_path, method: :get, id: "select_geography_form", class: "form-inline" do
+              span
+                = 'Viewing Geography: '
+              =select_tag(:geography_id, navbar_geographies_options, class: 'form-control', id: 'geography_select_dropdown')
+
+              - content_for :javascript do #Store original id to fallback to in case user clicks cancel on confirmation window
+                javascript:
+                  var originalGeographySelection = #{current_user.selected_geography_id}
+
+        .row.col-md-8
+          - if @selected_coop && @selected_coop.agencies.present?
+            .agencies-grouping
+              span.agencies-label
+                = 'Agencies: '
+              span.agencies-listed
+                = @selected_coop.agencies.map{|agency| agency.name}.join(', ')
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          /! Collect the nav links, forms, and other content for toggling
+          ul.nav.navbar-nav.navbar-left.main-nav-list
+            li
+              =link_to("Programs", programs_path)
+            li
+              =link_to("Calendar", calendars_path)
+            li
+              =link_to("Schematics", schematics_path)
+            -if can?(:access, :dam)
+              li
+                - dam_host = DAM_CONFIG[:host].match(':3009') ? DAM_CONFIG[:host].split(':')[0] : DAM_CONFIG[:host]
+                =link_to("Digital Asset Library", DAM_CONFIG[:uri_class].build({host: dam_host, port: DAM_CONFIG[:port]}).to_s, target: '_blank')
+            - if Killswitch.email_enabled?
+              li
+                =link_to("Message Center", '/message-center')
+            - if can? :manage, Alert
+              li
+                =link_to("Alerts", alerts_path)
+            li
+              =link_to("FAQs", "/faqs")
+          ul.nav.navbar-nav.navbar-right
+            li.dropdown
+              a.dropdown-toggle aria-expanded="false" data-toggle="dropdown" href="#" role="button"
+                |  Account
+                span.caret
+              ul.dropdown-menu role="menu"
+                ///// NOT USED FOR NOW //////
+                / li
+                /   a href="#"  My Account Details
+                li
+                  =link_to("My Contacts / Contact List", user_contact_lists_path(current_user.id))
+                li.divider
+                li
+                  a href="/faqs"  Help / FAQ
+                ///// NOT USED FOR NOW //////
+                / li
+                /   a href="#"  Contact Us
+                -if can?(:access, :dam)
+                  li.divider
+                -if can?(:manage, User) && can?(:manage, TrafficReport) #THIS checks that role isn't being stubbed
+                  li
+                    = link_to("User Management", users_path)
+                - if can? :manage, ColorBlock
+                  li
+                    a href="/color-blocks" Manage Marketing Categories
+                - if can? :manage, Agency
+                  li
+                    = link_to("Manage Agencies", agencies_path)
+                - if can? :create, :reports
+                  li
+                    = link_to("Generate Reports", "#")
+                -if can? :manage, LookupTable
+                  li.divider
+                  li
+                    = link_to("Lookup Tables", lookup_tables_path)
+                -if can? :read, :diagnostic
+                  li
+                    = link_to("Diagnostics", '/diagnostics')
+                -if can? :manage, TrafficReport
+                  li
+                    = link_to("BTR", traffic_reports_path)
+                -if can? :manage, Zone
+                  li
+                    = link_to("Zones", zones_path)
+                -if can? :admin_manage, Document
+                  li
+                    = link_to("Documents", documents_path)
+                -if can? :manage, DateType
+                  li
+                    = link_to("Date Types", date_types_path)
+                li.divider
+                li
+                  = form_tag auth_engine.sign_out_path, method: :delete do
+                    button.logout-btn
+                      i.fa.fa-sign-out.fa-fw
+                      span () Logout
+
+                li.divider
+
+        /! /.navbar-collapse
+      /! /.container-fluid

@@ -1,0 +1,53 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+  javascript:
+    var options = {
+      // columns on the model you want to search by
+      valueNames: ['delivery_type', 'subject', 'created_by', 'publish_date', 'archive_date']
+    };
+    // first param needs to be the ID in the wrapper container
+    var messageCenter = new List('message-center', options);
+    $( document ).ready(function() {
+      $(".clear-button").click(function() {
+        $("input#message-search").val("");
+        messageCenter.search()
+      });
+    });
+
+#message-center.container
+  .page-header
+    h1 Message Center
+    = render partial: "shared/breadcrumbs"
+
+  .row.message-queue-interactions
+    .search-messages.col-md-8.col-sm-8
+      / label.pull-left Search Messages:
+      / input.form-control.search.input-group#message-search placeholder="Search" type="text"
+      /   span.input-group-btn
+      /     button.btn.btn-default.clear-button type="button"
+      /       | Clear
+    .message-queue-actions.col-md-4.col-sm-4
+      .button-group.pull-right
+        a.btn.btn-primary(onclick="removeMultipleMessages();")
+          i.fa.fa-times-circle
+          |  Remove Selected
+        =link_to(new_message_path, :class => "btn btn-primary")
+          i.fa.fa-plus-circle
+          |  Add New Message
+
+  .row.message-queue-list
+    table.table.table-bordered.table-striped
+      thead
+        tr
+          th Select
+          th.sort(data-sort="delivery_type") Delivery
+          th.sort(data-sort="subject") Subject
+          th.sort(data-sort="created_by") From
+          th.sort(data-sort="c") To
+          th.sort(data-sort="publish_date") Publish Date
+          th Actions
+      tbody.list
+        =render @messages
+
+  .pagination.pull-right
+    = paginate(@messages)

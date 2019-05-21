@@ -1,0 +1,24 @@
+
+'use strict';
+
+angular.module('schematicApp')
+  .directive('schematicStatus', [
+    'SchematicSvc',
+    '$filter',
+    function(SchematicSvc, $filter){
+      return{
+        require: '^ngModel',
+        restrict: 'E',
+        replace: true,
+        scope: {
+          status: "=ngModel"
+        },
+        templateUrl: "<%= asset_path('schematics/templates/directives/schematicStatus.html') %>",
+        link: function(scope, element, attrs, ngModel){
+          scope.setVal = function(val){
+            ngModel.$setViewValue(val);
+          }
+        }
+      };
+    }
+  ])

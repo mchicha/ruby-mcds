@@ -1,0 +1,66 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+
+.container
+  .container#color_blocks
+    .page-header
+      h1 Market Categories
+      = render partial: "shared/breadcrumbs"
+    div.col-xs-4.text-left#color-block-search
+      div.form-group.input-group.search
+        input.search.form-control placeholder="Search"
+          span.input-group-btn
+            button.btn.btn-default.clear-button type="button"  Clear
+
+    div.col-xs-8.text-right
+      button.btn.btn-primary data-target="#NewColorBlockModal" data-toggle="modal" type="button"
+        | New Market Category
+      /! Modal
+      = render 'new_color_block_modal'
+
+    table.table
+      thead
+        tr
+          th ID
+          th Name
+          th Start Hex Color
+          th End Hex Color
+          th Output
+      tbody.list
+        -@color_blocks.each do |color_block|
+          tr
+            td.id = color_block.id
+            td.name = color_block.name
+            td.start_hex = color_block.start_hex
+            td.end_hex = color_block.end_hex
+            td.color-block id=("color-block-#{color_block.id}")
+            td.text-right
+              .btn-group aria-label="..." role="group"
+                button.btn.btn-default data-target="#EditColorBlockModal-#{color_block.id}" data-toggle="modal" type="button"
+                  | Edit
+                = link_to 'Remove', color_block_path(color_block.id),  method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger", type: "button"
+            = render 'edit_color_block_modal', color_block: color_block
+          css:
+            .color-block{
+               height: 32px;
+               width: auto;
+             }
+          -content_for :javascript do
+            javascript:
+              $("td#color-block-#{color_block.id}").css({
+                background: "-webkit-linear-gradient(#{color_block.start_hex} , #{end_color(color_block)})", /* For Safari 5.1 to 6.0 */
+                background: "-o-linear-gradient(#{color_block.start_hex}, #{end_color(color_block)})", /* For Opera 11.1 to 12.0 */
+                background: "-moz-linear-gradient(#{color_block.start_hex}, #{end_color(color_block)})", /* For Firefox 3.6 to 15 */
+                background: "linear-gradient(#{color_block.start_hex}, #{end_color(color_block)})" /* Standard syntax */
+              });
+
+              var options = {
+                valueNames: [ 'id', 'name', 'start_hex', 'end_hex' ]
+              };
+              var colorBlockList = new List('color_blocks', options);
+              $( document ).ready(function() {
+                $(".clear-button").click(function() {
+                  $("input.search").val("");
+                  colorBlockList.search()
+                });
+              });

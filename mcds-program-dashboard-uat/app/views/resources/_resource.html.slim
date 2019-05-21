@@ -1,0 +1,41 @@
+tr(id="program-resource-#{resource.id}")
+  td.description()
+    = resource.description
+  td
+    = truncate(resource.file_identifier, length: 100, omission: ' ...')
+  td()
+    a(href="#{resource_url(resource)}" target="_blank")
+  td.resource-actions()
+    a(href="#{resource.file.url}" target="_blank")
+      i.fa.fa-download()
+      |  Download
+  td.resource-actions()
+    a.action-item(
+      data-toggle="modal"
+      data-target="#email-a-resource"
+      data-url="#{resource_url(resource)}"
+      data-id="#{resource.id}"
+    )
+      i.fa.fa-envelope
+      |  Email
+  - if ["edit","create","update"].include?(params[:action])
+    td.resource-actions()
+      a.action-items.edit-resource(
+        href="#"
+        data-toggle="modal"
+        data-target="#upload-a-resource"
+        data-resource-description="#{resource.description}"
+        data-resource-file-name="#{resource.file_identifier}"
+        data-resource-id="#{resource.id}"
+        data-program-id="#{@program.id}"
+      )
+        i.fa.fa-pencil-square-o
+        | Edit
+    td.resource-actions()
+        a.remove-resource.action-item(
+          onclick="removeResource(this)"
+          data-program-id="#{@program.id}"
+          data-resource-id="#{resource.id}"
+        )
+          i.fa.fa-trash
+          |  Delete

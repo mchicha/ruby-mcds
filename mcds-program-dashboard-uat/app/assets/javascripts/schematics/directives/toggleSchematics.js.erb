@@ -1,0 +1,17 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('toggleSchematics', [
+    'SchematicSvc',
+    '$filter',
+    function(SchematicSvc, $filter){
+      return{
+        restrict: 'E',
+        replace: true,
+        template: '<div><a class="btn btn-primary active">My Schematics<span> (000)</span></a><a class="btn btn-primary">All Schematics<span> (000)</span></a></div>',
+        link: function(scope, element, attrs){
+
+        }
+      };
+    }
+  ]);

@@ -1,0 +1,16 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+  - if @message.send_date.present?
+    javascript:
+      $(document).ready(function() {
+        $("#headingTwo h4 label").click();
+        $("#send-at-later-date").show();
+      });
+
+.container
+  .page-header
+    h1 Message Details
+    = render partial: "shared/breadcrumbs"
+
+  .row(id="edit-message-#{@message.id}")
+    = render partial: "form"

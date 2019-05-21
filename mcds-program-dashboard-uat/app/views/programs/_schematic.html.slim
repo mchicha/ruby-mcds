@@ -1,0 +1,10 @@
+tr.program-resource-row(id="program-schematic-#{schematic.id}")
+  td.name
+    = schematic.name
+  td
+    = format_calendar_date(schematic.release_date)
+  td
+    = format_calendar_date(schematic.end_date)
+  td
+    = raw(schematic.geographies.collect(&:name).join("<br />"))
+

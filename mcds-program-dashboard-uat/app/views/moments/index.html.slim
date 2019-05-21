@@ -1,0 +1,55 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .page-header
+    h1 Moments
+    = render partial: "shared/breadcrumbs"
+
+  -if can? :create, GeographyMoment.new(geography: @selected_coop)
+    .pull-right
+      .new-alert-container
+        =link_to(new_moment_path, :class => "btn btn-primary")
+          i.fa.fa-plus-circle
+          |  New Calendar Event
+  .row.col-md-12
+    table.table.text-center.table-striped
+      thead
+        tr
+          th
+            | Name
+          - if can? :manage, :all
+            th
+              | Creator
+          th
+            | Post Date
+          th
+            | Remove Date
+          th
+            | Archived
+          -if can? :manage, GeographyMoment.new(geography: @selected_coop)
+            th
+              | Actions
+      tbody
+        - @moments.each do |moment|
+          tr
+            td
+              =link_to(moment)
+                = moment.title
+            - if can? :manage, :all
+              td
+                = moment.user.try(:email)
+            td
+              = moment.post_date.strftime('%m/%d/%y')
+            td
+              = moment.remove_date.strftime('%m/%d/%y')
+            td
+              = moment.archived?
+            -if can? :manage, GeographyMoment.new(geography: @selected_coop)
+              td
+                =link_to(edit_moment_path(moment), class: 'btn btn-primary fa fa-edit')
+                  = ' Edit'
+                =link_to(moment_path(moment, moment: {archived: moment.unarchived?}), method: :patch, class: "btn btn-primary #{action_class(moment)}")
+                  = archive_or_activate(moment)
+    .pagination
+      = paginate @moments

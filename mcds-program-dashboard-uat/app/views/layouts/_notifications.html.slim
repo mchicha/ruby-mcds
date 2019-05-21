@@ -1,0 +1,13 @@
+- if content_for?(:error_messages)
+  .error(data-alert="")
+    a.close(data-dismiss="alert") &#215;
+    = content_for :error_messages
+
+- flash.each do |name, msg|
+  .site-notifications(class="#{flash_class(name)}" data-alert="")
+    button.close(type="button" aria-label="Close")
+      span(aria-hidden="true") &times;
+    = content_tag :span, msg if msg.is_a?(String)
+    - if msg.is_a?(Array)
+      - msg.each do |message|
+        = content_tag :span, message if message.is_a?(String)

@@ -1,0 +1,15 @@
+.row
+  .col-xs-12 ng-if="newSchem.useGeographyMultiSelect"
+    label
+      span.blue-label-span ng-if="newSchem.schematic.source_id"
+        | Geographies Copied From "{{newSchem.schematic.sourceName}}":
+      p
+        span ng-repeat="geography in newSchem.schematic.geographies"
+          = " {{geography.name}}{{$last ? '' : ', '}}"
+    .form-group
+      coop-selector ids="newSchem.schematic.geography_ids" national_selected="newSchem.schematic.nationalSelected" coop_selected="newSchem.schematic.coopSelected"
+  .col-xs-12 ng-if="newSchem.useGeographyDropDown"
+    label
+      | Geography
+    .form-group
+      coop-drop-down ids="newSchem.schematic.geography_ids"

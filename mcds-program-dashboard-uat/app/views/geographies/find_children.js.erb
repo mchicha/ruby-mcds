@@ -1,0 +1,15 @@
+<% if @parent_geography.children %>
+  // $("#geography-<%#= @parent_geography.id %>-children").hide();
+  $("#geography-<%= @parent_geography.id %>-children").replaceWith("<%= escape_javascript(render(partial: 'list_of_children', collection: @parent_geography.children, as: :child_geography)).html_safe %>");
+  // $("#geography-<%#= @parent_geography.id %>-children").hide();
+  // $("#geography-<%#= @parent_geography.id %>-children").fadeIn("slow");
+  // check to see if there are any checkboxes checked and remove disabled attr on submit button
+  $(".co-op-checkbox").click(function() {
+    var checkedLength = $(".co-op-checkbox:checked").length;
+    if (checkedLength < 1) {
+      $("#add-geographies-btn").attr("disabled", "disabled");
+    } else {
+      $("#add-geographies-btn").removeAttr("disabled");
+    }
+  });
+<% end %>

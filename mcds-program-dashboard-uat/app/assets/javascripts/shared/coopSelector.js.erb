@@ -1,0 +1,74 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('coopSelector', [
+    'SchematicSvc',
+    '$filter',
+    function(SchematicSvc, $filter){
+      return{
+        restrict: 'E',
+        replace: true,
+        scope: {
+          ids: '=',
+          nationalSelected: '=',
+          coopSelected: '=',
+        },
+        templateUrl: "/api/v1/geographies/list.html",
+        link: function(scope, element, attrs){
+          scope.oneAtATime = false;
+
+          if(!scope.ids){scope.ids = []};
+
+          scope.isChecked = function(val){
+            if(scope.ids){
+              var idx = scope.ids.indexOf(val);
+              if (idx > -1){
+                return true;
+              } else {
+                false;
+              }
+            }
+          }
+
+          scope.setValue = function(bool, txt){
+            if(bool === true){
+              scope.ids.push(txt);
+            } else {
+              var idx = scope.ids.indexOf(txt);
+              scope.ids.splice(idx, 1);
+            }
+            scope.coopSelected = scope.ids.length > 0;
+          }
+
+          scope.checkBoxCorrector = function(el, bool){
+            setTimeout(function(){
+              el.prop('checked', bool)
+            }, 50)
+          }
+
+          //////////////////////////
+          // https://github.com/angular-ui/bootstrap/issues/3145
+          // clickNational() need a $event.stopPropagation() in it. Angular boostrap accordion does a double click...so whatever you set below
+          // is undone immediately after. Leaving the checkbox seemingly unbound to the variable.
+          // Adding the stopPropgation works great...in Chrome. In firefox it kicks off an event listener that reloads the entire page.
+          // Since it is the only way found to prevent this click again on the checkbox, and since it makes the site not work in firefox, we had to get hacky.
+          // A timeout works because 50 ms later the reclick event has already happened.
+          // TODO: Find a way to not have to use the timeout.
+          ////////////////////////
+
+          scope.clickNational = function(nationalId, $event){
+            if (scope.nationalSelected === true){
+              scope.ids = [];
+              scope.nationalSelected = false;
+            }
+            else{
+              scope.ids = [nationalId];
+              scope.nationalSelected = true;
+            }
+
+            scope.checkBoxCorrector($($event.target), scope.nationalSelected)
+          }
+        }
+      };
+    }
+  ]);

@@ -1,0 +1,38 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .new-path-container
+    a href="#{new_lookup_table_path}"
+      | New
+  .new-import-container
+    a href="#{new_import_lookup_tables_path}"
+      | Import
+  .dupl-tables-container
+    = form_tag user_changes_sync_lookup_tables_path
+      = submit_tag('Start Manual Changes Sync', :onclick => "return confirm('This will check the newest tables to see if any rows were updated using the online interface. Any changed rows will be sent to the DAM to overwirte all McDonalds Assets with matching keys in the Template Name. Are you sure you want to proceed?')")
+  .smart-sync-container
+    = form_tag smart_sync_lookup_tables_path
+      = submit_tag('Start Smart Sync', :onclick => "return confirm('This will compare the newest tables with the next most recent. The rows with different infromation will be sent to the DAM to overwirte all McDonalds Assets with matching keys in the Template Name. Are you sure you want to proceed?')")
+  .total-sync-container
+    = form_tag total_sync_lookup_tables_path
+      = submit_tag('Start Total Sync', :onclick => "return confirm('All lookup table infromation will be sent to the DAM to overwirte all McDonalds Assets with matching keys in the Template Name. Are you sure you want to proceed?')")
+
+
+
+  table.table
+    thead
+      tr
+        td Key Field Name
+        td Import Type
+        td Created
+        td Archived
+    tbody
+      - @lookup_tables.each do |table|
+        tr
+          td
+            a href="#{lookup_table_path(id: table.id)}"
+              =table.key_field_name
+          td =table.table_name
+          td =table.created_at.strftime('%H:%M %h %d, %Y')
+          td =table.archived

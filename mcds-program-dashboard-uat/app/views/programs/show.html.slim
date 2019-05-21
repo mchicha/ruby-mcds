@@ -1,0 +1,87 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+.container-fluid ng-app='McSource'
+  .container.program-details(ng-controller="AssetCtrl" ng-init="init(#{@program.id}, #{current_page?(:program)})")
+    .row
+      .col-xs-12.page-header
+        h1
+          | Program Details
+          .action-items.pull-right
+            a.btn(
+              data-toggle="modal"
+              data-target="#email-a-resource"
+              data-url="#{program_url(@program)}"
+            )
+              i.fa.fa-envelope
+              |  Email Link to Program
+            a.btn(
+              data-target="#audit-log"
+              data-toggle="modal"
+              type="button"
+            )
+              i.fa.fa-bars()
+              |  View Change Log (#{@program.audits.count})
+            - if can? :manage, @program and !current_user.read_only_or_leadership?
+              a.btn.btn-danger(href="#{edit_program_path(@program)}")
+                i.fa.fa-pencil-square-o
+                | Edit Program
+        .pull-left
+          = render partial: "shared/breadcrumbs"
+        .col-xs-12.program-status
+          h2() Program Status:
+          span.clearfix()
+            = @program.status.name if @program.status
+
+        div.program-show
+          .col-md-3.text-center.program-image
+            - if (image_url = @program.get_thumb_nail_image).present?
+              img.img-responsive(src="#{image_url}")
+            -else
+              img.img-responsive(src="http://placehold.it/225x225")
+          .col-md-5.general-attributes
+            h3.program-name() = @program.name
+            h5()
+              | Program Number (National Only): #{@program.number}
+            br /
+            h5()
+              | Result ID (Local Co-Op) From Jupiter: #{@program.report_id}
+
+            .program-date-ranges()
+              h4() Dates
+              div.dates
+                .program-delivery-method.date-list
+                  label() Delivery Method:
+                  div = @program.delivery_method.name if @program.delivery_method
+                = render partial: "program_dates_list"
+
+          .col-md-4
+            .program-geographies-list
+              fieldset
+                legend()
+                  | Geography
+                ul.show-list()
+                  - @program.geographies.each do |geography|
+                    li() #{geography.name}
+
+            .program-color-blocks-list
+              fieldset
+                legend()
+                  | Market Category
+                table#program-color-blocks-table.table.borderless.show-list()
+                  = render partial: "color_blocks/color_block_list", collection: @program.color_blocks, as: :color_block
+
+            .pos-block
+              fieldset
+                .form-group()
+                  legend()
+                    | POS #
+                  .show-list()
+                    / sanitized by a before_save hook
+                    = simple_format(@program.pos)
+
+      .col-xs-12
+        =render partial: "additional_program_details", locals: {edit: false}
+
+      .col-xs-12
+          =render partial: "shared/display_audits", locals: {audits: @program.audits}
+  =render partial: "email_resource"

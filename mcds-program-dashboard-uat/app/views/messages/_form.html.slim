@@ -1,0 +1,40 @@
+.row
+  = form_for(@message, html: {class: "messaging-form"}) do |f|
+    .select-message-type.col-md-4
+      .panel.panel-default
+        .panel-heading
+          h4.panel-title
+            i.fa.fa-envelope
+            | &nbsp; Send Message as an Email
+        .panel-body
+          = f.hidden_field(:delivery_type, value: "email")
+          = render partial: "email_message_form", locals: {f: f}
+
+      - if params[:action] == "edit" && !@resources.blank?
+        .resources
+          h4 Resources
+          ul
+            = render partial: "resources", collection: @resources, as: :resource
+
+    .message-details.col-md-8
+      .form-group
+        = f.label :subject, class: "col-sm-2 control-label"
+        .col-sm-10
+          = f.text_field :subject, class: "form-control subject-form"
+      .form-group
+        = f.label :content, "Message", class: "col-sm-2 control-label"
+        .col-sm-10
+          = f.cktext_area :content, class: "form-control", id: "message-content-wysiwyg"
+      .form-group
+        = f.fields_for(:resources, @message.resources.build) do |resource_field|
+          = resource_field.label(:file, raw("&nbsp;"), class: "col-sm-2 control-label")
+          .col-sm-10
+            = resource_field.file_field(:file, class: "form-control attach-file")
+            i.fa.fa-paperclip
+      .form-group.pull-right.cancel-send
+        = link_to((messages_path), class: "btn btn-primary")
+          i.fa.fa-times
+          |  Cancel
+        button.btn.btn-primary#submit-message-btn type="submit"
+          i.fa.fa-paper-plane
+          |  Send/Schedule Email

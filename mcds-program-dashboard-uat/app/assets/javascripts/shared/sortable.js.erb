@@ -1,0 +1,31 @@
+'use strict';
+
+angular
+  .module('TKsorter', [])
+  .directive('sortable', [ function () {
+    return {
+      restrict:    'A',
+      replace:     true,
+      transclude:  'true',
+      templateUrl: "<%= asset_path('shared/templates/sortable.html') %>",
+      scope: {
+        name: '@',
+        col:  '=',
+        dir:  '=',
+        fn:   '&'
+      },
+      link: function postLink(scope, element, attrs) {
+        scope.changeSort =  function(name){
+          if (name == scope.col){
+            scope.dir = !scope.dir;
+          } else {
+            scope.col = name;
+            scope.dir = false;
+          }
+          if(angular.isFunction(scope.fn())){
+            scope.fn()(true);
+          }
+        }
+      }
+    };
+  }]);

@@ -1,0 +1,40 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('schematicTestBool', [
+    'SchematicSvc',
+    function(SchematicSvc){
+      return{
+        require: 'ngModel',
+        restrict: 'E',
+        replace: true,
+        template: '<div class="well"><input type="checkbox" name="schematicTest" ng-model="val" ng-true-value="\'test\'" ng-false-value="\'standard\'" ng-change="saveVal()">Test Schematic</input></div>',
+        link: function(scope, element, attrs, ngModel){
+          scope.val = 0;
+
+          if(scope.new.schematic.test){
+            scope.val = 'test';
+          }
+
+          scope.saveVal = function(){
+            ngModel.$setViewValue(scope.val);
+          }
+
+          scope.isTrue = function(){
+            return true;
+          }
+
+          scope.isFalse = function(){
+            return false;
+          }
+
+          scope.$watch('test', function(newVal, oldVal){
+            if(newVal != oldVal){
+              scope.val = newVal;
+            }
+          })
+
+        }
+      };
+    }
+  ])

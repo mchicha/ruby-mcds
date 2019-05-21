@@ -1,0 +1,4 @@
+$("#color-block-<%= @color_block.id %>").fadeOut('slow');
+$("td#remove-color-to-program-<%= @color_block.id %>").replaceWith(
+  "<td id='add-color-to-program-<%= @color_block.id %>'><a class='btn btn-primary' data-method='post' data-remote='true' href='/programs/<%= @program.id %>/add_color_blocks?color_block_id=<%= @color_block.id %>' rel='nofollow'>Add</a></td>"
+);

@@ -1,0 +1,17 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('coopDropDown', [
+    'SchematicSvc',
+    '$filter',
+    function(SchematicSvc, $filter){
+      return{
+        require :'ngModel',
+        restrict: 'E',
+        scope: {
+          ids: '='
+        },
+        templateUrl: "/api/v1/geographies/drop_down.html"
+      };
+    }
+  ]);

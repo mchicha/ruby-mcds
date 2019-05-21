@@ -1,0 +1,63 @@
+'use strict';
+
+angular
+  .module('confirmable', [])
+  .directive('confirmable', function () {
+    return {
+      restrict: 'A',
+      scope: {
+        text: '@',
+        success: '&',
+        err: '&'
+      },
+      controller: 'ConfirmableCtrl as conCtrl',
+      bindToController: true,
+      link: function(scope, element, attrs, ngDisabled) {
+        element.on('click', function(){
+          if(!this.hasAttribute('disabled')){
+            scope.conCtrl.click();
+          }
+        });
+      }
+    }
+  })
+  .controller('ConfirmBoxCtrl', [
+    '$modalInstance',
+    'text',
+    function ($modalInstance, text) {
+    var con = this;
+    con.text = text;
+
+    con.choice = function (execute) {
+      $modalInstance.close(execute);
+    };
+
+  }])
+  .controller('ConfirmableCtrl', ['$modal', function($modal){
+    var con = this;
+
+    con.click = function(){
+      var confirm = $modal.open({
+        templateUrl:"<%= asset_path('schematics/templates/directives/confirmable.html') %>",
+        controller: 'ConfirmBoxCtrl as con',
+        size: (con.size || 'sm'),
+        resolve: {
+          text: function(){ return con.text }
+        }
+      });
+
+      confirm.result.then(function (execute) {
+        if(execute){
+          if (angular.isFunction(con.success())){
+            con.success()();
+          }
+        } else {
+          if (angular.isFunction(con.err())){
+            con.err()();
+          }
+        }
+      });
+    }
+
+  }]);
+

@@ -1,0 +1,21 @@
+- @program.date_ranges.each do |date_range|
+  = f.fields_for(:date_ranges, date_range) do |ff|
+    .row.date-list(class="#{date_range.date_type.get_class_name}")
+      label.col-xs-4()
+        = date_type_name(@date_types.detect{|date_type|  date_type.id == date_range.date_type_id})
+        -if date_range.date_type.required?
+          span.required() *
+      .form-group.col-xs-4.input-group
+        = ff.hidden_field(:date_type_id, value: date_range.date_type_id)
+        = ff.text_field(:start_date,
+                          value: program_date_range_start(date_range),
+                          size: "10", class: "form-date-input form-control", placeholder: "Start",
+                          required: date_range.date_type.required?, data: { name: date_range.date_type.name })
+        span.fa.fa-calendar.input-group-addon#basic-addon2
+      - if date_range.date_type.end_date_required?
+        .form-group.col-xs-4.input-group
+            = ff.text_field(:end_date,
+                              value: program_date_range_end(date_range),
+                              size: "10", class: "form-date-input form-control", placeholder: "End",
+                              required: date_range.date_type.required?, data: { name: date_range.date_type.name })
+            span.fa.fa-calendar.input-group-addon#basic-addon2

@@ -1,0 +1,10 @@
+$('#program-list').html(
+  "<%= escape_javascript(render partial: 'program_list', collection: @programs.uniq, as: :program) %>"
+);
+$("#apply-filter-message").hide();
+$("table").trigger("update");
+
+var resultLabel = "result"
+if(<%= @programs.uniq.size %> != 1){resultLabel += 's'}
+
+$("#project-count").html(" (<%= @programs.uniq.size %> " + resultLabel + ")");

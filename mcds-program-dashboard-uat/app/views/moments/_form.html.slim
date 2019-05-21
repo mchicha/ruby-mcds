@@ -1,0 +1,73 @@
+-content_for :javascript do
+  =javascript_include_tag 'alerts'
+  javascript:
+    var currentClass = 'moment'
+
+
+= form_for(@moment) do |f|
+  fieldset
+    .form-group.row
+      .col-md-11
+        = f.label :title
+        span.required() *
+      .col-md-4
+        = f.text_field :title, class: 'form-control', required: true
+
+  fieldset
+    .form-group.row
+      .col-md-11
+        = f.label :momentable_type, 'Calendar Event Type'
+      .col-md-4
+        = f.select(:momentable_type, options_for_select([["General", nil], "Program", "Schematic"], @moment.momentable_type), {}, {class: "form-control", id: 'alertable_type_select'})
+
+  fieldset.alert_for_container style='display: none'
+    .form-group.row
+      .col-md-11
+        = f.label :momentable_id, 'Calendar Event For'
+      .col-md-4
+        = f.select(:momentable_id, options_for_select(@programs.map{|program| [program.name, program.id]}, @moment.momentable_id), {}, {style: 'display: none', class: "form-control alertable_id_select", name: 'program_id', id: 'program_select'})
+        = f.select(:momentable_id, options_for_select(@schematics.map{|schematic| [schematic.name, schematic.id]}, @moment.momentable_id), {}, {style: 'display: none', class: "form-control alertable_id_select", name: 'schematic_id', id: 'schematic_select'})
+
+  fieldset
+    .form-group.row
+      .col-md-4
+        = f.label :post_date
+        span.required() *
+        = f.text_field(:post_date, value: @moment.post_date.try(:strftime, '%m/%d/%Y'), class: "form-date-input form-control", required: true)
+
+  fieldset
+    .form-group.row
+      .col-md-4
+        = f.label :remove_date
+        span.required() *
+        = f.text_field(:remove_date, value: @moment.remove_date.try(:strftime, '%m/%d/%Y'), class: "form-date-input form-control", required: true)
+
+  fieldset
+    .form-group
+      div
+        = f.label(:archived)
+      = f.label(:archived, "True")
+      = f.radio_button(:archived, true)
+      = f.label(:archived, "False")
+      = f.radio_button(:archived, false)
+
+  - if @selected_coop.national?
+    fieldset
+      .form-group
+        div
+          = f.label(:show_all)
+        = f.label(:show_all, "True")
+        = f.radio_button(:show_all, true)
+        = f.label(:show_all, "False")
+        = f.radio_button(:show_all, false)
+
+  fieldset
+    .form-group.row
+      .col-lg-11
+        = f.label :body
+      .col-lg-4
+        = f.text_area :body, class: 'form-control'
+
+  fieldset
+    .form-group
+      =f.submit class: 'btn btn-info'

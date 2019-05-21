@@ -1,0 +1,86 @@
+
+'use strict';
+
+angular.module('schematicApp')
+  .directive('datePicker', [
+    '$filter',
+    function($filter) {
+    return {
+      restrict: 'A',
+      replace:  true,
+      scope: {
+        alignRight: '=',
+        required: '='
+      },
+      templateUrl: "<%= asset_path('shared/templates/directives/datePicker.html') %>",
+      require: 'ngModel',
+      compile: function(){
+        return {
+          post: function(scope, element, attrs, model){
+            model.$formatters.shift();
+            scope.opened = false;
+
+            scope.today = function() {
+              // not sure this is used
+              scope.date = new Date();
+              return scope.date;
+            };
+
+            scope.clear = function () {
+              // not sure this is used
+              scope.date = null;
+              return scope.date
+            };
+
+            // Disable weekend selection
+            scope.disabled = function(date, mode) {
+              return false;
+            };
+
+            scope.toggleMin = function() {
+              // scope.minDate = scope.minDate ? null : new Date();
+            };
+
+            scope.open = function($event) {
+              $event.preventDefault();
+              $event.stopPropagation();
+
+              scope.opened = !scope.opened;
+            };
+
+
+            scope.$watch(function () {
+                return model.$modelValue;
+              }, function(newValue, oldValue) {
+                if(angular.isDefined(newValue)){
+                  scope.date = $filter('date')(newValue, "MM/dd/yyyy", "UTC");
+              }
+            });
+
+            if(scope.alignRight){
+              scope.$watch(function () {
+                return element.find('ul').length > 0
+              }, function() {
+                if(element.find('ul').length > 0){
+                  element.find('ul').attr('style', 'display: block; top: 34px; right: 0px')
+                }
+              });
+            }
+
+
+            scope.$watch('date', function(newValue, oldValue) {
+              // PART OF POTENTIAL ANSWER FROM WIPEING DATE FIELD
+              // ISSUE IS WHEN YOU PARSE NULL FROM SERVER IT SENDS YOU BACK TO 1969 DUDE
+              if(angular.isDate(newValue) && newValue != oldValue){
+                model.$setViewValue(new Date(scope.date));
+              }else if (!newValue && !!oldValue){
+                // Only fire off when previous was a value, AKA when cleared
+                // Must add null without the date parse for above reason
+                model.$setViewValue(null);
+              }
+            });
+          }
+        }
+      }
+    };
+ }]);

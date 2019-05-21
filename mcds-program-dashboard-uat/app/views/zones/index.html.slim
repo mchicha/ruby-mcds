@@ -1,0 +1,22 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+ .row.col-md-4
+    table.table.text-center.table-striped
+      thead
+        tr
+          th
+            | Name
+          th
+            | Sort Order
+      tbody
+        - @zones.each do |zone|
+          tr
+            td
+              a href="#{edit_zone_path(zone)}"
+                = zone.name
+            td
+              = zone.sort_order
+    .pagination
+      = paginate @zones

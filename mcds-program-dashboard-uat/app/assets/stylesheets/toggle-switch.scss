@@ -1,0 +1,125 @@
+$toggle-height: 35px;
+$toggle-width: 75px;
+$switch-size: 35px;
+$anim-bounce: cubic-bezier(0.34,1.61,0.7,1);
+$anim-speed: 250ms;
+$border-color: #ddd;
+
+@import "bourbon";
+
+.zone-toggle {
+  position: relative;
+  display: inline-block;
+  height: $toggle-height;
+  cursor: pointer;
+  vertical-align: middle;
+
+  > input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+    visibility: hidden;
+  }
+
+  .zone-toggle-body {
+    width: $toggle-width;
+    height: $toggle-height;
+    background: #fff;
+    border: 1px solid $border-color;
+    display: inline-block;
+    position: relative;
+    border-radius: em(50px);
+    border-radius: 3.125em;
+  }
+
+  .zone-toggle-switch {
+    width: $toggle-height;
+    height: $toggle-height;
+    display: inline-block;
+    background-color: #fff;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    border-radius: 50%;
+    border: 1px solid darken($border-color, 5%);
+    @include box-shadow(0 2px 2px rgba(0,0,0,0.15));
+    @include transition(left $anim-bounce $anim-speed, transform $anim-bounce $anim-speed);
+    z-index: 30;
+  }
+
+  .zone-toggle-track {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    border-radius: em(50px);
+    border-radius: 3.125em;
+    background-color: #cdcdcd;
+    z-index: 29;
+  }
+
+  .zone-toggle-bgd {
+    position: absolute;
+    right: -10px;
+    top: 0;
+    bottom: 0;
+    width: $toggle-width - ($switch-size / 2) + 10;
+    @include transition(left $anim-bounce $anim-speed, right $anim-bounce $anim-speed);
+    background: #337ab7;
+    text-align: left;
+    z-index: 29;
+
+    &:before {
+      content: "\f023";
+      font-family: FontAwesome;
+      color: #fff;
+      font-size: 24px;
+      margin-left: 26px;
+    }
+  }
+
+  .zone-toggle-bgd_neg {
+    right: auto;
+    left: -($toggle-width - ($switch-size / 2));
+    background: #fff;
+    z-index: 29;
+
+    &:before {
+      content: "\f09c";
+      font-family: FontAwesome;
+      color: #fff;
+      font-size: 24px;
+      margin-left: 12px;
+      float: left;
+    }
+  }
+
+  &:hover {
+    .zone-toggle-switch {
+      border-color: darken($border-color, 15%);
+      @include transform(scale(1.06));
+    }
+  }
+  &:active {
+    .zone-toggle-switch {
+      @include transform(scale(0.95));
+    }
+  }
+
+  &.checked .zone-toggle-body {
+    > .zone-toggle-switch {
+      left: $toggle-width - $switch-size;
+    }
+
+    .zone-toggle-bgd {
+      right: -($toggle-width - ($switch-size / 2));
+
+      &.zone-toggle-bgd_neg {
+        right: auto;
+        left: 10px;
+      }
+    }
+  }
+} //end zone-toggle

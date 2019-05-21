@@ -1,0 +1,8 @@
+- @root_geographies.each do |root_geography|
+  li.root-level-geographies()
+    - if root_geography.is_a_co_op?
+      = check_box_tag("geography_ids[]", root_geography.id, @agency.geographies.include?(root_geography), class: "co-op-checkbox", onclick: "addNewGeographies(this)", "data-geography-name" => root_geography.name)
+      = root_geography.name
+    -else
+      =link_to(root_geography.name, geography_children_path(root_geography, agency_id: @agency.id), remote: true)
+    ul(id="geography-#{root_geography.id}-children")

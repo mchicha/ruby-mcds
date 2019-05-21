@@ -1,0 +1,50 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .page-header
+    h1 Program List
+    = render partial: "shared/breadcrumbs"
+
+  = form_tag(programs_filter_programs_path, {remote: true, id: "filter-program-list-form"}) do
+
+    .project-list-filters
+      = render partial: "program_filter_options"
+    .row
+      / This needs to stay inside the form. The jQuery function is relient on
+      / there finding a parent form based on the element
+      .filters-list.col-xs-12.text-center#filter-buttons
+        #apply-filter-message.col-xs-9
+          p.text-center
+          | Please click the "Apply Filters" button to narrow the projects listed below to match
+          |  the filter criteria you have entered above.
+
+  .row
+    .col-xs-4.projects-table
+      h3
+        | Programs
+        span#project-count
+          = " (#{@programs.size} #{result_label(@programs.size)})"
+        - if can? :create, GeographyProgram.new(geography_id: @selected_geography_ids.first)
+          .action-items.pull-right.new-program
+            =link_to new_program_path, class: "btn btn-primary" do
+              i.fa.fa-plus
+              |  New Program
+
+    .project-list.row
+      fieldset.col-xs-12
+        / legend() Projects
+        table.table.table-striped.tablesorter#programs-list
+          thead()
+            tr()
+              th() Project Visual
+              th() Created By
+              th() Program Name
+              th() P.O.P. Install Date
+              th() Last Modified On
+              th() Geography
+              th() Status
+              - if can? :create, GeographyProgram.new(geography_id: @selected_geography_ids.first)
+                th() Actions
+          tbody#program-list
+            = render partial: "program_list", collection: @programs, as: :program

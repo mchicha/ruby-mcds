@@ -1,0 +1,20 @@
+
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+
+
+.container
+  .page-header
+    h1 = alert_title(@alert)
+    = render partial: "shared/breadcrumbs"
+  h2 = @alert.title
+
+  .email-show-section
+    .message-top-info
+      - if @alert.alertable_type.present?
+        = alert_type(@alert)
+        = ": "
+        = alert_link(@alert)
+    .content-section
+      .message-content
+        = @alert.body

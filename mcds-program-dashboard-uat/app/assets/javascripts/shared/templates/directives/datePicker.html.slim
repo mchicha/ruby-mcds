@@ -1,0 +1,6 @@
+p.input-group
+  input#filter-date.form-control datepicker-popup="MM/dd/yyyy" ng-model="date" date-disabled="disabled(date)" is-open="opened" close-text="Close" placeholder="MM/DD/YYYY" show-weeks="showWeeks" ng-required='required' ng-click="open($event)"
+
+  span.input-group-btn
+    button.btn.btn-cal ng-click="open($event)" type="button"
+      i.fa.fa-calendar

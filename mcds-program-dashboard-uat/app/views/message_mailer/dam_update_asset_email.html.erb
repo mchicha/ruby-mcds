@@ -1,0 +1,16 @@
+<h3>Dam Asset Update Worker did not get a successfull response from the Dam.</h3>
+<br />
+<br />
+<div><b>Environment:</b> <u><%=Rails.env%></u></div>
+<br />
+<br />
+<div><b>The asset id in question was:</b> <u><%=@processed_asset['id']}%></u></div>
+<br />
+<br />
+<div><b>The new metadata:</b> <%=@processed_asset['metadata']%></div>
+<br />
+<br />
+<div><b>The full request sent was:</b> <%={body: {'asset' => @processed_asset}, headers: {'Authorization' => ActionController::HttpAuthentication::Token.encode_credentials(@auth_key)}}%></div>
+<br />
+<br />
+<div><b>The response from the DAM was:</b> <%=@response%></div>

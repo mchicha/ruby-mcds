@@ -1,0 +1,155 @@
+// Place all the styles related to the contact_lists controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+table.all-users-table#contact-list-table {
+  width:100%;
+  margin-top: 0px;
+  background:#fff;
+  .btn{
+    margin:0;
+  }
+  tr:hover{
+    background-color:#f5f5f5;
+  }
+}
+
+
+a.view-contact-modal {
+  cursor:pointer;
+}
+
+.table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dddddd;
+  padding:5px;
+  text-align: center;
+}
+
+table.tablesorter tbody td {
+  color: #3D3D3D;
+  // background-color:#fff;
+  padding: 5px;
+  // vertical-align: top;
+  text-align: center;
+}
+
+.add-to-group {
+  .instructions {
+    padding: 2% 2% 0 2%;
+  }
+}
+
+.delete-button{
+  padding:0px;
+  margin:0px;
+  button{
+    border-radius:2em;
+    margin:0px;
+    background-color:#da2934;
+  }
+}
+
+.contact-options.nav-pills{
+  padding-left:0px;
+  .global-address-book {
+    h3.contact-list-nav-links {
+      cursor: pointer;
+      color: #000;
+    }
+
+    h3.active-link {
+      text-decoration: underline;
+      cursor: pointer;
+      color: #337ab7;
+      border-radius: 5px;
+      line-height: 1;
+    }
+  }
+}
+
+.number-displayed{padding:.5em 0;}
+
+.filter-buttons{
+  border-radius:5px;
+  border:1px solid red;
+}
+
+
+.search-users{
+  .text-right{
+  }
+  .input-group-btn:last-child > .btn{
+    margin-right:0;
+  }
+  .filter-button#add-to-new{
+    padding:0px 5px 0px 0px;
+    button{
+      margin:0px;
+      border-radius:2em;
+      background-color:#74a3ca;
+      border-color: #2e6da4;
+    }
+    .btn[disabled]{
+      background-color:#a8a8a8;
+    }
+  }
+  .filter-button#add-to-existing{
+    padding:0px 0px 0px 5px;
+    button{
+      margin:0px;
+      border-radius:2em;
+      background-color:#74a3ca;
+      border-color: #2e6da4;
+    }
+    .btn[disabled]{
+      background-color:#a8a8a8;
+    }
+  }
+  #contact-list-search{
+    width:100%;
+  }
+
+  .filter-button#send-message-to-selected{
+    padding:0px 0px 0px 0px;
+    button{
+      margin:0px;
+      border-radius:2em;
+      background-color:#74a3ca;
+      border-color: #2e6da4;
+    }
+    .btn[disabled]{
+      background-color:#a8a8a8;
+    }
+  }
+
+  .filter-button#remove-selected{
+    padding:0px 0px 0px 5px;
+    button{
+      margin:0px;
+      border-radius:2em;
+      background-color:#74a3ca;
+      border-color: #2e6da4;
+    }
+    .btn[disabled]{
+      background-color:#a8a8a8;
+    }
+  }
+}
+
+.users-lists {
+  ul{
+    padding-left:2.3em;
+    .active{
+      color:#337ab7;
+      text-decoration:underline;
+    }
+  }
+  li {
+    list-style:inherit;
+
+  }
+  a{
+    color:#000;
+  }
+}

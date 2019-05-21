@@ -1,0 +1,11 @@
+p()
+  span(id="agency-#{agency.id}-co-op-#{co_op.id}")
+    = co_op.name
+    a.remove-co-op-from-agency-link(
+      data-agency-id="#{agency.id}"
+      data-co-op-id="#{co_op.id}"
+      data-agency-name="#{agency.name}"
+      data-co-op-name="#{co_op.name}"
+      onclick="confirmAgencyCoOp(this)"
+    )
+      |  Remove

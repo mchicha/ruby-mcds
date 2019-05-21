@@ -1,0 +1,26 @@
+development:
+  # THIS DOESNT WORK IN WINDOWS SO PLEASE DONT CHANGE IT BACK!
+  # host: localhost:3009
+  # port: 3009
+  host: digital-asset-manager.dev
+  client_token: a7dd4aae7b6e4ea4bb3ab9924b820417
+  inbound_token: ed4eca8389fc4c459e9ec63df05895a9
+  uri_class: URI::HTTP
+
+test:
+  host: digital-asset-manager.dev
+  client_token: a7dd4aae7b6e4ea4bb3ab9924b820417
+  inbound_token: ed4eca8389fc4c459e9ec63df05895a9
+  uri_class: URI::HTTP
+
+staging:
+  host: digi.pixalized.com
+  client_token: a7dd4aae7b6e4ea4bb3ab9924b820417
+  inbound_token: ed4eca8389fc4c459e9ec63df05895a9
+  uri_class: URI::HTTP
+
+production:
+  host: dam.tkmltechnology.com.
+  client_token: a7dd4aae7b6e4ea4bb3ab9924b820417
+  inbound_token: ed4eca8389fc4c459e9ec63df05895a9
+  uri_class: URI::HTTPS

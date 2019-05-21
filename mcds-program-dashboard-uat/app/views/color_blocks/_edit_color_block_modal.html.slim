@@ -1,0 +1,29 @@
+.modal.fade.row.row-centered aria-hidden="true" aria-labelledby="NewColorBlock" id=("EditColorBlockModal-#{color_block.id}") role="dialog" tabindex="-1"
+  .col-md-6.col-centered
+    .container-fluid
+      .modal-dialog
+        .modal-content
+          = form_for color_block do |f|
+            .modal-header.text-center
+              button.close data-dismiss="modal" type="button"
+                span aria-hidden="true"  &times;
+                span.sr-only Close
+              h4#myModalLabel.modal-title Edit Market Category: #{color_block.name}
+            .modal-body.col-xs-12
+              .form-group.col-xs-4
+                = f.label :name
+                br/
+                = f.text_field :name, :class => "form-control"
+              .form-group.col-xs-4
+                = f.label :start_hex
+                br/
+                input#start.form-control.color-select name="start_hex_fake" value=("#{color_block.start_hex}") /
+                = f.hidden_field :start_hex, :id => "hidden_start_hex"
+              .form-group.col-xs-4
+                = f.label :end_hex
+                br/
+                input#end.form-control.color-select name="end_hex_fake" value=("#{color_block.end_hex}") /
+                = f.hidden_field :end_hex, :id => "hidden_end_hex"
+            .modal-footer
+              button.btn.btn-default data-dismiss="modal" type="button"  Close
+              = f.submit "Edit Market Category", :id => "submit-button", :class => "btn btn-primary"

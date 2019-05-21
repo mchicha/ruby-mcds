@@ -1,0 +1,23 @@
+$("#drawer-content").html("<%= escape_javascript(render partial: 'manage_users', locals: { agency: @magency } ) %>");
+
+$("#search-user-input").autocomplete({
+  source: $('#search-user-input').data('autocomplete-source'),
+  select: function (event, ui) {
+    event.preventDefault();
+    $("#agency_user_user_id").val(ui.item.value);
+    $("#search-user-input").val(ui.item.label);
+  },
+  focus: function(event, ui) {
+    event.preventDefault();
+    $("#search-user-input").val(ui.item.label);
+  }
+});
+
+$("#search-user-input").keyup(function() {
+  val = $(this).val();
+  if (val == "") {
+    $("#add-user-to-agency-btn").prop("disabled", true);
+  } else {
+    $("#add-user-to-agency-btn").prop("disabled", false);
+  }
+});

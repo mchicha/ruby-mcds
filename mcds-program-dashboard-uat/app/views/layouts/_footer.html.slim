@@ -1,0 +1,15 @@
+.container-fluid.hidden-print
+  .container
+    .row
+      .col-xs-12.text-center
+        .text-center
+          = link_to "Terms and Conditions", "#"
+          | |
+          = link_to "Privacy Policy", "#"
+          | |
+          = link_to "Help/FAQ", "#"
+          br
+          | For assistance please email:
+          = mail_to "mcsource@ims-sww.com", "mcsource@ims-sww.com", class: 'help-email'
+          br
+          = "Copyright © #{Date.current.year} McDonald's"

@@ -1,0 +1,137 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+  javascript:
+    userRole = "#{current_user.role}"
+    $(document).on('ready', function(){
+      setWarningMessage(#{@program.id})
+    })
+
+.container-fluid ng-app='McSource'
+  .container(ng-controller="AssetCtrl" ng-init="init(#{@program.id}, #{current_page?(:program)})")
+    = form_for(@program) do |f|
+      .row
+        .col-xs-12.page-header
+          h1
+            | Edit Program
+            .action-items.pull-right
+              .program-action-items.edit-program
+                .action-items.pull-right
+                  a.btn(
+                    data-toggle="modal"
+                    data-target="#email-a-resource"
+                    data-url="#{program_url(@program)}"
+                  )
+                    i.fa.fa-envelope
+                    |  Email Link to Program
+                  a.btn(
+                    data-target="#audit-log"
+                    data-toggle="modal"
+                    type="button"
+                  )
+                    i.fa.fa-bars()
+                    |  View Change Log (#{@program.audits.count})
+                  =link_to(programs_path, class: 'btn') do
+                    i.fa.fa-arrow-up
+                    | Return to Program List
+                  = f.submit "Save Changes", class: "btn btn-primary"
+          .pull-left
+            = render partial: "shared/breadcrumbs"
+      .row
+        .form-group.program-status()
+          h2() Program Status:
+          = f.collection_select(:status_id, Status.order(:sort_order), :id, :name)
+      .row.general-inputs
+        .program-action-items.form-group
+          .action-items.pull-left
+
+        .col-md-3.text-center.program-image
+          - if (image_url = @program.get_thumb_nail_image).present?
+            img.img-responsive(src="#{image_url}")
+          -else
+            img(src="http://placehold.it/225x225")
+          / =image_tag("MCD12960_Sirloin_Group_CC.p1.pdf.r18.jpg", class: "program-placeholer-image")
+
+        .col-md-5
+          .form-group()
+            label.program-name() Program Name:
+            span.required() *
+            = f.text_field :name, class: "form-control"
+          .form-group()
+            label() Program Number (National Only):
+            = f.text_field :number, class: "form-control"
+          .form-group()
+            label() Result ID (Local Co-Op) From Jupiter:
+            span.required () *
+            = f.text_field :report_id, placeholder: "XXXX", class: "form-control"
+
+          .row.form-group()
+            label.delivery-method.col-xs-4()
+              | Delivery Method:
+              span.required() *
+            span.form-group.col-xs-6()
+              = f.collection_select(:delivery_method_id, DeliveryMethod.all, :id, :name, {include_blank: "Delivery Method"}, {class: "mid-form-program-dropdown", required: true})
+          .row.form-group()
+            label.delivery-method.col-xs-4()
+              | Show on Calendar:
+              span.required() *
+            span.form-group.col-xs-6()
+              = f.select(:calendar_display, options_for_select(options_for_calendar_select(@selected_coop), @program.calendar_display), {prompt: 'false'}, {class: "mid-form-program-dropdown", required: true})
+
+          .program-date-ranges
+            = render partial: "program_dates", locals: {f: f}
+
+        .col-md-4
+          .col-md-12.program-geographies-list
+            fieldset
+              legend()
+                | Geography
+                span.required() *
+                a.add-item-link.pull-right(
+                  data-target="#assign-program-geographies"
+                  data-toggle="modal"
+                  type="button"
+                )
+                  | (+)
+              ul.assigned-geographies-list()
+                - @program.geographies.each do |geography|
+                  li(id="new_program_geographies_#{geography.id}")
+                    = geography.name
+
+          .col-md-12.program-color-blocks-list
+            fieldset
+              legend()
+                | Market Category
+                a.add-item-link.pull-right(
+                  data-target="#assign-program-color-blocks"
+                  data-toggle="modal"
+                  type="button"
+                )
+                  | (+)
+              table#program-color-blocks-table.table.borderless.show-list()
+                = render partial: "color_blocks/color_block_list", collection: @program.color_blocks, as: :color_block
+          .col-md-12
+            fieldset
+              .form-group()
+                label.program-name() POS #:
+                = f.text_area :pos, class: "form-control pos-text-area"
+          - if current_user.admin_or_super_admin?
+            .col-md-12
+              fieldset
+                label() Image URL
+                = f.text_field :thumb_image_url, class: "form-control"
+
+      .row
+        .col-xs-12
+          .action-items.pull-right
+            .program-action-items.edit-program
+              = f.submit "Save Changes", class: "btn btn-primary"
+        =render partial: "additional_program_details", locals: {f: f, edit: true}
+
+      .container
+        =render partial: "assign_new_geography_modal", locals: {obj: @program}
+        =render partial: "assign_new_color_block_modal", locals: {obj: @program}
+        =render partial: "shared/display_audits", locals: {audits: @program.audits}
+
+    =render partial: "upload_a_resource"
+    =render partial: "email_resource"
+    =render partial: "add_single_element_modal"

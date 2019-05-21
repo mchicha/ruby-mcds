@@ -1,0 +1,15 @@
+- content_for :javascript do
+  = javascript_include_tag URI.join(root_url, asset_path(:vendor))
+  javascript:
+    angular.module('config', []).
+      constant('current_user', #{{current_user.to_json(include: [:geographies, :selected_geography])}}).
+      constant('domain', "#{{"#{request.protocol}#{request.host_with_port}"}}").
+      constant('dam_host', '#{{DAM_CONFIG[:uri_class].build({host: DAM_CONFIG[:host], port: DAM_CONFIG[:port]}).to_s}}').
+      constant('dam_client_token', '#{{DAM_CONFIG[:client_token]}}');
+
+  = javascript_include_tag URI.join(root_url, asset_path(:print))
+
+base href="/schematics/print/"
+
+.schematics ng-app="schematicApp"
+  ui-view

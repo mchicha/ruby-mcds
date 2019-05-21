@@ -1,0 +1,2 @@
+module GeographiesSchematicsHelper
+end

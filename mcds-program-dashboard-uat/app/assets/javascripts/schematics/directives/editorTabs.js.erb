@@ -1,0 +1,22 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("editorTabs", [ function() {
+    return {
+      restrict:    "E",
+      templateUrl: "<%= asset_path('schematics/templates/directives/editorTabs.html') %>",
+      controller: function() {
+        var edTab = this;
+        edTab.tab = 1;
+
+        edTab.isSet = function(checkTab) {
+          return edTab.tab === checkTab;
+        };
+
+        edTab.setTab = function(activeTab) {
+          edTab.tab = activeTab;
+        };
+      },
+      controllerAs: "edTab"
+    };
+  }]);

@@ -1,0 +1,5 @@
+= link_to calendars_path, :class => "btn btn-default btn-sm", title: 'Grid View', 'data-toggle' => 'tooltip' do
+  i.glyphicon.glyphicon-th
+
+= link_to events_show_calendars_path, :remote => true, :format => "js", :class => "list_view btn btn-default btn-sm", title: 'List View', 'data-toggle' => 'tooltip' do
+  i.glyphicon.glyphicon-align-justify

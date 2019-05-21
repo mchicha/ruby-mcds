@@ -1,0 +1,15 @@
+= javascript_include_tag "message_drawer"
+
+- if @message.send_date.present?
+  -content_for :javascript do
+    javascript:
+      $(document).ready(function() {
+        $("#headingTwo h4 label").click();
+        $("#send-at-later-date").show();
+      });
+
+.container.message-drawer-wrapper
+  #message
+    fieldset
+      h3() Edit a message
+      = render partial: "form", locals: { message: @message }

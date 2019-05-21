@@ -1,0 +1,7 @@
+<% if @agency.save %>
+  $(".new-agency-error-messages").hide();
+  window.location = "/manage-agencies"
+<% else %>
+  $(".new-agency-error-messages").show();
+  $(".new-agency-error-messages").html("<%= escape_javascript(@agency.errors.full_messages.join(", ")) %>")
+<% end %>

@@ -1,0 +1,28 @@
+# Add configuration values here, as shown below.
+
+default: &default
+  # Uncomment all S3 variables including S3_BUCKET_NAME to leverage S3
+  # S3_ACCESS_KEY_ID: "AWS ACCESS KEY ID"
+  # S3_SECRET_ACCESS_KEY: "AWS SECRET ACCESS KEY"
+  # S3_REGION: "AWS REGION NAME"
+
+development:
+  <<: *default
+
+  APPLICATION_HOST: mcds-program-dashboard.dev
+  HOST: mcds-program-dashboard.dev
+  COOKIE_JAR: L1hTbEUrak55Y054cFJaUnRCOHVWbkZBMkthNUY3dnZNd0xPQ0lkNXg5dDJPQ0pGeldKUVJlUnhLSzA3NVFITWY2Q1FZQmYvemRkMU1BZFZWbEdia0NrTloySUp5U0lmSDFKdm1MeWpkeWFtZHV6cUZIc2JZQUlFZEM2THFPaFY5V0VjZ1dFRkZwRC82ck12V0o3Z3c1M2ovMkE4N081bHY4NTZ2NTdqYlVvPS0tU2h3Wm12VFJyNnFaR2ZYclBjdGF3Zz09--139b695839c73cf4613bd0def4a1a53c3144630e
+  # S3_BUCKET_NAME: mcsourceonline-development
+  WKHTML_ACCESS_TOKEN: 345ce9b4d2f53a154935ef1dc16774a40ab9f490c05c75594b00498737690d4bd689f44edc226d5ae43bc49717801783dbae8d73c365bdd6f4eb60f4d5924c10
+
+staging:
+  <<: *default
+  S3_BUCKET_NAME: mcsourceonline-development
+  APPLICATION_HOST: staging.mcsourceonline.com/
+  HOST: staging.mcsourceonline.com
+
+production:
+  <<: *default
+  S3_BUCKET_NAME: mcsourceonline-development
+  APPLICATION_HOST: production.mcsourceonline.com/
+  HOST: production.mcsourceonline.com

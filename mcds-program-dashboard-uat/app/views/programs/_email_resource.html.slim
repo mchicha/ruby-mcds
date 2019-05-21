@@ -1,0 +1,46 @@
+/! Modal
+#email-a-resource.modal.fade(aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1")
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        h3.modal-title() Email a Resource
+      =form_tag(messages_path, method: :post) do |f|
+        .modal-body
+          #email-resource-form.container
+            .form-group
+              label.control-label()
+              span.required() *
+                | Find Contacts:
+              = text_field_tag("message[user_email]", "", data: {autocomplete_source: api_v1_user_search_path}, id: "find-recipient", class: "form-control")
+              .users-selected()
+
+            .form-group
+              label.control-label()
+              span.required() *
+                | Subject:
+              = text_field_tag("message[subject]", "", class: "form-control")
+
+            .form-group
+              label.control-label()
+                | Send Message:
+              = select_tag("message[sent]", options_for_select([["Send Immediately", true], ["Send at a specific time", false]], true), class: "form-control")
+
+            .form-group#send-at-later-date
+              label.control-label()
+                | Send On:
+              = text_field_tag("message[send_date]", "", class: "form-date-time-input form-control")
+
+            .form-group
+              label.control-label.dynamic-label()
+              span.resource-url.form-control()
+
+            .form-group
+              label.control-label()
+                | Message:
+              = cktext_area_tag("message[content]", "", class: "form-control", id: "message_content_wysiwyg")
+
+        .modal-footer
+          =hidden_field_tag("resource_id", "", id: "resource-id")
+          =hidden_field_tag("message[delivery_type]", "email")
+          button.btn.btn-default data-dismiss="modal" type="button"  Close
+          =submit_tag("Send/Schedule Email", id: "add-geographies-btn", class: "btn btn-primary")

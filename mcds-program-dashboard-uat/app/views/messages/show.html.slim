@@ -1,0 +1,58 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+
+
+.container
+  .page-header(id="show-message-#{@message.id}")
+    h1 Message Details
+    = render partial: "shared/breadcrumbs"
+
+  .email-show-section
+    .message-top-info
+      / span
+      /   i.fa.fa-envelope
+      /   | &nbsp;
+      /   | Email
+      -if @message.user_id != current_user.id
+        span
+          =link_to(new_message_path(user_ids: [@message.user_id], message: {subject: "RE: #{@message.subject}", delivery_type: 'email'}))
+            i.fa.fa-envelope
+            | &nbsp;
+            | Reply
+        br
+      span.strong
+        | Published Date:
+      span
+        =" #{convert_date_for_input(@message.publish_date || @message.send_date || @message.created_at)}"
+      br
+      span.strong
+        | To:
+      span
+        =" #{@message.users.map{|user| user.email}.join(', ')}"
+      br
+      span.strong
+        | From:
+      span
+        =" #{@message.user.try(:email)}"
+      br
+      span.strong
+        | Subject:
+      span
+        =" #{@message.subject}"
+      br
+
+    .content-section
+      span.strong
+        | Message:
+      .message-content
+        = @message.content.html_safe
+    - if @message.resources.present?
+      .mail-resources
+        span.strong
+          =" Attachment or Download:"
+        - @message.resources.each do |resource|
+          = link_to("#{resource_url(resource.id)}", {target: 'blank'}) do
+            = resource.attributes['file']
+
+
+

@@ -1,0 +1,139 @@
+.container
+  .page-header
+    new-button
+
+    h1 () Schematics
+
+    .row
+      .col-xs-12
+        .breadcrumb_list
+          a href='/' Home
+          = " / My Schematics"
+
+  .row
+    .col-xs-12
+      .well
+        .row
+          .col-xs-4
+            div.input-group.search
+              input.form-control(
+                type="search"
+                ng-model="idxCtrl.f.search"
+                ng-model-options="idxCtrl.modelOptions"
+                ng-change="idxCtrl.filter(true)"
+                name="search"
+                placeholder="search"
+                required
+              )
+              span.input-group-btn
+                button.btn.btn-default.clear-button(
+                  type="button"
+                  ng-click="idxCtrl.f.search = ''; idxCtrl.filter(true)"
+                )  Clear
+          .col-xs-8
+            .form-inline
+              drop-down.col-md-3 label="Date Range"
+                div style="width: 650px;padding: 1em 0.5em;"
+                  .row.date-range
+                    .col-md-3.col-xs-12
+                      label.form-label () Start Dates From
+
+                    .col-md-9.col-xs-12
+                      .form-group ng-form="sDate"
+                        div ( ng-model="idxCtrl.f.release_date.from" ng-change="idxCtrl.filter(true)" required date-picker)
+                        span.to () to
+                        div ( ng-model="idxCtrl.f.release_date.to" ng-change="idxCtrl.filter(true)" required date-picker)
+
+                  .row.date-range
+                    .col-md-3.col-xs-12
+                      label.form-label () End Dates From
+
+                    .col-md-9.col-xs-12
+                      .form-group ng-form="eDate"
+                        div ( ng-model="idxCtrl.f.end_date.from" ng-change="idxCtrl.filter(true)" required date-picker)
+                        span.to () to
+                        div ( ng-model="idxCtrl.f.end_date.to" ng-change="idxCtrl.filter(true)" required date-picker)
+
+                  .row.date-range
+                    .col-md-3.col-xs-12
+                      label.form-label () Last Modified From
+
+                    .col-md-9.col-xs-12
+                      .form-group ng-form="mDate"
+                        div ( ng-model="idxCtrl.f.updated_at.from" ng-change="idxCtrl.filter(true)" required date-picker)
+                        span.to () to
+                        div ( ng-model="idxCtrl.f.updated_at.to" ng-change="idxCtrl.filter(true)" required date-picker)
+
+              display-status-filter.col-md-3 display-status="idxCtrl.f.status" ng-model="status" change="idxCtrl.filter"
+
+              type-filter ng-model="idxCtrl.f.isTest" change="idxCtrl.filter"
+
+              a.btn.btn-primary.pull-right ng-click="idxCtrl.clearFilters()" Clear Filters
+
+  .row
+    .col-md-4.form-inline
+      label.form-label ()
+        span () {{idxCtrl.min()}}
+        |  - &nbsp;
+        span () {{idxCtrl.max()}}
+        |  of &nbsp;
+        span () {{idxCtrl.f.totalCount}}
+        |  Schematics &nbsp;
+
+        select-dropdown default-text="#" options="idxCtrl.perPage" value="idxCtrl.f.perPage" label="label" val-opt="val" save="idxCtrl.filter(true)"
+        |  per page
+
+    .col-md-8.text-right
+      pagination total-items="idxCtrl.f.totalCount" ng-model="idxCtrl.f.currPage" items-per-page="idxCtrl.f.perPage" max-size="5" previous-text="‹" next-text="›" num-pages="idxCtrl.f.numPages" boundary-links="true" first-text="«" last-text="»" ng-change="idxCtrl.search()"
+  .row
+    .col-md-12
+      .no-schematics-message.text-center ng-show="idxCtrl.f.totalCount === 0"
+        strong
+          span.mid-level-case
+            | There are currently no schematics for this geography. Please contact your local agency for schematic information.
+
+
+      table.table.table-striped#schematics-list ng-hide="idxCtrl.f.totalCount === 0"
+        thead
+          tr
+            th (sortable name="name" col="idxCtrl.f.sort" dir="idxCtrl.f.dir" fn="idxCtrl.filter")
+              | Name
+              | &nbsp;
+            th () Geography
+            th () Test
+            th (sortable name="status" col="idxCtrl.f.sort" dir="idxCtrl.f.dir" fn="idxCtrl.filter")
+              | Status
+              | &nbsp;
+            th (sortable name="release_date" col="idxCtrl.f.sort" dir="idxCtrl.f.dir" fn="idxCtrl.filter")
+              | Start Date
+              | &nbsp;
+            th (sortable name="end_date" col="idxCtrl.f.sort" dir="idxCtrl.f.dir" fn="idxCtrl.filter")
+              | End Date
+              | &nbsp;
+            th (sortable name="updated_at" col="idxCtrl.f.sort" dir="idxCtrl.f.dir" fn="idxCtrl.filter")
+              | Last Modified
+              | &nbsp;
+            th options-column-display="" Options
+
+        tbody
+          tr ng-repeat="schm in idxCtrl.schematics track by schm.id"
+            td
+              a ui-sref="schematic.view({id: schm.id})"
+                | {{ ::schm.name }}
+            td
+              ul.schematic-geographies ng-if="schm.geography_ids.length > 0"
+                li (ng-repeat="geography in idxCtrl.geographies | collection:schm.geography_ids:'id'")
+                  | {{ geography.name | humanize }}
+            td
+              span.glyphicon.glyphicon-ok ng-if="schm.test"
+            td () {{ ::schm.display_status }}
+            td () {{ ::schm.release_date | utcDate }}
+            td () {{ ::schm.end_date | utcDate }}
+            td () {{ ::schm.updated_at | date }}
+            td options-column-display=""
+              div ng-if="schm.display_status != 'archived'"
+                a.btn(ui-sref="schematic.editor({id: schm.id})" ng-if="schm.parent_id || idxCtrl.selected_geography.name === 'National'" geography-ids="schm.geography_ids" user-geography-only)
+                  i.fa.fa-fw.fa-pencil-square-o
+                  | Edit
+                copy-button schm="schm" geographies="idxCtrl.geographies"
+            td ng-if="schm.status === 'archived'" options-column-display=""

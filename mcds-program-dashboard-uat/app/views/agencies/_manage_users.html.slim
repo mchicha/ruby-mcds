@@ -1,0 +1,36 @@
+.container
+  .container#manage-users
+    fieldset
+      legend() Users associated to agency: #{@agency.name}
+      table.table.table-striped
+        thead()
+          th() User Name
+          - @agency_geographies.each do |agency_co_op|
+            th() Assigned to #{agency_co_op.name}
+          th() Action
+        tbody#list-of-agency-users.list()
+          = render "agency_users_results", collection: @agency_users, as: :agency_user
+
+      .search-and-add-user.col-md-12
+        =form_for :agency_user, url: add_user_to_agency_agency_path do |f|
+          label.pull-left() Search for a User:
+          .col-md-1
+          = text_field_tag("agency_user[user_email]", "", data: {autocomplete_source: api_v1_user_search_path}, id: "search-user-input", class: "col-md-6")
+          / =f.autocomplete_field(:user_email,
+          /                       api_v1_user_search_path,
+          /                       class: "col-md-6",
+          /                       update_elements: {},
+          /                       id_element: "#agency_user_user_id",
+          /                       id: "search-user-input")
+          =f.hidden_field(:user_id)
+
+          button#add-user-to-agency-btn.btn.btn-primary.pull-right.col-md-3(disabled="disabled")
+            i.fa.fa-plus-circle
+            | Add User to This Agency
+      .col-md-12.instructional-info
+        .col-xs-2.pull-left
+          | &nbsp;
+        .col-xs-6.instructions
+          | To find a user to add to this agency, start typing the name or email address of the user you wish to add. From the list of matching users, click the one you wish to add then click the &quot;Add User to this Agency&quot; button to confirm.
+        / .save-or-cancel-actions.pull-right()
+          # = link_to("Cancel", "#", class: "clickme")

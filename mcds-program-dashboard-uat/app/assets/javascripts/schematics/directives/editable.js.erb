@@ -1,0 +1,102 @@
+'use strict';
+
+angular.module('schematicApp')
+    .directive('editable', [
+        'CanvasSvc',
+        '$filter',
+        '$document',
+        '$modal',
+        '$q',
+        function(CanvasSvc, $filter, $document, $modal, $q) {
+            return {
+                restrict: 'A',
+                require: 'ngModel',
+                scope: {
+                    ctrl: '=ctrl'
+                },
+                link: function link(scope, element, attrs, model) {
+                    var startX = 0, startY = 0, x = 0, y = 0;
+                    var currCtrl = scope.ctrl;
+
+                    // ********************************************************
+                    //                      WATCHERS
+                    // ********************************************************
+                    scope.$watch(function() { return currCtrl.currDoc; }, function(newValue, oldValue) {
+                        if(scope.stage){
+                          scope.stage.destroyChildren();
+                          element.removeClass('retina');
+                        }
+                        CanvasSvc.initialize(scope, attrs, currCtrl);
+                        Draw();
+                    });
+
+                    function applyLayerAssets(){
+                        angular.forEach(scope.layers[1].children, function(canvasElement, idx) {
+                            AssetHelpers.applyDamAsset(
+                              canvasElement.element,
+                              true
+                            );
+                        });
+                    };
+
+                    function Draw() {
+                        scope.stage  = CanvasSvc.buildStage(scope.doc.config);
+                        scope.layers = CanvasSvc.builder(scope, currCtrl);
+
+                        angular.forEach(scope.layers, function(layer, idx) {
+                            // CanvasSvc.setLayerVisibillity(layer, scope.schemCtrl.filters[layer.attrs.name]);
+                            scope.stage.add(layer);
+                            layer.setZIndex(idx);
+                        });
+
+                        CanvasSvc.applyRetina(scope.stage, element);
+                        CanvasSvc.scaleStage(scope.doc.config, scope.stage);
+                        scope.stage.draw();
+                    };
+
+                    // ********************************************************
+                    //                  CANVAS CONFIG FILE
+                    // ********************************************************
+
+                    scope.config = {
+                        layers: [{
+                            name: 'Background',
+                            mouseEvents: null,
+                            builder: function(element) {
+                                var obj = angular.copy(element.values);
+                                obj.tipe = 'background';
+                                return obj;
+                            }
+                        }, {
+                            name: 'Mask',
+                            mouseEvents: 'unfocusElements',
+                            builder: function(element) {
+                                var obj = angular.copy(element.values);
+                                obj.tipe = 'mask';
+                                // obj.fill = 'white';
+                                return obj;
+                            }
+                        }, {
+                            name: 'Interactive',
+                            mouseEvents: 'setFocusabeElement',
+                            builder: function(element) {
+                                var obj = angular.copy(element.values);
+                                obj.tipe = 'interactive';
+                                return obj;
+                            }
+                        }, {
+                            name: 'Text_Labels',
+                            mouseEvents: null,
+                            builder: function(element) {
+                                var obj = angular.copy(element.values);
+                                obj.tipe = 'text_label';
+                                return obj;
+                            }
+                        }],
+                        mouseEvents: currCtrl.mouseEvents
+                    };
+
+                }
+            };
+        }
+    ]);

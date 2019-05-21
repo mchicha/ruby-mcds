@@ -1,0 +1,74 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  p
+   | Updating: #{@date_type.name}
+  br
+  .col-lg-10
+    = form_for(@date_type) do |f|
+
+      fieldset
+        .form-group.row
+          .col-md-11
+            = f.label :name, "Name (Cannot change, code uses it. If not acceptable use Display Name to override in the view)"
+          .col-md-4
+            = f.text_field :name, class: 'form-control', disabled: true
+
+      fieldset
+        .form-group.row
+          .col-md-11
+            = f.label :display_name, "Display Name (If present, Overrides Name on Program show/edit and calendar, if default transformation is not acceptable)"
+          .col-md-4
+            = f.text_field :display_name, class: 'form-control'
+
+      fieldset
+        .form-group.row
+          .col-md-4
+            = f.label :sort_order
+            = f.text_field :sort_order, class: 'form-control'
+
+      fieldset
+        .form-group
+          div
+            = f.label(:requried, "Requried (User must fill to save program)")
+          = f.label(:requried, "True")
+          = f.radio_button(:required, true)
+          = f.label(:requried, "False")
+          = f.radio_button(:required, false)
+
+      fieldset
+        .form-group
+          div
+            = f.label(:end_date_required, "End Date Requried (Appears as a range with start and end)")
+          = f.label(:end_date_required, "True")
+          = f.radio_button(:end_date_required, true)
+          = f.label(:end_date_required, "False")
+          = f.radio_button(:end_date_required, false)
+
+      fieldset
+        .form-group
+          div
+            = f.label(:show_on_calendar, "Show On Calendar (Will render on calendar, if true then also fill out icon and icon color)")
+          = f.label(:show_on_calendar, "True")
+          = f.radio_button(:show_on_calendar, true)
+          = f.label(:show_on_calendar, "False")
+          = f.radio_button(:show_on_calendar, false)
+
+      fieldset
+        .form-group.row
+          .col-lg-11
+            = f.label :fa_icon, "Font Awesome Icon (See Font Awesome Website for Options)"
+          .col-lg-4
+            = f.text_field :fa_icon, class: 'form-control'
+
+      fieldset
+        .form-group.row
+          .col-lg-11
+            = f.label :icon_color, "Icon Color (Hex Code, for example Black: '#000000' or Red: '#FF0000')"
+          .col-lg-4
+            = f.text_field :icon_color, class: 'form-control'
+
+      fieldset
+        .form-group
+          =f.submit class: 'btn btn-info'

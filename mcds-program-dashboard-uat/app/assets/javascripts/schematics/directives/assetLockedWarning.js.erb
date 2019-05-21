@@ -1,0 +1,10 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("assetLockedWarning", [ function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/assetLockedWarning.html') %>"
+    };
+  }]);

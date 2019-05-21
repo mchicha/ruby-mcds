@@ -1,0 +1,71 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+  =javascript_include_tag 'calendar_grid_view'
+.container
+  .pull-left
+    = render partial: "shared/breadcrumbs"
+  .calendar-grid-view.row.col-md-12
+    .row.col-md-12
+      .col-md-4.col-md-offset-4
+        h3.text-center
+          = "#{@month_name} #{@year}"
+      .col-md-4
+        .pull-right.moment-links-container
+          - if can? :manage, GeographyMoment.new(geography: @selected_coop)
+            .moment-link-calendar
+              =link_to(new_moment_path, {class: 'btn btn-primary fa fa-plus'}) do
+                = ' New Event'
+          .moment-link-calendar
+            =link_to(moments_path, {class: 'btn btn-primary fa fa-list'}) do
+              = ' List Events'
+    .row.col-md-12
+      .text-center.date-type-legend
+        span.date-type-icon
+          input.calendar-filter-checkbox(type="checkbox" checked="true" check-class="calendar-event-calendar-marker")
+          .fa class="fa-calendar-o" style="color: #00C500"
+          = " Calendar Event"
+        -@calendar_date_types.each do |date_type|
+          span.date-type-icon
+            input.calendar-filter-checkbox(type="checkbox" checked="true" check-class="#{date_type.name}-calendar-marker")
+            .fa class="#{date_type.fa_icon}" style="color:#{date_type.icon_color}"
+            = " #{date_type.view_name}"
+    .row.col-md-12
+      table.calendar
+        thead
+          tr
+            th
+              | Sunday
+            th
+              | Monday
+            th
+              | Tuesday
+            th
+              | Wednesday
+            th
+              | Thursday
+            th
+              | Friday
+            th
+              | Saturday
+        tbody
+          - dates_to_week_array(@start_of_month, @end_of_month).each do |week|
+            tr
+              -week.each do |date|
+                td.outlined-calendar-square
+                  div.dontbreak
+                    - if date.present?
+                      p
+                        =date.day
+                      - @moments.select{|moment| moment.post_date.to_date <= date && moment.remove_date.to_date >= date}.each do |moment|
+                        div(class="calendar-event-calendar-marker")
+                          = link_to(moment_path(moment))
+                            .fa class="fa-calendar-o" style="color: #00C500"
+                            = " #{moment.title}"
+                      - @programs_for_month.each do |program|
+                        - applicable_date_ranges = program.date_ranges.select{|date_range| @calendar_date_type_ids.include?(date_range.date_type.id) && date_range.start_date.to_date <= date && date_range.end_date >= date}
+                        - if applicable_date_ranges.present?
+                          - applicable_date_ranges.each do |dr|
+                            div(class="#{dr.date_type.name}-calendar-marker")
+                              = link_to(program_path(program))
+                                .fa class="#{dr.date_type.fa_icon}" style="color:#{dr.date_type.icon_color}"
+                                = " #{program.name}"

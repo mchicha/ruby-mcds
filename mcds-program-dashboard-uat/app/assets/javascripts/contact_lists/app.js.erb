@@ -1,0 +1,62 @@
+var contactListApp = angular.module('contactListApp', [
+  'ngAnimate',
+  'ui.router',
+  'ngResource',
+  'ui.bootstrap',
+  'angucomplete-alt'
+]);
+
+contactListApp.config([
+  '$stateProvider',
+  '$urlRouterProvider',
+  function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise("/");
+    $stateProvider.state("contact_lists", {
+      url: "/",
+      controller: 'ContactListsCtrl as contact',
+      templateUrl: "<%= asset_path('contact_lists/templates/index.html') %>",
+      resolve: {
+        users: function($q, UserSvc) {
+          var deferred = $q.defer();
+          UserSvc.resource.query().$promise.then(function(data) {
+            deferred.resolve(data);
+          });
+          return deferred.promise;
+        },
+        contact_lists: function($q, current_user, ContactListSvc) {
+          var deferred = $q.defer();
+          ContactListSvc.resource.query({user_id: current_user.id}).$promise.then(function(data) {
+            deferred.resolve(data);
+          });
+          return deferred.promise;
+        }
+      }
+    }).state("list", {
+      url: "/list/:listId",
+      templateUrl: "<%= asset_path('contact_lists/templates/list.html') %>",
+      controller: 'ContactListCtrl as list',
+      resolve: {
+        contact_lists: function($q, current_user, ContactListSvc) {
+          var deferred = $q.defer();
+          ContactListSvc.resource.query({user_id: current_user.id}).$promise.then(function(data) {
+            deferred.resolve(data);
+          });
+          return deferred.promise;
+        }
+      }
+    }).state('my_lists', {
+      url: "/my_lists",
+      templateUrl: "<%= asset_path('contact_lists/templates/my_lists.html') %>",
+      controller: "MyContactListsCtrl as my_lists",
+      resolve: {
+        contact_lists: function($q, current_user, ContactListSvc) {
+          var deferred = $q.defer();
+          ContactListSvc.resource.query({user_id: current_user.id}).$promise.then(function(data) {
+            deferred.resolve(data);
+          });
+          return deferred.promise;
+        }
+      }
+    });
+  }
+]);

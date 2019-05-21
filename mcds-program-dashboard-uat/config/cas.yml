@@ -1,0 +1,13 @@
+### sets your hosts file /etc/hosts or POW for cas.dev to be your proper server
+## dfdf
+development:
+  url: http://tkml.dev:3002
+
+test:
+  url: http://tkml.dev:3002
+
+staging:
+  url: https://auth.pixalized.com
+
+production:
+  url: https://auth.tkmldevelopment.com

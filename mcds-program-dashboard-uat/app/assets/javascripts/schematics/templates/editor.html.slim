@@ -1,0 +1,106 @@
+.container-fluid
+  .page-header.edit-schematics
+    form (name="formName" role="form" novalidate)
+      h1
+        .input-group
+          .input-group-addon
+            i.fa.fa-pencil-square-o.fa-fw.fa-2x
+          input.form-control (type="text" name="schName" ng-model="schemCtrl.schematic.name" ng-change="schemCtrl.saveForm(formName.$valid)"  ng-model-options="schemCtrl.scalingModelOptions" autocomplete="off" required)
+
+    .row
+      .col-md-12.col-sm-12.col-xs-12
+        .breadcrumb_list
+          a href="/" Home
+          | &nbsp;
+          | /
+          | &nbsp;
+          a ui-sref="root" My Schematics
+          | &nbsp;
+          | /
+          | &nbsp;
+          | {{ schemCtrl.schematic.name }}
+
+  .row
+    .col-md-3
+      editor-tabs
+
+    .col-md-9
+      a.btn.pull-right (ui-sref="schematic.view({id: schemCtrl.schematic.id})")
+        i.fa.fa-eye
+        |  View Schematic to Print
+
+      ul.nav.nav-tabs
+        li ng-repeat="zone in schemCtrl.schematicZones"
+          a.dropdown-toggle aria-expanded="false" data-toggle="dropdown" type="button"
+            | {{ zone.name }} &nbsp;
+            span.caret
+          ul.dropdown-menu
+            li ng-repeat="doc in zone.documents"
+              a.document-link-in-dropdown href="#" ng-click="schemCtrl.updateSelectedZone($event, doc)" {{ doc.name }}
+
+      .row#schematic-builder-header
+        .col-md-12.col-sm-12.col-xs-12
+          .well
+            .schematic-details ng-controller="detailsCtrl"
+              form (name="form" role="form" novalidate)
+                .row
+                  .col-md-3.col-sm-12.col-xs-12
+                    dl.dl-horizontal.modifications
+                      dt () Last Modified:
+                      dd () {{ schemCtrl.schematic.updated_at | date}}
+                    dl.dl-horizontal.modifications
+                      dt () Modified By:
+                      dd () {{schemCtrl.schematic.last_modified_by.email}}
+                  .col-md-3.col-sm-12.col-xs-12
+                    .form-group
+                      label () Schematic Status:
+                      select.form-control (name="schStatus" ng-model="schemCtrl.schematic.status" ng-change="schemCtrl.saveForm(form.$valid)" required)
+                        option value="planning" Planning
+                        option value="published" Published
+                  .col-md-3.col-sm-12.col-xs-12
+                    .form-group
+                      label () Start Date:
+                      div ( ng-model="schemCtrl.schematic.release_date" name="schReleaseDate" ng-change="schemCtrl.saveForm(form.$valid)"  date-picker )
+                  .col-md-3.col-sm-12.col-xs-12
+                    .form-group
+                      label () End Date:
+                      div.end_date ( ng-model="schemCtrl.schematic.end_date" name="schReleaseDate" ng-change="schemCtrl.saveForm(form.$valid)" align-right="'true'" date-picker )
+                .row
+                  .col-md-12.col-sm-12.col-xs-12
+                    dl.geos
+                      dt Geography:
+                      dd
+                        ul.list.list-inline.list-unstyled
+                          li (ng-repeat="geography in schemCtrl.schematic.geographies")
+                            span.label.label-danger () {{geography.name}}
+
+            hr.row.red-bar
+
+            .btn-toolbar
+              .btn-group
+                legend-button (ctrl="schemCtrl")
+              .btn-group(role="group")
+                a.btn.btn-default ( ng-click="schemCtrl.toggleTextboxes()" ng-class="{active: schemCtrl.textBoxes}" )
+                  i.fa.fa-align-left
+                  |  {{ schemCtrl.textBoxes ? 'Done Editing' : 'Add/Edit Text Box'}}
+                a.btn.btn-default( ng-click="schemCtrl.toggleRemovable()" ng-class="{active: schemCtrl.removable}" )
+                  i.fa.fa-close
+                  |  {{ schemCtrl.removable ? 'Done Removing' : 'Remove Elements'}}
+
+      .canvas-stand ( ng-style="{
+        'background': 'url(\"' + schemCtrl.documents[schemCtrl.currDoc].background + '\") no-repeat',
+        'width': schemCtrl.documents[schemCtrl.currDoc].config.width + 'px',
+        'height': schemCtrl.documents[schemCtrl.currDoc].config.height + 'px'}"
+        )
+        note-collection (
+          ng-class="{active: schemCtrl.textBoxes}"
+          doc="schemCtrl.documents[schemCtrl.currDoc]"
+          schem="schemCtrl.schematic"
+          edit="schemCtrl.textBoxes"
+          removable="schemCtrl.removable"
+          ng-style="{transform: 'scale(' + schemCtrl.documents[schemCtrl.currDoc].config.scale + ')'}")
+
+        #schematic-builder (
+          ctrl="schemCtrl"
+          ng-model="schemCtrl.documents[schemCtrl.currDoc]"
+          editable )

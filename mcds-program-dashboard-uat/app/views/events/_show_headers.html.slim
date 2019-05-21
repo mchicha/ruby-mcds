@@ -1,0 +1,22 @@
+.container
+  .row
+    = render partial: 'event_day_buttons'
+
+    .calendar-queue-interactions
+      .search-calendar
+        = form_tag(events_show_calendars_path, :method => "get", id: "search-form", :start_date => @start_date) do
+          = text_field_tag :search, params[:search], placeholder: "Search"
+
+  .row
+    div.event_list_date
+      .pull-left
+        = 'TODAY ' if @start_date.to_date == DateTime.now.to_date
+        = @start_date.strftime("%A, %B %-d, %Y")
+      = render partial: 'event_list_counts'
+
+  .row
+    - if @events.empty?
+      div.events_list_none
+        | No events are scheduled for this date.
+    - else
+      = render partial: 'show_data', collection: @events, as: :event

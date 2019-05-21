@@ -1,0 +1,112 @@
+.container
+  .page-header
+    new-button
+
+    h1 () My Schematics
+
+    .row
+      .col-xs-12
+        ol.breadcrumb
+          li
+            a ui-sref="main" Home
+          li
+            | My Schematics
+
+  .row
+    .col-md-4
+      .btn-group.btn-group-justified
+        a.btn.btn-primary.active
+          | My Schematics
+          span ()  (000)
+
+        a.btn.btn-primary ui-sref="root"
+          | All Schematics
+          span ()  (000)
+
+    .col-md-8
+      .well.form-inline
+        drop-down label="Date Range"
+          .well style="width: 650px;"
+            .row.date-range
+              .col-md-3.col-xs-12
+                label.form-label () Start Dates From
+
+              .col-md-9.col-xs-12.form-inline
+                div ( ng-model="idxCtrl.f.sdate.from" date-picker )
+                span.to () to
+                div ( ng-model="idxCtrl.f.sdate.to" date-picker )
+
+            .row.date-range
+              .col-md-3.col-xs-12
+                label.form-label () End Dates From
+
+              .col-md-9.col-xs-12.form-inline
+                div ( ng-model="idxCtrl.f.edate.from" date-picker )
+                span.to () to
+                div ( ng-model="idxCtrl.f.edate.to" date-picker )
+
+            .row.date-range
+              .col-md-3.col-xs-12
+                label.form-label () Last Modified From
+
+              .col-md-9.col-xs-12.form-inline
+                div ( ng-model="idxCtrl.f.mdate.from" date-picker )
+                span.to () to
+                div ( ng-model="idxCtrl.f.mdate.to" date-picker )
+
+        status-filter status="idxCtrl.f.st"
+
+        a.btn.btn-warning.pull-right ng-click="idxCtrl.clearFilters()" Clear Filters
+
+  .row
+    .col-md-4
+      input.form-control type="search" name="search" ng-model="idxCtrl.f.search"
+
+    .col-md-4.form-inline
+      label.form-label ()
+        span () 1
+        |  - &nbsp;
+        span () 5
+        |  of &nbsp;
+        span () 0000
+        |  Schematics &nbsp;
+
+        select-dropdown default-text="#" options="idxCtrl.perPage" value="idxCtrl.f.perPage" label="label" val-opt="val"
+        |  per page
+
+    .col-md-4.text-right
+      pagination total-items="idxCtrl.filtSchematics.length" ng-model="idxCtrl.f.currPage" items-per-page="idxCtrl.f.perPage" max-size="5" previous-text="‹" next-text="›" num-pages="idxCtrl.f.numPages" boundary-links="true" first-text="«" last-text="»"
+
+  .row
+    .col-md-12
+
+      table.table.table-striped
+        thead
+          tr
+            th (sortable name="name" col="idxCtrl.col" dir="idxCtrl.dir") Name
+            th () Division/Region
+            th (sortable name="status" col="idxCtrl.col" dir="idxCtrl.dir") Status
+            th () Programs Included
+            th (sortable name="release_date" col="idxCtrl.col" dir="idxCtrl.dir") Start Date
+            th (sortable name="end_date" col="idxCtrl.col" dir="idxCtrl.dir") End Date
+            th (sortable name="updated_at" col="idxCtrl.col" dir="idxCtrl.dir") Last Modified
+            th () Options
+
+        tbody
+          tr ng-repeat="schm in idxCtrl.filtSchematics = (idxCtrl.schematics | filter:idxCtrl.f.search | dateRange:idxCtrl.f.sdate.from:idxCtrl.f.sdate.to:'release_date'| dateRange:idxCtrl.f.edate.from:idxCtrl.f.edate.to:'end_date'| dateRange:idxCtrl.f.mdate.from:idxCtrl.f.mdate.to:'updated_at' | statusFilter: idxCtrl.f.st | orderBy:idxCtrl.col:idxCtrl.dir) | limitTo: idxCtrl.offSet(idxCtrl.f) | limitTo: idxCtrl.pullSize(idxCtrl.f, idxCtrl.filtSchematics.length) track by schm.id"
+            td () {{ ::schm.name }}
+            td
+              | 00 Total
+              a.btn.btn-info
+                | View
+            td () {{ ::schm.status }}
+            td () Monopoly
+            td () {{ ::schm.release_date | date }}
+            td () {{ ::schm.end_date | date }}
+            td () {{ ::schm.updated_at | date }}
+            td
+              a.btn.btn-info
+                | Edit
+
+              a.btn.btn-info
+                | Copy

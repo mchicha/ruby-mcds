@@ -1,0 +1,231 @@
+'use strict';
+
+angular.module('schematicApp')
+    .controller('EditorCtrl', [
+        'schematic',
+        'layoutConfigs',
+        'CanvasSvc',
+        'ElementSvc',
+        'DocumentSvc',
+        '$filter',
+        'DocumentProgramSvc',
+        function(schematic, layoutConfigs, CanvasSvc, ElementSvc, DocumentSvc, $filter, DocumentProgramSvc) {
+          var editCtrl      = this;
+          editCtrl.filter   = $filter;
+          editCtrl.layouts  = layoutConfigs.layouts;
+
+          // editCtrl.forSelectedZone = function(input) {
+          //   if (editCtrl.selectedZone){
+          //     return input.zone === editCtrl.selectedZone;
+          //   } else {
+          //     return true;
+          //   }
+          // };
+
+          editCtrl.uniqueAsset = function(id, currElement, currDocument){
+            if (currDocument){
+              return currDocument.assetIds.indexOf(id) === -1;
+            }
+          }
+
+          editCtrl.adjustScaling = function(action, currElement){
+            //Clear the opacity for the element no matter which scaling adjust method is fired off
+             var previouslyGrayscaled = false;
+             if (currElement.element.grayscale){
+                previouslyGrayscaled = true;
+                currElement.element.grayscale = false;
+              }
+            editCtrl[action](currElement)
+            currElement.element.$update({schematic_id: schematic.id}, function(success) {
+                // currElement.element.asset = asset;
+            }, function(errorResult) {
+
+            });
+
+            currElement.fillPatternRepeat('no-repeat').parent.draw();
+
+            if(previouslyGrayscaled){
+              // If it was grayscale, we need to reload the image because the gray-version is an entire different image
+              CanvasSvc.applyImage(currElement, currElement.element.primary_dam_asset_path);
+            }
+          }
+
+          editCtrl.adjustFillScale = function(currElement){
+              var scale = currElement.element.values.fillPatternScaleX;
+
+              currElement.fillPatternScaleY(scale);
+              currElement.fillPatternScaleX(scale);
+              currElement.element.values.fillPatternScaleY = scale;
+          }
+          editCtrl.adjustFillRotation = function(currElement){
+              var rotate = currElement.element.values.fillPatternRotation;
+
+              currElement.fillPatternRotation(rotate);
+          }
+
+          editCtrl.adjustFillX = function(currElement){
+              var x = currElement.element.values.fillPatternX;
+
+              currElement.fillPatternX(x);
+          }
+          editCtrl.adjustFillY = function(currElement){
+              var y = currElement.element.values.fillPatternY;
+
+              currElement.fillPatternY(y);
+          }
+
+          ////////
+          // Currently offset sliders not wanted, if they wanted them back uncomment here and in scaling.html.slim
+          //////
+          // editCtrl.adjustFillOffX = function(currElement){
+          //     var x = currElement.element.values.fillPatternOffsetX;
+
+          //     currElement.fillPatternOffsetX(x);
+          // }
+          // editCtrl.adjustFillOffY = function(currElement){
+          //     var y = currElement.element.values.fillPatternOffsetY;
+
+          //     currElement.fillPatternOffsetY(y);
+          // }
+
+          editCtrl.clearScaling = function(currElement){
+            delete currElement.element.values.fillPatternScaleX
+            delete currElement.element.values.fillPatternScaleY
+            delete currElement.element.values.fillPatternRotation
+            delete currElement.element.values.fillPatternY
+            delete currElement.element.values.fillPatternX
+
+            delete currElement.attrs.fillPatternScaleX
+            delete currElement.attrs.fillPatternScaleY
+            delete currElement.attrs.fillPatternRotation
+            delete currElement.attrs.fillPatternY
+            delete currElement.attrs.fillPatternX
+          }
+
+          editCtrl.applyImage = function(asset, currElement, currDocument, schematic) {
+            // Only editable elements
+            if(currElement && (currElement.element.editable || !schematic.parent_id)){
+              // Only unused Assets for this document
+              if(editCtrl.uniqueAsset(asset.id, currElement, currDocument)){
+                // remove old image href from list of usedUrls
+                if(currElement.element.primary_dam_asset_id){
+                  var indexOfAssetId = currDocument.assetIds.indexOf(currElement.element.primary_dam_asset_id);
+                  if (indexOfAssetId > -1){
+                    currDocument.assetIds.splice(indexOfAssetId, 1);
+                  }
+                }
+
+                // clear any existing scaling from both element and attrs to show on page
+                editCtrl.clearScaling(currElement);
+
+                // add new image href to list of currDocument.assetIds
+                currDocument.assetIds.push(asset.id);
+                currElement.element.schematic_id = schematic.id;
+                currElement.element.primary_dam_asset_id = asset.id;
+
+                angular.forEach(asset.metadata, function(meta) {
+                  if(meta.name == "Program ID"){
+                    currElement.element.primary_program_id = parseInt(meta.value);
+                  }
+                });
+                currElement.element.primary_dam_asset_path = asset.medium_url;
+
+                if (currElement.element.grayscale){
+                  currElement.element.grayscale = false;
+                }
+                currElement.element.$update(function(success) {
+                  editCtrl.refreshCurrentDocumentPrograms(currDocument);
+                  currElement.element.asset = asset;
+                }, function(errorResult) {
+
+                });
+
+                CanvasSvc.applyImage(currElement, asset.medium_url);
+              }
+            }
+          }
+
+          editCtrl.applyGradient = function(colorBlock, schemCtrl) {
+            var redraw;
+
+            if(schemCtrl.currElement.element.primary_dam_asset_id){
+
+              var indexOfAssetId = schemCtrl.currentDocument.assetIds.indexOf(schemCtrl.currElement.element.primary_dam_asset_id);
+              if (indexOfAssetId > -1){
+                schemCtrl.currentDocument.assetIds.splice(indexOfAssetId, 1);
+              }
+
+              editCtrl.clearScaling(schemCtrl.currElement);
+              schemCtrl.currElement.element.primary_dam_asset_id = null;
+              schemCtrl.currElement.element.primary_dam_asset_path = null;
+              schemCtrl.currElement.element.secondary_dam_asset_id = null;
+              schemCtrl.currElement.element.secondary_dam_asset_path = null;
+
+              redraw = true;
+            }
+            schemCtrl.currElement.element.schematic_id = schemCtrl.schematic.id;
+
+            schemCtrl.currElement.attrs.fillLinearGradientColorStops = ["0.1", colorBlock.end_hex, "1", colorBlock.start_hex];
+            schemCtrl.currElement.element.values.fillLinearGradientColorStops = ["0.1", colorBlock.end_hex, "1", colorBlock.start_hex];
+
+            schemCtrl.currElement.attrs.fillLinearGradientEndPointX = 0;
+            schemCtrl.currElement.attrs.fillLinearGradientEndPointY = 100;
+            schemCtrl.currElement.element.values.fillLinearGradientEndPoint = {x: 0, y: 100};
+
+            var height = schemCtrl.currElement.attrs.height;
+
+            schemCtrl.currElement.attrs.fillLinearGradientStartPointX = 0;
+            schemCtrl.currElement.attrs.fillLinearGradientStartPointY = height;
+            schemCtrl.currElement.element.values.fillLinearGradientStartPoint = {x: 0, y: height};
+            schemCtrl.currElement.element.values.fillPriority = 'linear-gradient';
+
+            schemCtrl.currElement.element.$update({schematic_id: schemCtrl.schematic.id}, function(success) {
+
+            }, function(errorResult) {
+            });
+
+            if(schemCtrl.currWrapper){
+              var layout = editCtrl.filter('filter')(schemCtrl.documents, {id: schemCtrl.currWrapper.element.layout_id})[0];
+
+
+              if(layout){
+                var elements = editCtrl.filter('filter')(schemCtrl.elements, function(elem){
+                  return layout.element_ids.indexOf(elem.id) > -1;
+                })
+                CanvasSvc.applyLayout(
+                  schemCtrl.currWrapper,
+                  [schemCtrl.currElement.element],
+                  schemCtrl.mouseEvents.setFocusabeElement,
+                  [schemCtrl.currElement.element.id]
+                );
+              }
+
+            }else{
+              if(redraw && schemCtrl.currElement){
+                CanvasSvc.applyImage(schemCtrl.currElement)
+              }
+            }
+          }
+
+          editCtrl.refreshCurrentDocumentPrograms = function(currentDocument){
+              var document_id = currentDocument.id;
+
+              DocumentProgramSvc.get({ document_id: document_id, schematic_id: schematic.id }, function(data){
+                  currentDocument.programs = data.programs;
+              });
+           }
+
+          editCtrl.saveCurrElement = function(currElement) {
+            var params = {
+              shematic_id: schematic.id,
+              id: currElement.element.id
+            };
+            ElementSvc.resource.updateCanvasElement({
+              schematic_id: schematic.id,
+              id: currElement.element.id
+            },
+            currElement.element);
+          };
+
+        }
+    ]);

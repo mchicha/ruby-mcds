@@ -1,0 +1,22 @@
+/! Modal
+#upload-a-resource.modal.fade aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h4#myModalLabel.modal-title Add a resource to #{@program.name}
+      = form_for([@program, Resource.new], remote: true, authenticity_token: true) do |f|
+        .modal-body
+          div#errors-div
+          .form-group
+            p
+              = f.label(:description)
+              = f.text_area(:description, class: "form-control")
+          .form-group()
+            p.current-file
+              span.name Current File Name:
+              span.value
+            = f.file_field(:file, class: "form-control")
+            = f.hidden_field(:id)
+        .modal-footer
+          button.btn.btn-default data-dismiss="modal" type="button"  Close
+          =f.submit("Save Changes", class: "btn btn-primary")

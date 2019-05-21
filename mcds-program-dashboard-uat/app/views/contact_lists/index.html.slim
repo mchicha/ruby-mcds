@@ -1,0 +1,9 @@
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+
+div(ng-app="contactListApp")
+  - content_for :javascript do
+    javascript:
+      contactListApp.value('current_user', #{current_user.to_json.html_safe});
+
+  ui-view

@@ -1,0 +1,182 @@
+'use strict';
+
+angular
+  .module('schematicApp', [
+    'ngAnimate',
+    'ngResource',
+    'ui.router',
+    'ngMessages',
+    'ui.bootstrap',
+    'loadingOnAJAX',
+    'errorMessages',
+    'TKsorter',
+    'tkPaginate',
+    'tkDropdown',
+    'TKscrollTo',
+    'carrierwave',
+    'customFilters',
+    'DAM',
+    'confirmable',
+    'config',
+    'rzModule',
+    'tkmlFilters'
+  ])
+  .config([
+    '$httpProvider',
+    '$locationProvider',
+    '$stateProvider',
+    '$urlRouterProvider',
+    '$compileProvider',
+    'datepickerConfig',
+    function($httpProvider, $locationProvider, $stateProvider, $urlRouterProvider, $compileProvider, datepickerConfig) {
+
+    datepickerConfig.showWeeks = false;
+
+    $locationProvider.html5Mode(true).hashPrefix('!');
+    $compileProvider.debugInfoEnabled(<%= Rails.env.development? %>);
+
+    var token = document.querySelector('meta[name="csrf-token"]');
+
+    if(angular.isElement(token)){
+      $httpProvider.defaults.headers.common['X-CSRF-Token'] = token.content;
+    }
+    $httpProvider.useApplyAsync(true);
+    // THIS FORCES THE APP TO LEVERAGE JQLike FOR SERIALIZING QUERYT PARAMS
+    // ALLOWS US TO PASS NESTED PARAMS IN A QUERY STRING, INCLUDING ARRAY
+    $httpProvider.defaults.paramSerializer = '$httpParamSerializerJQLike';
+    $httpProvider.defaults.headers.common['Authorization']  = '<%#
+    ActionController::HttpAuthentication::Basic.encode_credentials(
+      AUTH_CONFIG[:name],
+      AUTH_CONFIG[:password]
+    ) %>';
+
+    // For any unmatched url, redirect to /state1
+    $urlRouterProvider.
+    otherwise("/");
+
+    $stateProvider
+    .state('root', {
+      url: "/",
+      templateUrl: "<%= asset_path('schematics/templates/browse-index.html') %>",
+      controller: 'IndexCtrl as idxCtrl',
+      resolve: {
+        schematics: function($q, SchematicSvc){
+          return $q(function(resolve, reject){
+            SchematicSvc.resource.query({status: ['planning', 'published']}).
+            $promise.then(function(data) {
+              resolve(data);
+
+            }, function(error){
+              reject(error);
+            });
+          });
+        }
+      }
+    })
+    .state('schematic', {
+      url: "/:id",
+      template: "<ui-view></ui-view>",
+      controller: "SchematicCtrl as schemCtrl",
+      resolve: {
+        schematic: function($q, SchematicSvc, $stateParams){
+          return $q(function(resolve, reject){
+            SchematicSvc.resource.get({id: $stateParams.id}).
+            $promise.then(function(data) {
+              resolve(data);
+            }, function(error){
+              reject(error);
+            });
+          });
+        },
+        canvas: function($q, DocumentSvc, $stateParams){
+          return $q(function(resolve, reject){
+            DocumentSvc.resource.query({schematic_id: $stateParams.id, include_date_ranges: true}).
+            $promise.then(function(data) {
+              resolve(data);
+            }, function(error){
+              reject(error);
+            });
+          });
+        },
+        assetTypes: function($q, DamAssetTypeSvc){
+          return $q(function(resolve, reject){
+            DamAssetTypeSvc.resource.query().
+            $promise.then(function(data) {
+              resolve(data);
+
+            }, function(error){
+              reject(error);
+            });
+          });
+        },
+        assets: function($q, DamAssetSvc){
+          return $q(function(resolve, reject){
+            DamAssetSvc.resource.query().
+            $promise.then(function(data) {
+              resolve(data);
+
+            }, function(error){
+              reject(error);
+            });
+          });
+        }
+      }
+    })
+    .state('schematic.view', {
+      url: "/view",
+      templateUrl: "<%= asset_path('schematics/templates/show.html') %>",
+      controller: 'ShowCtrl as showCtrl',
+      resolve: {
+        pdfs: function($q, $stateParams, PdfSvc){
+          return $q(function(resolve, reject){
+            PdfSvc.resource.query({schematic_id: $stateParams.id})
+              .$promise.then(function(data){
+                resolve(data);
+              }, function(error){
+                reject(error);
+              });
+          });
+        }
+      }
+    })
+    .state('schematic.editor', {
+        url: "/editor",
+        templateUrl: "<%= asset_path('schematics/templates/editor.html') %>",
+        controller: 'EditorCtrl as edCtrl',
+        resolve: {
+          layoutConfigs: function($q, LayoutSvc, $stateParams){
+            return $q(function(resolve, reject){
+              LayoutSvc.resource.query({schematic_id: $stateParams.id}).
+              $promise.then(function(data) {
+                resolve(data);
+
+              }, function(error){
+                reject(error);
+              });
+            });
+          }
+        }
+    })
+    .state('mySchematics',{
+      url: "/my-schematics",
+      templateUrl: "<%= asset_path('schematics/templates/my-schematics.html') %>"
+    })
+    .state('coops', {
+      url: "/:id/co-ops",
+      templateUrl: "<%= asset_path('schematics/templates/co-op-schematics.html') %>",
+      controller: 'CoopCtrl as coopCtrl',
+      resolve : {
+        coops: function($q, SchematicSvc, $stateParams){
+          return $q(function(resolve, reject){
+            SchematicSvc.resource.coops({id: $stateParams.id})
+              .$promise.then(function(data){
+                resolve(data);
+              }, function(error){
+                reject(error);
+              });
+          });
+        }
+      }
+    });
+
+  }]);

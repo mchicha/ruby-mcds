@@ -1,0 +1,89 @@
+div.col-xs-12(role="tabpanel" )
+  ul.nav.nav-tabs.miscellaneous-lists(role="tablist")
+    li.active(role="presentation")
+      a(aria-controls="home" data-toggle="tab" href="#notes-special-instructions" role="tab") Notes/Special Instructions
+    li(role="presentation")
+      a(aria-controls="messages" data-toggle="tab" href="#resources" role="tab") Resources
+    li(role="presentation")
+      a(aria-controls="profile" data-toggle="tab" href="#associated-elements" role="tab") Associated Elements
+    / li(role="presentation")
+    /   a(aria-controls="settings" data-toggle="tab" href="#schematics" role="tab") Schematics Using Assets from this Program
+
+  .tab-content
+    #notes-special-instructions.tab-pane.active(role="tabpanel")
+      - if edit
+        = f.cktext_area :notes
+      -else
+        = raw(@program.notes)
+
+    #resources.col-xs-12.tab-pane(role="tabpanel")
+      - if @new_program
+        p.text-center Please save the program and click to edit it to add resources to this program.
+      - else
+        div
+          .search-for-resource.pull-left.col-xs-12
+            label() Search for Resources with the Keyword:
+            .input-group.search
+              input.form-control#resource-search placeholder=("Search for resources with keyword...") type="text" /
+              span.input-group-btn
+                button.btn.btn-default.clear-button type="button"  Clear
+          / a.btn.btn-primary(onclick="clearFuzzySearch(programResources);")
+          /   |  Clear
+
+          .element-action-btns.pull-right(ng-if="!isShowPage")
+            a(
+              data-target="#upload-a-resource"
+              data-toggle="modal"
+              data-program-id="#{@program.id}"
+              type="button"
+              class="btn #{@new_program ? 'disabled btn-default' : 'btn-primary'}"
+            )
+              i.fa.fa-plus-circle()
+              |  Add a Resource
+        div
+          table.table.col-xs-12.table-striped()
+            thead()
+              tr()
+                th() Description
+                th() Filename
+                th()
+                th()
+                th()
+                th()
+                th()
+            tbody.list(id='resources-list')
+              = render partial: "program_resources", collection: @program.resources, as: :resource
+            - content_for :javascript do
+              javascript:
+                var options = {
+                  valueNames: [ 'description', 'file']
+                };
+                var programResources = new List('resources', options);
+                $( document ).ready(function() {
+                  $(".clear-button").click(function() {
+                    $("input#resource-search").val("");
+                    programResources.search()
+                  });
+                });
+
+    #associated-elements.col-xs-12.tab-pane(role="tabpanel")
+      = render partial: "program_assets"
+
+
+
+
+    / #schematics.tab-pane(role="tabpanel")
+    /   -raise
+    /   - if @new_program
+    /     p.text-center Please save the program then click to edit it in order to see this program's schematics.
+    /   - else
+    /     div
+    /       table.table.table-striped()
+    /         thead()
+    /           tr()
+    /             th() Schematic Name
+    /             th() Start Date
+    /             th() End Date
+    /             th() Geography
+    /         tbody.list
+    /           = render partial: "schematic", collection: @program.schematics.preload(:geographies).distinct, as: :schematic

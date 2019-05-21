@@ -1,0 +1,18 @@
+- @agency_users.each do |agency_user|
+  tr(id="agency-#{@agency.id}-user-#{agency_user.id}")
+    td() =agency_user.email
+    - @agency_geographies.each do |agency_user_co_cop|
+      td()
+        = check_box_tag("agency_user_co_op[]",
+                        agency_user_co_cop.id,
+                        belongs_to_agency_and_geography(agency_user, agency_user_co_cop),
+                        onclick: "updateUserToGeography(this);",
+                        "data-user-id" => agency_user.id)
+    td()
+      a.remove-agency-user-link(
+        data-user-id="#{agency_user.id}"
+        data-user-name="#{agency_user.email}"
+        data-agency-id="#{@agency.id}"
+        data-agency-name="#{@agency.name}"
+        onclick="removeAgencyUser(this)"
+      ) Remove

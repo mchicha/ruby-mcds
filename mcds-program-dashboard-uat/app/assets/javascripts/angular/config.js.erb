@@ -1,0 +1,4 @@
+angular.module("McSource", ['tkmlDamClient', 'loadingOnAJAX']).
+  config(['tkmlConfigProvider', function(tkmlConfigProvider){
+  tkmlConfigProvider.configApi('/api/v1/dam_caches','<%= DAM_CONFIG["client_token"] %>');
+}]);

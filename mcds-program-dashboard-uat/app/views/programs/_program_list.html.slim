@@ -1,0 +1,25 @@
+tr()
+  td()
+    / =image_tag("MCD12960_Sirloin_Group_CC.p1.pdf.r18.jpg", class: "program-placeholer-image-thumb")
+    span.fa.fa-file-image-o
+  td()
+    = program.user.try(:email) || "Me"
+  td()
+    = link_to(program.name, program_path(program))
+  td()
+    = program_date_range(program, @pop_install_date_type)
+  td()
+    = program.updated_at.strftime("%m/%d/%Y")
+  td()
+    = raw(program.geographies.collect(&:name).join("<br />"))
+  td()
+   = program.status.try(:name)
+   - if can? :create, GeographyProgram.new(geography_id: @selected_geography_ids.first)
+    td.actions()
+      = link_to(" Edit", edit_program_path(program), class: "fa fa-edit edit")
+      / The following become post links, see programs.js for more details
+      - if program.status && program.status.archived?
+        = link_to(" Activate", update_status_program_path(program, status_id: Status.published_id), class: "fa fa-plus-circle edit change-status")
+      - else
+        = link_to(" Archive", update_status_program_path(program, status_id: Status.archive_id), class: "fa fa-archive edit change-status")
+

@@ -1,0 +1,41 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .page-header
+    h1 Edit User
+    = render partial: "shared/breadcrumbs"
+  p
+   | Updating: #{@user.email}
+  br
+  = form_for(@user) do |f|
+
+      fieldset
+        = f.label :active
+        p
+          | Active
+          = f.radio_button :active, '1', checked: @user.active?
+        p
+          | Inactive
+          = f.radio_button :active, '0', checked: !@user.active?
+
+      br
+      fieldset
+        = f.label :role
+        - ['admin', 'inputter', 'leadership', 'us_read_only', 'tukaiz_super_admin'].each do |role|
+          p
+            = role
+            = f.radio_button :role, role, checked: @user.role == role
+
+      br
+      fieldset
+        = f.label :geography_ids
+        -Geography.find_each do |geog|
+          -if geog.is_a_co_op?
+            p
+              =check_box_tag("geography_ids[]", geog.id, @user.geographies.include?(geog))
+              =geog.name
+
+      br
+      fieldset
+        =f.submit

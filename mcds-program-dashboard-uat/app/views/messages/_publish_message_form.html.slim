@@ -1,0 +1,22 @@
+.row
+  label.control-label.col-sm-3
+    | Publish
+  .col-sm-9
+    = f.text_field(:publish_date, value: convert_date_for_input(@message.publish_date), class: "form-date-time-input form-control")
+  label.control-label.col-sm-3
+    | Deactivate
+  .col-sm-9
+    = f.text_field(:archive_date, value: convert_date_for_input(@message.archive_date), class: "form-date-time-input form-control")
+  label.control-label.col-sm-3
+    | Groups that will see this message:
+  .col-sm-9
+    .assigned-geographies-list()
+      - @message.geographies.each do |geography|
+        li(id="new_program_geographies_#{geography.id}")
+          = geography.name
+    a.add-item-link.pull-right(
+      data-target="#assign-program-geographies"
+      data-toggle="modal"
+      type="button"
+    )
+      | Select Groups

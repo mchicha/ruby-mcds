@@ -1,0 +1,27 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  p
+   | Updating: #{@killswitch.name}
+  br
+  .col-lg-5
+    = form_for(@killswitch) do |f|
+
+        .form-group
+          = f.label :name
+          = f.text_field :name, class: 'form-control'
+
+        .form-group
+          div
+            = f.label(:killed, "Killswitch Engaged")
+          = f.label(:killed, "True")
+          = f.radio_button(:killed, true)
+          = f.label(:killed, "False")
+          = f.radio_button(:killed, false)
+        .form-group
+          = f.label :description
+          = f.text_field :description, class: 'form-control'
+        br/
+        .form-group
+          =f.submit class: 'btn btn-info'

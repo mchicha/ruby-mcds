@@ -1,0 +1,17 @@
+#new-agency-modal.modal.fade aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+        h4#myModalLabel.modal-title Add an Agency to System
+      = form_for(:agency, remote: true) do |f|
+        .modal-body
+          p.new-agency-error-messages.alert.alert-danger(role="alert")
+          .create-agency
+            p()
+              = f.label(:name, "Agency Name: ")
+              = f.text_field(:name)
+        .modal-footer
+          button.btn.btn-default(data-dismiss="modal" type="button") Close
+          = f.submit "Save & Add Agency", class: "btn btn-primary"

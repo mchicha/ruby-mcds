@@ -1,0 +1,4 @@
+div.errors-messages( ng-if="er.hasErrors()" )
+  ul.errors
+    li ( ng-repeat="error in er.errorMsgs | orderBy:createdAt:true")
+      p.error () {{ error.message }}

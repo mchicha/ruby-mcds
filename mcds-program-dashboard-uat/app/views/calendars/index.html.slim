@@ -1,0 +1,23 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+
+.container
+  .col-md-11
+    .page-header
+      h1 Calendar
+      = render partial: "shared/breadcrumbs"
+    form.form action="/calendars/grid_view"
+      .row
+        .form-group.col-md-2
+          label for="month"
+            | Month:
+          =select_month(Date.today, {}, class: 'form-control')
+
+        .form-group.col-md-2
+          label for="year"
+            | Year:
+          =select_year(Date.today, {}, class: 'form-control')
+      div
+        input.btn.btn-default type="submit" value="See Calendar"
+

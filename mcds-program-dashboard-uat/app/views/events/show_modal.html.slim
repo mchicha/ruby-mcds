@@ -1,0 +1,39 @@
+.modal-header
+  h4.modal-title
+    = @start_date.strftime("%A, %B %-d, %Y")
+
+.modal-body
+  ul.events_list
+    - @events.each do |event|
+      li.one_event
+        - if event.is_a? Message
+          span.fc-event-icons.event
+          br
+          | Publish Date:  #{event.publish_date.strftime("%Y-%m-%d")}
+          br
+          | Subject:&nbsp;&nbsp;
+          = link_to event.subject, edit_message_path(event.id)
+          br
+          span.show-event-details
+            div.hidden(id='this_event_#{event.id}')
+              | Deactivate Date:
+              = event.archive_date ? event.archive_date.strftime("%Y-%m-%d") : ' None'
+              br
+              = list_geography_names(event)
+              br
+              | Message: #{event.content}
+              br
+            a(onclick="showEventDetail(this, #{event.id})")
+              | Show Details
+        - else
+          - if event.is_national?
+            span.fc-event-icons.national
+          - else
+            span.fc-event-icons.coop
+          = list_geography_names(event)
+          h4
+            = link_to event.name, program_path(event.id)
+          | Key Date(s):  #{event.date_ranges.where(start_date: @start_date).uniq.collect{|dr| dr.date_type.name.titleize}.join(", ")}
+
+.modal-footer
+  button.btn.btn-default data-dismiss="modal" type="button"  Close

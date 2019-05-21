@@ -1,0 +1,77 @@
+<samlp:Response ID="_5757c8a6-c6cf-4f2c-9303-687785ee13f4" Version="2.0" IssueInstant="2015-05-23T10:34:31.848Z" Destination="https://staging.mcsourceonline.com/api/v1/users/get_claims" Consent="urn:oasis:names:tc:SAML:2.0:consent:unspecified" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol">
+	<Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion">http://gafsstg.mcd.com/adfs/services/trust</Issuer>
+	<samlp:Status>
+		<samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
+	</samlp:Status>
+	<Assertion ID="_93b32172-b84d-43b2-b3a4-f9a6f981dc5d" IssueInstant="2015-05-23T10:34:31.848Z" Version="2.0" xmlns="urn:oasis:names:tc:SAML:2.0:assertion">
+		<Issuer>http://gafsstg.mcd.com/adfs/services/trust</Issuer>
+		<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+			<ds:SignedInfo>
+				<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+				<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+				<ds:Reference URI="#_93b32172-b84d-43b2-b3a4-f9a6f981dc5d">
+					<ds:Transforms>
+						<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+						<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+					</ds:Transforms>
+					<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+					<ds:DigestValue>pyVr+cD9qy673S8ibLTaU0CdlSCwP6K4p2DzDiBnWkk=</ds:DigestValue>
+				</ds:Reference>
+			</ds:SignedInfo>
+			<ds:SignatureValue>hv7GaSjlwthwNjqgJQgdiS+KIUteetEwdPp6kyMbMuihl8Q4HjtpBs2Rj57vGF0QNpJNuVHRaGWMhjXzJMSCLnkwF9aTicRiczBnSq+qH6AS+uKzYHD3HQtsb86cz9rq56MyNu/imnavKMszwZkoOk95DKLDyk2QAFsLN88ruEhuiih4eY61/3vPY1h8IJjWyVT63I5pSqQrTYSz13yQ8MYThUhhlLkeDYXt02c7dXdi3ujnnmlJFImXyTCrc2+4BMbOcTC+C0VEDYkJkeTATOLHcGqONnqbM1WZQC0xCCIr1/aMKDSUOAoFUROgc6h57yz3xlf3IZrzy6v1Aw3Wxg==</ds:SignatureValue>
+			<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIFDDCCA/SgAwIBAgIQcEg7L7N71mqwCGLiAQ78ijANBgkqhkiG9w0BAQsFADB+MQswCQYDVQQGEwJVUzEdMBsGA1UEChMUU3ltYW50ZWMgQ29ycG9yYXRpb24xHzAdBgNVBAsTFlN5bWFudGVjIFRydXN0IE5ldHdvcmsxLzAtBgNVBAMTJlN5bWFudGVjIENsYXNzIDMgU2VjdXJlIFNlcnZlciBDQSAtIEc0MB4XDTE0MTAwOTAwMDAwMFoXDTE3MTIxNDIzNTk1OVowgYsxCzAJBgNVBAYTAlVTMREwDwYDVQQIDAhJbGxpbm9pczESMBAGA1UEBwwJT2FrIEJyb29rMR8wHQYDVQQKDBZNY0RvbmFsZCdzIENvcnBvcmF0aW9uMQwwCgYDVQQLDANJVEYxJjAkBgNVBAMMHWdhZnNzdGctdG9rZW4tc2lnbmluZy5tY2QuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArIlzYcwuM8p0Gy3HHyprkpEB9tkYckWLDDD5ZRWU2QCF1CK4GGKqIwuqUjh6xX9jt6lRs9wwBtFpLrHb7dj1N8G/h887909x+jJEOqkbKKav91RDteQKHNr7cPwZAAl3mcyeKgPsB2O8rd6wcxtme+T5qcriKiCWX5ksu/1TyLUq79K08TqaPwDmTgKHjSPJnw13b55kX7LHEoPLfna9dWfQPaM6aaGmU8qq/wHcWv+mkXjEaYLZTDMtCzPvrD0OGQ2o+IwNiH5C9X0+zOKjPqEXwo5gbPUXr844s4z5XzHBP6fxtPWdPKaDnEq641DMLgY5l5LdQwChO8e6zfrbLQIDAQABo4IBdjCCAXIwKAYDVR0RBCEwH4IdZ2Fmc3N0Zy10b2tlbi1zaWduaW5nLm1jZC5jb20wCQYDVR0TBAIwADAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMGUGA1UdIAReMFwwWgYKYIZIAYb4RQEHNjBMMCMGCCsGAQUFBwIBFhdodHRwczovL2Quc3ltY2IuY29tL2NwczAlBggrBgEFBQcCAjAZGhdodHRwczovL2Quc3ltY2IuY29tL3JwYTAfBgNVHSMEGDAWgBRfYM9hkFXfhEMUimAqsvV69EMY7zArBgNVHR8EJDAiMCCgHqAchhpodHRwOi8vc3Muc3ltY2IuY29tL3NzLmNybDBXBggrBgEFBQcBAQRLMEkwHwYIKwYBBQUHMAGGE2h0dHA6Ly9zcy5zeW1jZC5jb20wJgYIKwYBBQUHMAKGGmh0dHA6Ly9zcy5zeW1jYi5jb20vc3MuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQCje9Vfe8lCR0huRnHBfUxCf5by2odBZqToOdUWmE4rlPpX4rQ0QKRFjn3We7bEbTq6eKiLzzgPruGGLP2ymDStSWZqdx33Po34EVmgvMUvkKD5ZIU2gxwJYOtx9j1YovjRf+HgdTl77Z+vlbrVSknN7ujmz2zQj9jYr4ACuRRS0tWyP6rh3+gpa9a0QAprSLQY7Yp6uXNfryR3dxEeW9NsIqWrQIjcyHEX9HA+NpMOoPbBLCmuFOSm45uADi2EZnvP16e2UjLpxF9Cf6LUyZZ1/eQby7gHKZn2GSCpd2V3kjdjviRDoXfAAg6NipPyHWHLUAmAx9SV7hHnhzgmmVm+</ds:X509Certificate>
+				</ds:X509Data>
+			</KeyInfo>
+		</ds:Signature>
+		<Subject>
+			<NameID>e0063517</NameID>
+			<SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+				<SubjectConfirmationData NotOnOrAfter="2015-05-23T10:39:31.848Z" Recipient="https://staging.mcsourceonline.com/api/v1/users/get_claims" />
+			</SubjectConfirmation>
+		</Subject>
+		<Conditions NotBefore="2015-05-18T10:29:31.723Z" NotOnOrAfter="2015-05-25T11:29:31.723Z">
+			<AudienceRestriction>
+				<Audience>staging.mcsourceonline.com</Audience>
+			</AudienceRestriction>
+		</Conditions>
+		<AttributeStatement>
+			<Attribute Name="http://schemas.microsoft.com/ws/2008/06/identity/claims/dn">
+				<AttributeValue>lab-bsabadi</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.xmlsoap.org/claims/CommonName">
+				<AttributeValue>Sabadi, Branko</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname">
+				<AttributeValue>Branko</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name">
+				<AttributeValue>Sabadi, Branko</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress">
+				<AttributeValue>branko.sabadi@span.eu</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname">
+				<AttributeValue>Sabadi</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.microsoft.com/ws/2008/06/identity/claims/eid">
+				<AttributeValue>e0063517</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.microsoft.com/ws/2008/06/identity/claims/role">
+				<AttributeValue>McD Staff</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.microsoft.com/ws/2008/06/identity/claims/l">
+				<AttributeValue>europe:europe</AttributeValue>
+			</Attribute>
+			<Attribute Name="http://schemas.microsoft.com/ws/2008/06/identity/claims/companytype">
+				<AttributeValue>McDonald's Corporation</AttributeValue>
+			</Attribute>
+		</AttributeStatement>
+		<AuthnStatement AuthnInstant="2015-05-18T10:34:31.286Z" SessionIndex="_93b32172-b84d-43b2-b3a4-f9a6f981dc5d">
+			<AuthnContext>
+				<AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</AuthnContextClassRef>
+			</AuthnContext>
+		</AuthnStatement>
+	</Assertion>
+</samlp:Response>

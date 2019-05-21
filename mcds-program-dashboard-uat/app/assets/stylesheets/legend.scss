@@ -1,0 +1,63 @@
+.legend-area {
+  font-size: 12px;
+
+  .subtitle {
+    border-bottom: thin solid #ccc;
+    font-weight: bold;
+  }
+
+  h3 {
+    margin-top: 0px;
+  }
+
+  h5 {
+    font-weight: bold;
+  }
+
+  .section {
+    margin-top: 15px;
+  }
+}
+
+.show-legend {
+  .subtitle {
+    border-bottom: none;
+  }
+
+  .legend-header {
+    border-bottom: thin solid red;
+    padding-bottom: 10px;
+
+    .last {
+      margin-bottom: 0px;
+    }
+  }
+
+  dl {
+    &.dl-horizontal {
+      dt {
+        width: auto;
+        padding-right: 0.5em;
+      }
+      dd {
+        margin-left: auto;
+      }
+    }
+  }
+
+  .legend-body {
+    margin-top: 20px;
+  }
+
+  .next-zone {
+    text-align: right;
+  }
+
+  .current-zone {
+    text-align: center;
+  }
+
+  .next-zone, .previous-zone {
+    font-size: 12px;
+  }
+}

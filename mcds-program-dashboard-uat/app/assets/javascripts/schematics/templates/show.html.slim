@@ -1,0 +1,74 @@
+.container-fluid
+  .page-header
+    span.pull-right(ng-if="schemCtrl.schematic.display_status != 'archived'" options-column-display)
+      copy-button schm="schemCtrl.schematic" geographies="schemCtrl.schematic.geographies"
+
+    h1 () {{ schemCtrl.schematic.name }}
+    .row
+      .col-md-12.col-sm-12.col-xs-12
+        .breadcrumb_list
+          a href="/" Home
+          | &nbsp;
+          | /
+          | &nbsp;
+          a ui-sref="root" My Schematics
+          | &nbsp;
+          | /
+          | &nbsp;
+          | {{ schemCtrl.schematic.name }}
+
+.container-fluid
+
+  .row
+    .col-md-3
+      p.text-right
+        a.btn.btn-info ng-href="/schematics/print/{{showCtrl.schematic.id}}" target="_blank"
+          i.fa.fa-print
+          |  Print Schematic
+
+      section.assets
+        .well
+          div.tab-section
+            position ctrl="schemCtrl"
+
+    .col-md-9
+      .row
+        .col-xs-12
+          a.btn.pull-right (ui-sref="schematic.editor({id: showCtrl.schematic.id})" ng-if="showCtrl.schematic.display_status != 'archived'" admin-only )
+                i.fa.fa-fw.fa-pencil-square-o
+                | Edit Schematic
+          ul.nav.nav-tabs
+            li ng-repeat="zone in schemCtrl.schematicZones"
+                a.dropdown-toggle aria-expanded="false" data-toggle="dropdown" type="button"
+                  | {{ zone.name }}&nbsp;
+                  span.caret
+                ul.dropdown-menu
+                  li ng-repeat="doc in zone.documents"
+                    a href="#" ng-click="schemCtrl.updateSelectedZone($event, doc)"  {{ doc.name }}
+
+      .row#schematic-builder-header
+        .col-xs-12
+          .well
+            show-legend (ctrl="schemCtrl")
+          .row
+            .col-xs-12
+              .canvas-stand (
+                ng-style="{
+                    'width': schemCtrl.documents[schemCtrl.currDoc].config.width + 'px',
+                    'height': schemCtrl.documents[schemCtrl.currDoc].config.height + 'px',
+                    'background': 'url(\"' + schemCtrl.documents[schemCtrl.currDoc].background + '\") no-repeat'}"
+                )
+
+                note-collection (
+                  doc="schemCtrl.documents[schemCtrl.currDoc]"
+                  schem="schemCtrl.schematic"
+                  edit="schemCtrl.textBoxes"
+                  removable="schemCtrl.removable"
+                  ng-style="{transform: 'scale(' + schemCtrl.documents[schemCtrl.currDoc].config.scale + ')'}"
+                  )
+
+                #schematic-builder (
+                  ctrl="schemCtrl"
+                  ng-model="schemCtrl.documents[schemCtrl.currDoc]"
+                  editable )
+

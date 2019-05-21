@@ -1,0 +1,36 @@
+ul.event_list_info
+  - if event.is_a? Message
+    li.event_logo.col-md-1
+      span.fc-event-icons.event
+    .col-md-11
+      li.event_name
+        | Subject:
+        .info
+          = link_to event.subject, edit_message_path(event.id)
+      li.event_sender_name
+        | Sender:
+        .info
+          = User.find(event.user_id).email
+      li.event_geographies
+        = render partial: 'list_geographies', locals: {event: event}
+      li.event_dates
+        | Publish Date:
+        .info
+          = event.publish_date.strftime("%m/%d/%Y")
+
+  - else
+    li.event_logo.col-md-1
+      - if event.is_national?
+        span.fc-event-icons.national
+      - else
+        span.fc-event-icons.coop
+    .col-md-11
+      li.event_name
+        = link_to event.name, program_path(event.id)
+      li.event_geographies
+        = render partial: 'list_geographies', locals: {event: event}
+      li.event_dates
+        | Key Date(s):
+        .info
+          span.event_type
+            = event.date_ranges.where("start_date = '#{@start_date}'").uniq.collect{|dr| dr.date_type.name.titleize}.join(", ")

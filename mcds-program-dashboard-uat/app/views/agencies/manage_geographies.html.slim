@@ -1,0 +1,28 @@
+- content_for :breadcrumbs do
+  = render partial: "shared/breadcrumbs"
+
+-content_for :javascript do
+  =javascript_include_tag 'application', 'programs'
+
+.container
+  .container#manage-co-ops
+    =form_tag(add_geographies_agency_path) do
+      fieldset#co-op-hierarchy
+        legend() = @agency.name
+        .co-op-hierarchy-list
+          ul()
+            = render "geographies/list_of_geographies", collection: @root_geographies, as: :root_geography
+
+      .action-buttons.pull-right
+        =link_to("Cancel", agencies_path)
+        button#add-geographies-btn.btn.btn-primary(type="submit" disabled)
+          i.fa.fa-plus-circle
+          | Add Selected Co-Ops to Agency
+        - unless agency.geographies.blank?
+          a.btn.btn-danger(
+            onclick="removeAllCoOps(this)"
+            data-agency-name="#{@agency.name}"
+            data-agency-id="#{@agency.id}"
+          )
+            i.fa.fa-trash-o
+            | Remove All Co-Ops From Agency

@@ -1,0 +1,12 @@
+//= require angular
+//= require angular-resource
+//= require angular-route
+//= require angular-animate
+//= require angular-sanitize
+//= require angular-ui-router
+//= require angular-bootstrap
+//= require angucomplete-alt
+//= require './contact_lists/app'
+//= require_directory './contact_lists/templates'
+//= require_directory './contact_lists/services'
+//= require_directory './contact_lists/controllers'

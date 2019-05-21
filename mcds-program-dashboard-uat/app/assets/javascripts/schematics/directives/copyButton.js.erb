@@ -1,0 +1,47 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('copyButton', [
+    'current_user',
+    function(current_user){
+    return{
+      require :'?ngModel',
+      restrict: 'E',
+      scope: {
+        schm: '=',
+        geographies: '='
+      },
+      bindToController: true,
+      controller: function($modal){
+        var cp = this;
+
+        cp.openNewModal = function(size, schematic, geographies){
+            var modalInstance = $modal.open({
+              templateUrl: "<%= asset_path('schematics/templates/new.html') %>",
+              controller: "NewCtrl as new",
+              size: size,
+              resolve: {
+                schematic: function(){
+                  return schematic;
+                },
+                geographies: function(){
+                  return geographies;
+                }
+              }
+            });
+          };
+      },
+      controllerAs: "copyCtrl",
+
+      templateUrl: "<%= asset_path('schematics/templates/directives/copyButton.html') %>",
+      link: function(scope){
+        if (current_user.selected_geography.name === 'National' || scope.copyCtrl.schm.parent_id) {
+          scope.copyCtrl.buttonText = 'Copy';
+        }
+        else{
+          scope.copyCtrl.buttonText = 'Save As Local';
+        }
+      }
+    };
+  }
+]);

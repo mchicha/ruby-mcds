@@ -1,0 +1,41 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive('toggleSwitch', [ function() {
+    return {
+      restrict: 'AE',
+      require: 'ngModel',
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/toggleSwitch.html') %>",
+      scope: {
+        save   : '&'
+      },
+      link: function postLink(scope, element, attrs, model) {
+        scope.isActive = function(value) {
+          if(scope.active){
+            return value === false
+          } else {
+            return value === true
+          }
+        }
+
+        scope.$watch(function () {
+            return model.$modelValue;
+
+          }, function(newValue, oldValue) {
+            if(angular.isDefined(newValue)){
+              scope.value = newValue;
+          }
+        });
+
+        scope.$watch('value', function(newValue, oldValue) {
+          model.$setViewValue(scope.value);
+          var saveable = angular.isFunction(scope.save) && oldValue !== undefined && newValue !== oldValue;
+
+          if(saveable){
+            scope.save();
+          }
+        });
+      }
+    }
+  }]);

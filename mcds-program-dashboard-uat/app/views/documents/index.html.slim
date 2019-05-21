@@ -1,0 +1,27 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .row.col-md-12
+    a href='documents/rejoin_programs'
+      | Rejoin ALL documents to Programs (ONLY CLICK IF SURE)
+  .row.col-md-4
+    table.table.text-center.table-striped
+      thead
+        tr
+          th
+            | Name
+          th
+            | Display Name
+          th
+            | Sort Order
+      tbody
+        - @documents.each do |document|
+          tr
+            td
+              a href="#{edit_document_path(document)}"
+                = document.name
+            td
+              = document.display_name
+            td
+              = document.sort_order

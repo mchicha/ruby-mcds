@@ -1,0 +1,20 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  p
+   | Updating: #{@zone.name}
+  br
+  .col-lg-5
+    = form_for(@zone) do |f|
+
+        .form-group
+          = f.label :name
+          = f.text_field :name, class: 'form-control'
+
+        .form-group
+          = f.label :sort_order
+          = f.text_field :sort_order, class: 'form-control'
+        br/
+        .form-group
+          =f.submit class: 'btn btn-info'

@@ -1,0 +1,5 @@
+ul
+  | Geographies:
+  - event.geographies.map(&:name).each do |geo_name|
+    li
+      = geo_name

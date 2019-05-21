@@ -1,0 +1,25 @@
+.layout-list
+  .position-unselected(ng-hide="schemCtrl.currElement.element || schemCtrl.currWrapper.element.group")
+    .well
+      p () No position selected. Please select a position to view the details for the layouts in that position.
+
+  asset-locked-warning
+
+  .position-selected(ng-if="schemCtrl.currElement.element.editable || (!schemCtrl.currElement.element && schemCtrl.currWrapper.element.group)")
+    |{{schemCtrl.currWrapper.element.group}}
+    .well
+      div(ng-if="schemCtrl.checkWrapperIfLocked(schemCtrl.currWrapper)")
+        h3.text-center
+          | Layout Locked
+        .row
+          .col-xs-10.col-xs-offset-1 () One of the positions within this layout has been locked so the layout cannot be changed.
+      div(ng-if="!schemCtrl.checkWrapperIfLocked(schemCtrl.currWrapper)")
+        div ng-show="layCtrl.filtLayouts.length == 0"
+          h3.text-center () No layouts available
+          p () Please select an element with layouts to use this tab.
+        ul.row.list-unstyled.list-group
+          li.col-xs-12.col-md-6 (ng-repeat="layout in layCtrl.filtLayouts = (edCtrl.layouts | filter:{name: (schemCtrl.currWrapper.element.group || '')}:true)")
+            a.thumbnail ng-click="schemCtrl.applyLayout(layout, schemCtrl.currWrapper, schemCtrl.schematic)"
+              img.img-responsive ng-src="{{'/canvas/' + layout.filename}}"
+            p () {{layout.name}}
+

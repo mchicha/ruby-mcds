@@ -1,0 +1,7 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .lookup_tables_back
+    = link_to('<- Back to Lookup Table', lookup_table_path(@lookup_table))
+  = render 'form'

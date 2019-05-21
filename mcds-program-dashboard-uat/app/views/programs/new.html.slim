@@ -1,0 +1,122 @@
+-content_for :javascript do
+  = javascript_include_tag 'application', 'programs'
+
+.container-fluid ng-app='McSource'
+  .container
+    = form_for(@program) do |f|
+      .row
+        .col-xs-12.page-header
+          h1
+            | New Program
+            .action-items.pull-right
+              .program-action-items.new-program
+                .action-items.pull-right
+                  a.btn.btn-primary(href="#{programs_path}")
+                    i.fa.fa-arrow-up
+                    |  Return to Program List
+                  = f.submit "Save Changes", class: "btn btn-primary"
+          .pull-left
+            = render partial: "shared/breadcrumbs"
+      .row
+        .col-xs-12
+          .form-group.program-status()
+            h2() Program Status:
+            = f.collection_select(:status_id, Status.order(:sort_order), :id, :name, {:selected => Status.planning_id})
+      .row.general-inputs
+        .program-action-items.form-group
+          .action-items.pull-left
+
+        .col-md-3.program-image
+          img(src="http://placehold.it/250x250")
+
+          / .form-group()
+          /   / label() Current Status:
+          /   = f.collection_select(:status_id, Status.all, :id, :name, include_blank: "Status")
+        .col-md-5
+          .form-group()
+            label.program-name() Program Name:
+            span.required() *
+            = f.text_field :name, class: "form-control", autofocus: true
+          .form-group()
+            label() Program Number (National Only):
+            = f.text_field :number, class: "form-control"
+          .form-group()
+            label() Result ID (Local Co-Op) From Jupiter:
+            span.required () *
+            = f.text_field :report_id, placeholder: "XXXX", class: "form-control"
+          .row.form-group()
+            label.delivery-method.col-xs-4()
+              | Delivery Method:
+              span.required() *
+            span.form-group.col-xs-6()
+              = f.collection_select(:delivery_method_id, DeliveryMethod.all, :id, :name, {include_blank: "Delivery Method"}, {class: "mid-form-program-dropdown", required: true})
+          .row.form-group()
+            label.delivery-method.col-xs-4()
+              | Show on Calendar:
+              span.required() *
+            span.form-group.col-xs-6()
+              = f.select(:calendar_display, options_for_select(options_for_calendar_select(@selected_coop)), {prompt: 'false'}, {class: "mid-form-program-dropdown", required: true})
+
+          label#program-dates() Dates
+          .program-date-ranges
+            = render partial: "program_dates", locals: {f: f}
+
+        .col-md-4
+          .col-md-12.program-geographies-list
+            fieldset
+              legend()
+                | Geography
+                span.required() *
+                a.add-item-link.pull-right(
+                  data-target="#assign-program-geographies"
+                  data-toggle="modal"
+                  type="button"
+                )
+                  | (+)
+              ul.assigned-geographies-list()
+
+          .col-md-12.program-color-blocks-list
+            fieldset
+              legend()
+                | Market Category
+                a.add-item-link.pull-right(
+                  data-target="#assign-program-color-blocks"
+                  data-toggle="modal"
+                  type="button"
+                )
+                  | (+)
+              table#program-color-blocks-table.table.borderless.show-list()
+                = render partial: "color_blocks/color_block_list", collection: @program.color_blocks, as: :color_block
+          .col-md-12
+            fieldset
+              .form-group()
+                label.program-name() POS #:
+                = f.text_area :pos, class: "form-control pos-text-area"
+      .row
+        .col-xs-12
+          .action-items.pull-right
+            .program-action-items.new-program
+              = f.submit "Save Changes", class: "btn btn-primary"
+        =render partial: "additional_program_details", locals: {f: f, edit: true}
+
+      .container
+        =render partial: "assign_new_geography_modal", locals: {obj: @program}
+        =render partial: "assign_new_color_block_modal", locals: {obj: @program}
+        =render partial: "shared/display_audits", locals: {audits: @program.audits}
+
+
+  / javascript:
+  /   $(document).ready(function() {
+  /     $('#program_delivery_method_id').selectpicker({
+  /       style: 'btn-default',
+  /       size: 4
+  /     });
+  /     $('#program_status_id').selectpicker({
+  /       style: 'btn-default',
+  /       size: 4
+  /     });
+  /     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+  /       $('#program_delivery_method_id').selectpicker('mobile');
+  /       $('#program_status_id').selectpicker('mobile');
+  /     }
+  /   });

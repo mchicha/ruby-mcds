@@ -1,0 +1,17 @@
+'use strict';
+
+angular.module('schematicApp')
+  .directive("assetList", [ function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "<%= asset_path('schematics/templates/directives/assetList.html') %>",
+      controller: function() {
+        var aList = this;
+        aList.program = "";
+        aList.search = "";
+        aList.filteredAssets = [];
+      },
+      controllerAs: "aList"
+    };
+  }]);

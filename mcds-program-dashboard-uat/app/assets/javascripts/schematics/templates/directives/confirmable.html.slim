@@ -1,0 +1,17 @@
+.panel-primary.confirm-box
+  .modal-header.panel-heading
+    h3.panel-title
+      |  Confirm
+
+  .modal-body.confirmer
+    .row
+      .col-xs-12.text-center
+        h5 () {{ con.text }}
+
+  .modal-footer
+    .row
+      .col-xs-12
+        .text-uppercase.btn-toolbar
+          a.btn.btn-success ng-click="con.choice(true)" Ok
+          a.btn.btn-danger ng-click="con.choice(false)" Cancel
+

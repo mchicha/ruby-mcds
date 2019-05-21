@@ -1,0 +1,37 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  .page-header
+    h1 FAQ
+    = render partial: "shared/breadcrumbs"
+
+  .row
+    .col-md-12
+      h2
+        | User Resources
+      ul
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/McSource+Online+Instruction+Manual+(3.11rr).pdf?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = 'McSource Online Instruction Manual'
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/McSource+Online+FAQs+-+quick+reference.pdf?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = 'McSource FAQ'
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/McSource+Online+Troubleshooting+and+Contacts.pdf?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = 'McSource Online Troubleshooting and Contacts'
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/McSource+Online++Instruction+Manual+for+Owner-Operators.pdf?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = 'McSource Online Instruction Manual for Owner-Operations'
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/McSource+POP+Information+Page.pdf?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = 'McSource POP Information Page'
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/IDMB+Dos+%26+Don%27ts.pdf?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = "IDMB Dos and Don'ts"
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/McSource+Online+MLM+presentation+2016+-+Tampa+Read+Only+PPT+(7.29).pptx?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = "McSource Online Instruction Manual for Restaurants and Owner/Operators"
+        li
+          =link_to("https://s3-us-west-2.amazonaws.com/mcsourceonline-production/documentation/McSource+Online+MLM+presentation+2016+-+Tampa+Read+Only+(7.29).ppsx?#{Date.today.to_s.gsub('-','')}", {target: 'blank'}) do
+            = "McSource Online Instruction Manual for Restaurants and Owner/Operators (video)"

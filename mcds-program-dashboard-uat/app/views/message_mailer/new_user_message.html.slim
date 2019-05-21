@@ -1,0 +1,19 @@
+h3
+  = "A new user has logged into McSource for the first time."
+p
+  strong
+    | Email:
+    | &nbsp
+  =  @user.email
+p
+  strong
+    | Role:
+    | &nbsp
+  =  @user.role
+
+ul
+  | User Geographies:
+  - @user.geographies.each do |geog|
+    li
+      = geog.name
+

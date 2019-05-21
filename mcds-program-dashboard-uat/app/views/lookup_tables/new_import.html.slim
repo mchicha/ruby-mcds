@@ -1,0 +1,25 @@
+-content_for :javascript do
+  =javascript_include_tag 'application'
+
+.container
+  = form_tag import_lookup_tables_path, multipart: true
+
+    p
+      | NOTE: Currently the only MetaData Field is "Template Name" and the Table Names are  "friendly" and "position"
+
+    fieldset
+      = label_tag(:key_field_name)
+        | MetaData Field :
+      = text_field_tag(:key_field_name)
+
+    fieldset
+      = label_tag(:table_name)
+        | Table Name :
+      = text_field_tag(:table_name)
+
+    fieldset
+      = label_tag(:spreadsheet)
+      = file_field_tag(:spreadsheet)
+
+    fieldset
+     = submit_tag
